@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>RoYo Logistics – Автоперевозки и логистические решения</title>
+  <title>RoYo Logistics – Платформа грузоперевозок для перевозчиков и грузоотправителей</title>
   <link rel="stylesheet" href="styles.css" />
-  <meta name="description" content="RoYo Logistics – надежная автодоставка и логистические решения по всей территории США для дилеров, клиентов и партнёров." />
+  <meta name="description" content="RoYo Logistics — простая платформа грузоперевозок. Грузоотправители размещают заявки, перевозчики предлагают ставки и бронируют рейсы по направлениям в Узбекистане." />
 </head>
 <body>
   <!-- Шапка -->
@@ -18,34 +18,36 @@
 
       <!-- Desktop nav -->
       <nav class="nav">
-        <a href="index.html#services">Services</a>
-        <a href="index.html#network">Coverage</a>
-        <a href="investors.html">Investors</a>
-        <a href="index.html#contact">Contact</a>
+        <a href="#how">Как это работает</a>
+        <a href="#services">Сервисы</a>
+        <a href="#lanes">Маршруты</a>
+        <a href="#investors">Инвесторам</a>
+        <a href="#contact">Контакты</a>
+        <a href="login.html" class="nav-login">Вход</a>
       </nav>
 
       <!-- Language switch (desktop) -->
       <div class="lang-switch">
-        <a href="index.html" class="active">EN</a>
-        <a href="ru.html">RU</a>
+        <a href="index.html">EN</a>
+        <a href="ru.html" class="active">RU</a>
         <a href="uz.html">UZ</a>
       </div>
 
       <!-- Mobile menu button -->
-      <button class="menu-toggle" aria-label="Open menu">
-        ☰
-      </button>
+      <button class="menu-toggle" aria-label="Open menu">☰</button>
     </div>
 
     <!-- Mobile dropdown -->
     <div class="mobile-menu">
-      <a href="index.html#services">Services</a>
-      <a href="index.html#network">Coverage</a>
-      <a href="investors.html">Investors</a>
-      <a href="index.html#contact">Contact</a>
+      <a href="#how">Как это работает</a>
+      <a href="#services">Сервисы</a>
+      <a href="#lanes">Маршруты</a>
+      <a href="#investors">Инвесторам</a>
+      <a href="#contact">Контакты</a>
+      <a href="login.html">Вход</a>
       <div class="mobile-lang">
-        <a href="index.html" class="active">EN</a>
-        <a href="ru.html">RU</a>
+        <a href="index.html">EN</a>
+        <a href="ru.html" class="active">RU</a>
         <a href="uz.html">UZ</a>
       </div>
     </div>
@@ -55,137 +57,162 @@
   <section class="hero">
     <div class="container hero-inner">
       <div class="hero-text">
-        <h1>Надёжная автодоставка и логистика по США</h1>
+        <h1>Грузоперевозки проще для перевозчиков и грузоотправителей</h1>
         <p>
-          RoYo Logistics организует безопасную, прозрачную и своевременную
-          доставку автомобилей и грузов по всей территории США – для дилеров,
-          частных клиентов и логистических партнёров.
+          Разместите груз, получите ставки, забронируйте перевозчика и ведите статус доставки —
+          понятным и быстрым способом. Начинаем с маршрутов по Узбекистану.
         </p>
+
         <div class="hero-actions">
-          <a href="#contact" class="btn">Запросить расчёт</a>
-          <a href="#investors" class="btn btn-outline">Информация для инвесторов</a>
+          <a href="login.html" class="btn">Вход</a>
+          <a href="#lanes" class="btn btn-outline">Выбрать маршрут</a>
         </div>
+
         <div class="hero-tags">
-          <span>Доставка «от двери до двери»</span>
-          <span>Застрахованные перевозчики</span>
-          <span>Персональное сопровождение</span>
+          <span>Ставки от перевозчиков</span>
+          <span>Размещение грузов</span>
+          <span>Прозрачные статусы</span>
         </div>
       </div>
 
+      <!-- Быстрая заявка грузоотправителя -->
       <div class="hero-card">
-        <h2>Быстрый расчёт (демо)</h2>
-        <form>
+        <h2>Разместить груз / запросить ставку</h2>
+
+        <!-- Реальная форма (mailto). Позже подключим CRM/API. -->
+        <form action="mailto:info@royologistics.com" method="post" enctype="text/plain">
           <label>
-            Город / штат загрузки
-            <input type="text" placeholder="Например, Casper, WY" required />
+            Грузоотправитель (компания)
+            <input type="text" name="Грузоотправитель" placeholder="Название компании" required />
           </label>
+
           <label>
-            Город / штат выгрузки
-            <input type="text" placeholder="Например, Dallas, TX" required />
+            Контакт (телефон или email)
+            <input type="text" name="Контакт" placeholder="+998 XX XXX XX XX / email" required />
           </label>
+
           <label>
-            Описание автомобиля или груза
-            <input type="text" placeholder="1 SUV, на ходу" />
+            Город отправления (Узбекистан)
+            <input type="text" name="Откуда" id="pickupInput" placeholder="Выберите ниже в маршрутах" required />
           </label>
+
           <label>
-            Ваш телефон или e-mail
-            <input type="text" placeholder="+1 (555) 000-0000" required />
+            Город доставки (Узбекистан)
+            <input type="text" name="Куда" id="deliveryInput" placeholder="Выберите ниже в маршрутах" required />
           </label>
-          <button type="submit" class="btn btn-fullwidth" disabled>
-            Отправить запрос (демо)
-          </button>
+
+          <label>
+            Описание груза
+            <input type="text" name="Груз" placeholder="Например: 2 паллеты, 800 кг, тент" required />
+          </label>
+
+          <label>
+            Дата загрузки
+            <input type="text" name="Дата" placeholder="Например: 2025-12-20" required />
+          </label>
+
+          <button type="submit" class="btn btn-fullwidth">Отправить запрос</button>
+
           <p class="form-note">
-            Форма демо-версии. Позже мы сможем подключить её к почте или CRM.
+            Заявка будет отправлена на <a href="mailto:info@royologistics.com">info@royologistics.com</a>.
           </p>
         </form>
       </div>
     </div>
   </section>
 
-  <!-- Услуги -->
-  <section id="services" class="section">
+  <!-- Как это работает -->
+  <section id="how" class="section section-muted">
     <div class="container">
-      <h2 class="section-title">Основные услуги</h2>
+      <h2 class="section-title">Как это работает</h2>
       <p class="section-subtitle">
-        RoYo Logistics специализируется на автотранспортных перевозках и масштабируемых логистических решениях.
-      </p>
-
-      <div class="grid-3">
-        <div class="card">
-          <h3>Автоперевозки (открытые и закрытые автовозы)</h3>
-          <p>
-            Перевозка автомобилей для автосалонов, аукционов, компаний и частных клиентов с понятным трекингом и обновлениями.
-          </p>
-        </div>
-        <div class="card">
-          <h3>Регулярные маршруты и флот</h3>
-          <p>
-            Постоянные направления и выделенные мощности для партнёров, которым нужны регулярные перевозки.
-          </p>
-        </div>
-        <div class="card">
-          <h3>Брокерские и диспетчерские услуги</h3>
-          <p>
-            Подбор проверенных перевозчиков, оптимизация маршрутов и ставок при одном контактном лице для клиента.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Маршруты (общее описание) -->
-  <section id="network" class="section section-muted">
-    <div class="container">
-      <h2 class="section-title">Покрытие и фокус</h2>
-      <p class="section-subtitle">
-        Штаб-квартира в Casper, Wyoming. Работаем с ключевыми федеральными трассами и развивающимися направлениями по США.
+        Логика как у DAT / Central Dispatch, но проще и понятнее.
       </p>
 
       <div class="steps">
         <div class="step">
           <span class="step-number">1</span>
-          <h3>Вся территория США</h3>
+          <h3>Грузоотправитель размещает груз</h3>
           <p>
-            Организация перевозок между крупными агломерациями и небольшими городами по основным магистралям США.
+            Выберите маршрут Откуда → Куда, укажите параметры и отправьте заявку.
           </p>
         </div>
         <div class="step">
           <span class="step-number">2</span>
-          <h3>Сеть надёжных перевозчиков</h3>
+          <h3>Перевозчики предлагают ставку</h3>
           <p>
-            Сотрудничаем с перевозчиками, уделяющими особое внимание безопасности, страховкам и срокам доставки.
+            Перевозчики выбирают подходящие направления и отправляют цену.
           </p>
         </div>
         <div class="step">
           <span class="step-number">3</span>
-          <h3>Технологии и прозрачность</h3>
+          <h3>Статус и документы</h3>
           <p>
-            Цифровые документы, статус по каждому этапу и понятное ценообразование для клиентов и партнёров.
+            Подтверждение загрузки, в пути, доставлено — с базовыми документами в одном месте.
           </p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- НОВОЕ: Города и регионы -->
-  <section id="cities" class="section cities">
+  <!-- Сервисы -->
+  <section id="services" class="section">
     <div class="container">
-      <h2 class="section-title">Города и регионы, где мы работаем</h2>
+      <h2 class="section-title">Основные сервисы</h2>
       <p class="section-subtitle">
-        RoYo Logistics уже выстраивает сеть в ключевых узлах Узбекистана и США.
-        Выберите город, чтобы увидеть доступные услуги и типичные сроки доставки.
+        Фокус на грузоперевозках и маршрутах по Узбекистану.
       </p>
 
-      <div class="cities-layout">
-        <!-- Слева: список городов -->
-        <div class="cities-list" id="city-list">
-          <!-- Кнопки заполняются через JavaScript -->
+      <div class="grid-3">
+        <div class="card">
+          <h3>FTL и LTL</h3>
+          <p>
+            Полная загрузка (FTL) и сборный груз (LTL) с понятным выбором маршрута и ставки.
+          </p>
+        </div>
+        <div class="card">
+          <h3>Сеть перевозчиков</h3>
+          <p>
+            Профили перевозчиков, доступность по направлениям, ставки и бронирование.
+          </p>
+        </div>
+        <div class="card">
+          <h3>Диспетчеризация и координация</h3>
+          <p>
+            Чёткая коммуникация, подтверждение загрузки/выгрузки и прозрачные обновления статуса.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Маршруты (кнопки городов) -->
+  <section id="lanes" class="section lanes">
+    <div class="container">
+      <h2 class="section-title">Выберите маршрут (Узбекистан)</h2>
+      <p class="section-subtitle">
+        Нажмите город для <strong>Откуда</strong>, затем выберите город для <strong>Куда</strong>.
+        Выбор автоматически подставится в форму заявки.
+      </p>
+
+      <div class="lanes-grid">
+        <div class="lane-box">
+          <h3>Откуда</h3>
+          <div class="lane-selected" id="fromSelected">—</div>
+          <div class="city-buttons" id="fromCities"></div>
         </div>
 
-        <!-- Справа: детали по выбранному городу -->
-        <div class="city-details" id="city-details">
-          <!-- Содержимое заполняется через JavaScript -->
+        <div class="lane-box">
+          <h3>Куда</h3>
+          <div class="lane-selected" id="toSelected">—</div>
+          <div class="city-buttons" id="toCities"></div>
         </div>
+      </div>
+
+      <div class="lane-actions">
+        <button class="btn primary" id="laneApply" disabled>Применить маршрут к форме</button>
+        <button class="btn btn-outline" id="laneReset" type="button">Сброс</button>
+        <a class="btn" href="login.html">Войти для размещения/ставок</a>
       </div>
     </div>
   </section>
@@ -195,33 +222,32 @@
     <div class="container">
       <h2 class="section-title">Инвесторам и кредиторам</h2>
       <p class="section-subtitle">
-        RoYo Logistics строит транспортную платформу с акцентом на масштабируемость, соблюдение требований и понятную экономику.
+        RoYo Logistics строит масштабируемую платформу грузоперевозок с понятными процессами и прозрачной экономикой.
       </p>
 
       <div class="grid-3">
         <div class="card">
-          <h3>Прозрачное использование капитала</h3>
+          <h3>Понятное использование капитала</h3>
           <p>
-            Инвестиции направляются в технику, оборотный капитал, технологии и маркетинг для роста рентабельных направлений.
+            Средства направляются на продукт, подключение перевозчиков/грузоотправителей, операционное развитие и рост.
           </p>
         </div>
         <div class="card">
-          <h3>Управление рисками</h3>
+          <h3>Операционная дисциплина</h3>
           <p>
-            Работа с застрахованными перевозчиками, контроль соответствия требованиям и консервативное финансовое планирование.
+            Стандартизированные статусы, управляемость маршрутов и измеряемая эффективность.
           </p>
         </div>
         <div class="card">
           <h3>Масштабируемая модель</h3>
           <p>
-            Сочетание собственной мощности и брокерской модели позволяет расти без потери управляемости.
+            Доход от комиссии и опциональные платные инструменты для участников рынка.
           </p>
         </div>
       </div>
 
       <p class="section-subtitle" style="margin-top: 18px;">
-        Чтобы получить подробную презентацию или бизнес-план, свяжитесь с нами
-        через форму ниже или по адресу
+        Запросить презентацию или бизнес-план:
         <a href="mailto:info@royologistics.com">info@royologistics.com</a>.
       </p>
     </div>
@@ -231,39 +257,37 @@
   <section id="contact" class="section section-muted">
     <div class="container contact-inner">
       <div>
-        <h2 class="section-title">Связаться с RoYo Logistics</h2>
+        <h2 class="section-title">Контакты RoYo Logistics</h2>
         <p class="section-subtitle">
-          Запрос расчёта, партнёрство или инвесторский запрос – напишите нам.
+          Запрос ставки, партнёрство или материалы для инвесторов.
         </p>
         <ul class="contact-list">
           <li><strong>Компания:</strong> RoYo Logistics</li>
           <li><strong>Телефон:</strong> <a href="tel:+18889590849">(888) 959-0849</a></li>
-          <li><strong>E-mail:</strong> <a href="mailto:info@royologistics.com">info@royologistics.com</a></li>
+          <li><strong>Email:</strong> <a href="mailto:info@royologistics.com">info@royologistics.com</a></li>
           <li><strong>Адрес:</strong> 5830 E 2nd St, Casper, WY 82609</li>
         </ul>
       </div>
 
       <div class="contact-box">
-        <h3>Отправить сообщение (демо)</h3>
-        <form>
+        <h3>Отправить сообщение</h3>
+
+        <form action="mailto:info@royologistics.com" method="post" enctype="text/plain">
           <label>
             Ваше имя
-            <input type="text" placeholder="Полное имя" required />
+            <input type="text" name="Имя" placeholder="Полное имя" required />
           </label>
           <label>
-            Ваш контакт (телефон или e-mail)
-            <input type="text" placeholder="Удобный способ связи" required />
+            Контакт (телефон или email)
+            <input type="text" name="Контакт" placeholder="Удобный способ связи" required />
           </label>
           <label>
-            Тема
-            <textarea rows="4" placeholder="Расчёт, партнёрство или инвесторский запрос"></textarea>
+            Сообщение
+            <textarea name="Сообщение" rows="4" placeholder="Ставка, партнёрство или запрос для инвесторов" required></textarea>
           </label>
-          <button type="submit" class="btn btn-fullwidth" disabled>
-            Отправить (демо)
-          </button>
+          <button type="submit" class="btn btn-fullwidth">Отправить</button>
           <p class="form-note">
-            Форма не подключена. Позже можем направлять заявки напрямую на
-            info@royologistics.com или в CRM.
+            Сообщение будет отправлено на <a href="mailto:info@royologistics.com">info@royologistics.com</a>.
           </p>
         </form>
       </div>
@@ -276,180 +300,18 @@
       <p>© <span id="year"></span> RoYo Logistics. Все права защищены.</p>
       <p>Сайт на GitHub Pages · Домен на Squarespace.</p>
     </div>
-    <script>
-      document.getElementById("year").textContent = new Date().getFullYear();
-    </script>
   </footer>
 
-  <!-- НОВЫЙ СКРИПТ: города (RU) -->
+  <!-- Скрипты -->
+  <script src="app.js"></script>
   <script>
-    const ROYO_CITIES = [
-      {
-        id: "tashkent-uz",
-        name: "Ташкент, Узбекистан",
-        region: "Центральный логистический узел",
-        services: [
-          "Открытые и закрытые автоперевозки",
-          "Грузовые перевозки FTL",
-          "Грузовые перевозки LTL",
-          "Последняя миля для B2B-клиентов"
-        ],
-        eta: "1–2 дня до большинства регионов Узбекистана",
-        notes: "Опорный хаб для импортно-экспортных потоков и национальной дистрибуции."
-      },
-      {
-        id: "urgench-uz",
-        name: "Ургенч, Узбекистан",
-        region: "Ворота Хорезма и Каракалпакстана",
-        services: [
-          "Автоперевозки для дилеров и частных клиентов",
-          "Региональные грузовые перевозки FTL и LTL",
-          "Магистральные рейсы в Ташкент и другие регионы"
-        ],
-        eta: "1–3 дня до Ташкента, 1–2 дня внутри региона",
-        notes: "Стратегическая точка для маршрутов в Нукус, Қўшкўпир и соседние районы."
-      },
-      {
-        id: "qoshkopir-uz",
-        name: "Қўшкўпир, Узбекистан",
-        region: "Локальная и региональная дистрибуция",
-        services: [
-          "Автоперевозки (частные и дилерские грузы)",
-          "Региональная консолидация грузов",
-          "Организация забора и доставки"
-        ],
-        eta: "В тот же день до Ургенча, 1–2 дня до других хабов",
-        notes: "Развивающийся жилой и коммерческий кластер, поддерживаемый маршрутами RoYo."
-      },
-      {
-        id: "samarkand-uz",
-        name: "Самарканд, Узбекистан",
-        region: "Центральные и южные коридоры",
-        services: [
-          "Автоперевозки по ключевым коридорам",
-          "Грузовые перевозки FTL и LTL",
-          "Транзитный узел между Ташкентом и западными регионами"
-        ],
-        eta: "1–2 дня до Ташкента, 2–3 дня до западных регионов",
-        notes: "Исторический и коммерческий центр с устойчивыми грузопотоками."
-      },
-      {
-        id: "bukhara-uz",
-        name: "Бухара, Узбекистан",
-        region: "Западный Узбекистан",
-        services: [
-          "Автоперевозки",
-          "Региональные грузовые перевозки FTL и LTL",
-          "Проектная логистика для строительства и ритейла"
-        ],
-        eta: "1–2 дня до Ургенча, 2–3 дня до Ташкента",
-        notes: "Поддержка туризма, строительства и розничных сетей."
-      },
-      {
-        id: "nukus-uz",
-        name: "Нукус, Узбекистан",
-        region: "Каракалпакстан",
-        services: [
-          "Автоперевозки (открытые и, где возможно, закрытые)",
-          "Дальнемагистральные перевозки из центрального Узбекистана",
-          "Региональная дистрибуция"
-        ],
-        eta: "2–4 дня из Ташкента в зависимости от типа груза",
-        notes: "Ключевой узел для северных и западных направлений."
-      },
-      {
-        id: "memphis-us",
-        name: "Мемфис, Теннесси, США",
-        region: "Хаб автоперевозок и грузоперевозок в США",
-        services: [
-          "Автоперевозки для дилеров и аукционов",
-          "Межштатные грузоперевозки FTL и LTL",
-          "Кросс-докинг и дистрибуция (партнёрская сеть)"
-        ],
-        eta: "1–5 дней до большинства штатов США (в зависимости от расстояния)",
-        notes: "Стратегический хаб, связанный с основными интерстейтами и грузовыми сетями."
-      },
-      {
-        id: "chicago-us",
-        name: "Чикаго, Иллинойс, США",
-        region: "Средний Запад и национальная дистрибуция",
-        services: [
-          "Автоперевозки для дилеров и частных клиентов",
-          "Дальнемагистральные грузовые перевозки FTL/LTL",
-          "Мультимодальные решения (авто/жд)"
-        ],
-        eta: "2–5 дней по США в зависимости от направления",
-        notes: "Ключевой узел для национальных перевозок автомобилей и грузов."
-      }
-    ];
+    document.getElementById("year").textContent = new Date().getFullYear();
 
-    function renderCityButtons() {
-      const listEl = document.getElementById("city-list");
-      listEl.innerHTML = "";
-
-      ROYO_CITIES.forEach((city, index) => {
-        const btn = document.createElement("button");
-        btn.className = "city-button" + (index === 0 ? " active" : "");
-        btn.textContent = city.name;
-        btn.dataset.cityId = city.id;
-        btn.addEventListener("click", () => {
-          setActiveCity(city.id);
-        });
-        listEl.appendChild(btn);
-      });
-    }
-
-    function renderCityDetails(cityId) {
-      const city = ROYO_CITIES.find(c => c.id === cityId) || ROYO_CITIES[0];
-      const detailsEl = document.getElementById("city-details");
-
-      detailsEl.innerHTML = `
-        <h3 class="city-name">${city.name}</h3>
-        <p class="city-region">${city.region}</p>
-        <div class="city-stats">
-          <div>
-            <h4>Основные услуги</h4>
-            <ul>
-              ${city.services.map(s => `<li>${s}</li>`).join("")}
-            </ul>
-          </div>
-          <div>
-            <h4>Типичные сроки доставки</h4>
-            <p>${city.eta}</p>
-            <h4>Комментарий</h4>
-            <p>${city.notes}</p>
-          </div>
-        </div>
-      `;
-    }
-
-    function setActiveCity(cityId) {
-      const buttons = document.querySelectorAll(".city-button");
-      buttons.forEach(btn => {
-        btn.classList.toggle("active", btn.dataset.cityId === cityId);
-      });
-      renderCityDetails(cityId);
-    }
-
-    document.addEventListener("DOMContentLoaded", () => {
-      renderCityButtons();
-      if (ROYO_CITIES.length > 0) {
-        renderCityDetails(ROYO_CITIES[0].id);
-      }
-    });
-  </script>
-
-  <!-- Существующий скрипт меню -->
-  <script>
     const toggle = document.querySelector(".menu-toggle");
     const mobileMenu = document.querySelector(".mobile-menu");
-
     if (toggle && mobileMenu) {
-      toggle.addEventListener("click", () => {
-        mobileMenu.classList.toggle("open");
-      });
+      toggle.addEventListener("click", () => mobileMenu.classList.toggle("open"));
     }
   </script>
-
 </body>
 </html>
