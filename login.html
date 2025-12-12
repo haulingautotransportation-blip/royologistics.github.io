@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>RoYo Logistics — Login</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="auth-body">
+  <div class="auth-wrap">
+
+    <header class="auth-top">
+      <a class="auth-brand" href="index.html">
+        <span class="auth-logo">RoYo</span>
+        <span class="auth-brandtext">
+          <strong>RoYo Logistics</strong>
+          <small>Freight marketplace for Carriers & Shippers</small>
+        </span>
+      </a>
+
+      <div class="lang-switch">
+        <a href="login.html" class="active">EN</a>
+        <a href="login-ru.html">RU</a>
+        <a href="login-uz.html">UZ</a>
+      </div>
+    </header>
+
+    <main class="auth-card">
+      <h1>Login</h1>
+      <p class="muted">Choose your portal to continue.</p>
+
+      <div class="role-grid">
+        <!-- CARRIER -->
+        <section class="role-card">
+          <div class="role-head">
+            <span class="pill">Carrier</span>
+            <h2>Carrier Portal</h2>
+          </div>
+
+          <form class="auth-form" action="#" method="post">
+            <label>Email</label>
+            <input type="email" placeholder="name@company.com" required>
+
+            <label>Password</label>
+            <input type="password" placeholder="••••••••" required>
+
+            <div class="row">
+              <label class="check"><input type="checkbox"><span>Remember me</span></label>
+              <a href="#" class="link">Forgot password?</a>
+            </div>
+
+            <button class="btn primary" type="submit">Log in as Carrier</button>
+            <button class="btn ghost" type="button">Create Carrier Account</button>
+          </form>
+        </section>
+
+        <!-- SHIPPER -->
+        <section class="role-card">
+          <div class="role-head">
+            <span class="pill alt">Shipper</span>
+            <h2>Shipper Portal</h2>
+          </div>
+
+          <form class="auth-form" action="#" method="post">
+            <label>Email</label>
+            <input type="email" placeholder="name@company.com" required>
+
+            <label>Password</label>
+            <input type="password" placeholder="••••••••" required>
+
+            <div class="row">
+              <label class="check"><input type="checkbox"><span>Remember me</span></label>
+              <a href="#" class="link">Forgot password?</a>
+            </div>
+
+            <button class="btn primary" type="submit">Log in as Shipper</button>
+            <button class="btn ghost" type="button">Create Shipper Account</button>
+          </form>
+        </section>
+      </div>
+
+      <footer class="auth-foot">
+        <span>By continuing you agree to our</span>
+        <a class="link" href="terms.html">Terms</a>
+        <span>and</span>
+        <a class="link" href="privacy.html">Privacy Policy</a>.
+      </footer>
+    </main>
+  </div>
+</body>
+</html>
