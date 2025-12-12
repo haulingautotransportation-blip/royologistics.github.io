@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>RoYo Logistics – Auto Transport & Freight Solutions</title>
+  <title>RoYo Logistics – Freight Marketplace for Carriers & Shippers</title>
   <link rel="stylesheet" href="styles.css" />
-  <meta name="description" content="RoYo Logistics provides reliable auto transport and freight solutions across the United States, with investor-ready systems and scalable operations." />
+  <meta name="description" content="RoYo Logistics is a simple freight marketplace for Carriers and Shippers. Post loads, receive bids, book capacity, and manage lanes across Uzbekistan." />
 </head>
 <body>
   <!-- Top bar -->
@@ -18,10 +18,12 @@
 
       <!-- Desktop nav -->
       <nav class="nav">
+        <a href="#how">How it works</a>
         <a href="#services">Services</a>
-        <a href="#cities">Coverage</a>
+        <a href="#lanes">Lanes</a>
         <a href="#investors">Investors</a>
         <a href="#contact">Contact</a>
+        <a href="login.html" class="nav-login">Login</a>
       </nav>
 
       <!-- Language switch (desktop) -->
@@ -32,17 +34,17 @@
       </div>
 
       <!-- Mobile menu button -->
-      <button class="menu-toggle" aria-label="Open menu">
-        ☰
-      </button>
+      <button class="menu-toggle" aria-label="Open menu">☰</button>
     </div>
 
     <!-- Mobile dropdown -->
     <div class="mobile-menu">
+      <a href="#how">How it works</a>
       <a href="#services">Services</a>
-      <a href="#cities">Coverage</a>
+      <a href="#lanes">Lanes</a>
       <a href="#investors">Investors</a>
       <a href="#contact">Contact</a>
+      <a href="login.html">Login</a>
       <div class="mobile-lang">
         <a href="index.html" class="active">EN</a>
         <a href="ru.html">RU</a>
@@ -55,49 +57,102 @@
   <section class="hero">
     <div class="container hero-inner">
       <div class="hero-text">
-        <h1>Auto Transport & Logistics You Can Trust</h1>
+        <h1>Freight Shipping Made Simple for Carriers & Shippers</h1>
         <p>
-          RoYo Logistics coordinates safe, transparent, and on-time vehicle and
-          freight transportation across the United States – built for shippers,
-          dealers, and logistics partners.
+          Post a load, receive bids, book a carrier, and track status — with a clean, easy workflow.
+          Built for Uzbekistan lanes first.
         </p>
+
         <div class="hero-actions">
-          <a href="#contact" class="btn">Get a Transport Quote</a>
-          <a href="#investors" class="btn btn-outline">For Investors</a>
+          <a href="login.html" class="btn">Login</a>
+          <a href="#lanes" class="btn btn-outline">Select a Lane</a>
         </div>
+
         <div class="hero-tags">
-          <span>Door-to-door delivery</span>
-          <span>Insured carriers</span>
-          <span>Dedicated support</span>
+          <span>Carrier bidding</span>
+          <span>Shipper load posting</span>
+          <span>Clear status updates</span>
         </div>
       </div>
 
+      <!-- Shipper quick post -->
       <div class="hero-card">
-        <h2>Quick Quote (Demo)</h2>
-        <form>
+        <h2>Post a Load / Request a Rate</h2>
+
+        <!-- This is a REAL form (mailto). Later we can connect to CRM/API. -->
+        <form action="mailto:info@royologistics.com" method="post" enctype="text/plain">
           <label>
-            Pickup city / state
-            <input type="text" placeholder="e.g. Casper, WY" required />
+            Shipper name / company
+            <input type="text" name="Shipper" placeholder="Your company name" required />
           </label>
+
           <label>
-            Delivery city / state
-            <input type="text" placeholder="e.g. Dallas, TX" required />
+            Contact (phone or email)
+            <input type="text" name="Contact" placeholder="+998 XX XXX XX XX / email" required />
           </label>
+
           <label>
-            Vehicle or freight details
-            <input type="text" placeholder="e.g. 1 SUV, running condition" />
+            Pickup city (Uzbekistan)
+            <input type="text" name="Pickup" id="pickupInput" placeholder="Choose from lane selector below" required />
           </label>
+
           <label>
-            Your phone or email
-            <input type="text" placeholder="+1 (555) 000-0000" required />
+            Delivery city (Uzbekistan)
+            <input type="text" name="Delivery" id="deliveryInput" placeholder="Choose from lane selector below" required />
           </label>
-          <button type="submit" class="btn btn-fullwidth" disabled>
-            Send Request (Demo Only)
+
+          <label>
+            Cargo details
+            <input type="text" name="Cargo" placeholder="e.g., 2 pallets, 800 kg, dry van" required />
+          </label>
+
+          <label>
+            Load date
+            <input type="text" name="LoadDate" placeholder="e.g., 2025-12-20" required />
+          </label>
+
+          <button type="submit" class="btn btn-fullwidth">
+            Send Request
           </button>
+
           <p class="form-note">
-            This is a demo form. We can later connect it to your email or CRM.
+            Your request will be sent to info@royologistics.com.
           </p>
         </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section id="how" class="section section-muted">
+    <div class="container">
+      <h2 class="section-title">How it works</h2>
+      <p class="section-subtitle">
+        A simple marketplace flow — like DAT / Central Dispatch, but easier.
+      </p>
+
+      <div class="steps">
+        <div class="step">
+          <span class="step-number">1</span>
+          <h3>Shippers post loads</h3>
+          <p>
+            Choose From → To cities, enter cargo details, and publish the load.
+          </p>
+        </div>
+        <div class="step">
+          <span class="step-number">2</span>
+          <h3>Carriers bid or book</h3>
+          <p>
+            Carriers see loads by lane and send a price. Shippers choose the best offer.
+          </p>
+        </div>
+        <div class="step">
+          <span class="step-number">3</span>
+          <h3>Status & documents</h3>
+          <p>
+            Confirm pickup, in-transit, delivered. Keep basic documents in one place.
+          </p>
+        </div>
       </div>
     </div>
   </section>
@@ -107,92 +162,59 @@
     <div class="container">
       <h2 class="section-title">Core Services</h2>
       <p class="section-subtitle">
-        RoYo Logistics focuses on auto transport and scalable freight solutions.
+        Freight-focused services for Uzbekistan lanes.
       </p>
 
       <div class="grid-3">
         <div class="card">
-          <h3>Auto Transport (Open & Enclosed)</h3>
+          <h3>FTL & LTL Freight</h3>
           <p>
-            Reliable vehicle hauling for dealerships, auctions, relocation
-            clients, and online car buyers – with tracking and clear updates.
+            Full Truckload and Less-than-Truckload shipping with lane-based pricing and simple booking.
           </p>
         </div>
         <div class="card">
-          <h3>Dedicated Routes & Fleets</h3>
+          <h3>Carrier Network</h3>
           <p>
-            Recurring routes and dedicated capacity for partners that move
-            vehicles and freight on a weekly or monthly basis.
+            Carriers build profiles, publish capacity, and bid on loads that match their routes.
           </p>
         </div>
         <div class="card">
-          <h3>Brokerage & Dispatch</h3>
+          <h3>Dispatch & Coordination</h3>
           <p>
-            Matching shippers with vetted carriers, optimizing routes and pricing
-            while maintaining a single point of contact.
+            Clear communication, pickup/delivery confirmation, and easy status updates for both sides.
           </p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Network -->
-  <section id="network" class="section section-muted">
+  <!-- Lanes (Uzbekistan cities buttons From -> To) -->
+  <section id="lanes" class="section lanes">
     <div class="container">
-      <h2 class="section-title">Coverage & Focus</h2>
+      <h2 class="section-title">Select a Lane (Uzbekistan)</h2>
       <p class="section-subtitle">
-        Headquartered in Casper, Wyoming, with a focus on nationwide U.S.
-        corridors and emerging regional lanes.
+        Click a city for <strong>From</strong>, then click a city for <strong>To</strong>.
+        This selection also fills your request form automatically.
       </p>
 
-      <div class="steps">
-        <div class="step">
-          <span class="step-number">1</span>
-          <h3>Nationwide Reach</h3>
-          <p>
-            From major metros to smaller markets, RoYo coordinates carriers
-            across key U.S. routes.
-          </p>
+      <div class="lanes-grid">
+        <div class="lane-box">
+          <h3>From</h3>
+          <div class="lane-selected" id="fromSelected">—</div>
+          <div class="city-buttons" id="fromCities"></div>
         </div>
-        <div class="step">
-          <span class="step-number">2</span>
-          <h3>Carrier Relationships</h3>
-          <p>
-            Building a network of trusted carriers focused on safety, insurance
-            compliance, and on-time performance.
-          </p>
-        </div>
-        <div class="step">
-          <span class="step-number">3</span>
-          <h3>Technology & Transparency</h3>
-          <p>
-            Step-by-step status updates, digital documentation, and clear pricing
-            for shippers and partners.
-          </p>
+
+        <div class="lane-box">
+          <h3>To</h3>
+          <div class="lane-selected" id="toSelected">—</div>
+          <div class="city-buttons" id="toCities"></div>
         </div>
       </div>
-    </div>
-  </section>
 
-  <!-- Cities / Service coverage -->
-  <section id="cities" class="section cities">
-    <div class="container">
-      <h2 class="section-title">Service coverage – cities we serve</h2>
-      <p class="section-subtitle">
-        RoYo Logistics currently operates across key hubs in Uzbekistan and the United States.
-        Choose a city to see available services and typical transit times.
-      </p>
-
-      <div class="cities-layout">
-        <!-- Left: city list -->
-        <div class="cities-list" id="city-list">
-          <!-- Buttons will be inserted by JavaScript -->
-        </div>
-
-        <!-- Right: selected city details -->
-        <div class="city-details" id="city-details">
-          <!-- Default content will be inserted by JavaScript -->
-        </div>
+      <div class="lane-actions">
+        <button class="btn primary" id="laneApply" disabled>Apply lane to form</button>
+        <button class="btn btn-outline" id="laneReset" type="button">Reset</button>
+        <a class="btn" href="login.html">Login to post/quote</a>
       </div>
     </div>
   </section>
@@ -202,37 +224,32 @@
     <div class="container">
       <h2 class="section-title">For Investors & Lenders</h2>
       <p class="section-subtitle">
-        RoYo Logistics is building a transport platform designed for
-        scalability, compliance, and clear unit economics.
+        RoYo Logistics is building a freight marketplace with simple workflows and scalable unit economics.
       </p>
 
       <div class="grid-3">
         <div class="card">
           <h3>Clear Use of Capital</h3>
           <p>
-            Funds are directed toward equipment, working capital, technology,
-            and marketing to grow high-margin routes and customer segments.
+            Funds go to product development, onboarding carriers/shippers, compliance, and operational growth.
           </p>
         </div>
         <div class="card">
-          <h3>Risk-Aware Operations</h3>
+          <h3>Operational Discipline</h3>
           <p>
-            Focus on insured carriers, compliance, and conservative financial
-            planning to protect both customers and capital partners.
+            Structured lane workflows, transparent status updates, and measurable performance.
           </p>
         </div>
         <div class="card">
           <h3>Scalable Model</h3>
           <p>
-            Combination of in-house capacity and asset-light brokerage enables
-            growth without losing operational control.
+            Marketplace growth with commission-based revenue and optional premium tools.
           </p>
         </div>
       </div>
 
       <p class="section-subtitle" style="margin-top: 18px;">
-        To request the detailed investor deck or business plan, use the contact
-        form below or email <a href="mailto:info@royologistics.com">info@royologistics.com</a>.
+        Request the investor deck or business plan: <a href="mailto:info@royologistics.com">info@royologistics.com</a>.
       </p>
     </div>
   </section>
@@ -243,7 +260,7 @@
       <div>
         <h2 class="section-title">Contact RoYo Logistics</h2>
         <p class="section-subtitle">
-          Reach out for transport quotes, partnerships, or investor materials.
+          For freight quotes, partnerships, or investor materials.
         </p>
         <ul class="contact-list">
           <li><strong>Company:</strong> RoYo Logistics</li>
@@ -254,27 +271,24 @@
       </div>
 
       <div class="contact-box">
-        <h3>Send a Message (Demo)</h3>
-        <form>
+        <h3>Send a Message</h3>
+
+        <!-- Real mailto form -->
+        <form action="mailto:info@royologistics.com" method="post" enctype="text/plain">
           <label>
             Your name
-            <input type="text" placeholder="Full name" required />
+            <input type="text" name="Name" placeholder="Full name" required />
           </label>
           <label>
             Your email or phone
-            <input type="text" placeholder="Best way to reach you" required />
+            <input type="text" name="Contact" placeholder="Best way to reach you" required />
           </label>
           <label>
-            Topic
-            <textarea rows="4" placeholder="Quote, partnership, or investor inquiry"></textarea>
+            Message
+            <textarea name="Message" rows="4" placeholder="Quote, partnership, or investor inquiry" required></textarea>
           </label>
-          <button type="submit" class="btn btn-fullwidth" disabled>
-            Send (Demo Only)
-          </button>
-          <p class="form-note">
-            This form is not yet connected. We can later route it directly to
-            info@royologistics.com or a CRM.
-          </p>
+          <button type="submit" class="btn btn-fullwidth">Send</button>
+          <p class="form-note">This message will be sent to info@royologistics.com.</p>
         </form>
       </div>
     </div>
@@ -286,180 +300,19 @@
       <p>© <span id="year"></span> RoYo Logistics. All rights reserved.</p>
       <p>Site hosted on GitHub Pages · Domain by Squarespace.</p>
     </div>
-    <script>
-      document.getElementById("year").textContent = new Date().getFullYear();
-    </script>
   </footer>
 
-  <!-- Menu toggle script -->
+  <!-- Scripts -->
+  <script src="app.js"></script>
   <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // Mobile menu toggle
     const toggle = document.querySelector(".menu-toggle");
     const mobileMenu = document.querySelector(".mobile-menu");
-
     if (toggle && mobileMenu) {
-      toggle.addEventListener("click", () => {
-        mobileMenu.classList.toggle("open");
-      });
+      toggle.addEventListener("click", () => mobileMenu.classList.toggle("open"));
     }
-  </script>
-
-  <!-- Cities script (EN) -->
-  <script>
-    // List of cities RoYo covers (you can edit or add more)
-    const ROYO_CITIES = [
-      {
-        id: "tashkent-uz",
-        name: "Tashkent, Uzbekistan",
-        region: "Central logistics hub",
-        services: [
-          "Enclosed & open auto transport",
-          "Full Truckload (FTL) freight",
-          "Less-than-Truckload (LTL)",
-          "Last-mile delivery for B2B clients"
-        ],
-        eta: "1–2 days to most regions in Uzbekistan",
-        notes: "Ideal hub for import/export flows and nationwide distribution."
-      },
-      {
-        id: "urgench-uz",
-        name: "Urgench, Uzbekistan",
-        region: "Khorezm & Karakalpakstan gateway",
-        services: [
-          "Auto transport for dealerships and individuals",
-          "Regional FTL & LTL freight",
-          "Line-haul routes to Tashkent and other regions"
-        ],
-        eta: "1–3 days to Tashkent, 1–2 days within region",
-        notes: "Strategic point for flows to Nukus, Qo‘shko‘pir and nearby districts."
-      },
-      {
-        id: "qoshkopir-uz",
-        name: "Qo‘shko‘pir, Uzbekistan",
-        region: "Local & regional distribution",
-        services: [
-          "Auto transport (individual & dealer loads)",
-          "Regional consolidation of freight",
-          "Pickup & drop-off coordination"
-        ],
-        eta: "Same-day to Urgench, 1–2 days to other hubs",
-        notes: "Growing residential and commercial cluster supported by RoYo routes."
-      },
-      {
-        id: "samarkand-uz",
-        name: "Samarkand, Uzbekistan",
-        region: "Central & southern corridors",
-        services: [
-          "Auto transport along major corridors",
-          "FTL & LTL freight",
-          "Transit hub between Tashkent and western regions"
-        ],
-        eta: "1–2 days to Tashkent, 2–3 days to western regions",
-        notes: "Important historical and commercial hub with steady cargo flows."
-      },
-      {
-        id: "bukhara-uz",
-        name: "Bukhara, Uzbekistan",
-        region: "Western Uzbekistan",
-        services: [
-          "Auto transport",
-          "Regional FTL & LTL freight",
-          "Project-based logistics for construction & retail"
-        ],
-        eta: "1–2 days to Urgench, 2–3 days to Tashkent",
-        notes: "Supports tourism, construction and retail supply chains."
-      },
-      {
-        id: "nukus-uz",
-        name: "Nukus, Uzbekistan",
-        region: "Karakalpakstan",
-        services: [
-          "Auto transport (open & enclosed where available)",
-          "Long-haul freight from central Uzbekistan",
-          "Regional distribution"
-        ],
-        eta: "2–4 days from Tashkent depending on load type",
-        notes: "Key node for northern and western flows."
-      },
-      {
-        id: "memphis-us",
-        name: "Memphis, Tennessee, USA",
-        region: "US auto-transport & freight hub",
-        services: [
-          "Auto transport (dealers & auctions)",
-          "Interstate FTL & LTL freight",
-          "Cross-dock & distribution (partner network)"
-        ],
-        eta: "1–5 days to most US states depending on distance",
-        notes: "Strategic US hub connected to major interstates and freight networks."
-      },
-      {
-        id: "chicago-us",
-        name: "Chicago, Illinois, USA",
-        region: "Midwest & national distribution",
-        services: [
-          "Dealer & individual auto transport",
-          "Long-haul FTL/LTL freight",
-          "Multi-modal connections (road/rail)"
-        ],
-        eta: "2–5 days nationwide depending on lane",
-        notes: "Ideal for nationwide vehicle and freight movements."
-      }
-    ];
-
-    function renderCityButtons() {
-      const listEl = document.getElementById("city-list");
-      listEl.innerHTML = "";
-
-      ROYO_CITIES.forEach((city, index) => {
-        const btn = document.createElement("button");
-        btn.className = "city-button" + (index === 0 ? " active" : "");
-        btn.textContent = city.name;
-        btn.dataset.cityId = city.id;
-        btn.addEventListener("click", () => {
-          setActiveCity(city.id);
-        });
-        listEl.appendChild(btn);
-      });
-    }
-
-    function renderCityDetails(cityId) {
-      const city = ROYO_CITIES.find(c => c.id === cityId) || ROYO_CITIES[0];
-      const detailsEl = document.getElementById("city-details");
-
-      detailsEl.innerHTML = `
-        <h3 class="city-name">${city.name}</h3>
-        <p class="city-region">${city.region}</p>
-        <div class="city-stats">
-          <div>
-            <h4>Core services</h4>
-            <ul>
-              ${city.services.map(s => `<li>${s}</li>`).join("")}
-            </ul>
-          </div>
-          <div>
-            <h4>Typical transit times</h4>
-            <p>${city.eta}</p>
-            <h4>Notes</h4>
-            <p>${city.notes}</p>
-          </div>
-        </div>
-      `;
-    }
-
-    function setActiveCity(cityId) {
-      const buttons = document.querySelectorAll(".city-button");
-      buttons.forEach(btn => {
-        btn.classList.toggle("active", btn.dataset.cityId === cityId);
-      });
-      renderCityDetails(cityId);
-    }
-
-    document.addEventListener("DOMContentLoaded", () => {
-      renderCityButtons();
-      if (ROYO_CITIES.length > 0) {
-        renderCityDetails(ROYO_CITIES[0].id);
-      }
-    });
   </script>
 </body>
 </html>
