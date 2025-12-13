@@ -79,36 +79,44 @@
       <div class="hero-card">
         <h2>Post a Load / Request a Rate</h2>
 
-        <!-- This is a REAL form (mailto). Later we can connect to CRM/API. -->
-        <form action="mailto:info@royologistics.com" method="post" enctype="text/plain">
+        <!-- Formspree: Shipper Load Request -->
+        <form action="https://formspree.io/f/manrvnbe" method="POST">
+          <!-- Helpful routing/meta -->
+          <input type="hidden" name="type" value="Load Request" />
+          <input type="hidden" name="language" value="EN" />
+          <input type="hidden" name="page" value="Homepage (EN) – Load Request" />
+          <input type="hidden" name="platform" value="RoYo Logistics" />
+          <input type="hidden" name="_subject" value="New Load Request – RoYo Logistics (EN)" />
+          <input type="hidden" name="_template" value="table" />
+
           <label>
             Shipper name / company
-            <input type="text" name="Shipper" placeholder="Your company name" required />
+            <input type="text" name="shipper_company" placeholder="Your company name" required />
           </label>
 
           <label>
             Contact (phone or email)
-            <input type="text" name="Contact" placeholder="+998 XX XXX XX XX / email" required />
+            <input type="text" name="shipper_contact" placeholder="+998 XX XXX XX XX / email" required />
           </label>
 
           <label>
             Pickup city (Uzbekistan)
-            <input type="text" name="Pickup" id="pickupInput" placeholder="Choose from lane selector below" required />
+            <input type="text" name="pickup_city" id="pickupInput" placeholder="Choose from lane selector below" required />
           </label>
 
           <label>
             Delivery city (Uzbekistan)
-            <input type="text" name="Delivery" id="deliveryInput" placeholder="Choose from lane selector below" required />
+            <input type="text" name="delivery_city" id="deliveryInput" placeholder="Choose from lane selector below" required />
           </label>
 
           <label>
             Cargo details
-            <input type="text" name="Cargo" placeholder="e.g., 2 pallets, 800 kg, dry van" required />
+            <input type="text" name="cargo_details" placeholder="e.g., 2 pallets, 800 kg, dry van" required />
           </label>
 
           <label>
             Load date
-            <input type="text" name="LoadDate" placeholder="e.g., 2025-12-20" required />
+            <input type="text" name="load_date" placeholder="e.g., 2025-12-20" required />
           </label>
 
           <button type="submit" class="btn btn-fullwidth">
@@ -116,7 +124,7 @@
           </button>
 
           <p class="form-note">
-            Your request will be sent to info@royologistics.com.
+            Submitted requests are delivered to your Formspree inbox and email notifications.
           </p>
         </form>
       </div>
@@ -273,22 +281,30 @@
       <div class="contact-box">
         <h3>Send a Message</h3>
 
-        <!-- Real mailto form -->
-        <form action="mailto:info@royologistics.com" method="post" enctype="text/plain">
+        <!-- Formspree: Contact / Investor -->
+        <form action="https://formspree.io/f/xqarnalq" method="POST">
+          <input type="hidden" name="type" value="Contact / Investor" />
+          <input type="hidden" name="language" value="EN" />
+          <input type="hidden" name="page" value="Homepage (EN) – Contact" />
+          <input type="hidden" name="platform" value="RoYo Logistics" />
+          <input type="hidden" name="_subject" value="New Contact Message – RoYo Logistics (EN)" />
+          <input type="hidden" name="_template" value="table" />
+
           <label>
             Your name
-            <input type="text" name="Name" placeholder="Full name" required />
+            <input type="text" name="name" placeholder="Full name" required />
           </label>
           <label>
             Your email or phone
-            <input type="text" name="Contact" placeholder="Best way to reach you" required />
+            <input type="text" name="contact" placeholder="Best way to reach you" required />
           </label>
           <label>
             Message
-            <textarea name="Message" rows="4" placeholder="Quote, partnership, or investor inquiry" required></textarea>
+            <textarea name="message" rows="4" placeholder="Quote, partnership, or investor inquiry" required></textarea>
           </label>
+
           <button type="submit" class="btn btn-fullwidth">Send</button>
-          <p class="form-note">This message will be sent to info@royologistics.com.</p>
+          <p class="form-note">Your message will appear in Formspree submissions and email notifications.</p>
         </form>
       </div>
     </div>
