@@ -3,67 +3,73 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Create Carrier Account – RoYo Logistics</title>
+  <title>RoYo Logistics — Carrier Signup</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
-<body>
-  <header class="top-bar">
-    <div class="container top-bar-inner">
-      <div class="logo">
-        <img src="logo.png" class="logo-img" alt="RoYo Logistics logo" />
-        <span class="logo-text">RoYo Logistics</span>
-      </div>
+
+<body class="auth-body">
+  <div class="auth-wrap">
+
+    <header class="auth-top">
+      <a class="auth-brand" href="index.html">
+        <span class="auth-logo">RoYo</span>
+        <span class="auth-brandtext">
+          <strong>RoYo Logistics</strong>
+          <small>Freight marketplace for Carriers & Shippers</small>
+        </span>
+      </a>
 
       <div class="lang-switch">
-        <a href="index.html">EN</a>
-        <a href="ru.html">RU</a>
-        <a href="uz.html">UZ</a>
+        <a href="carrier-signup.html" class="active">EN</a>
+        <a href="carrier-signup-ru.html">RU</a>
+        <a href="carrier-signup-uz.html">UZ</a>
       </div>
-    </div>
-  </header>
+    </header>
 
-  <main class="section">
-    <div class="container">
-      <div class="hero-card" style="max-width: 720px; margin: 0 auto;">
-        <h2 style="margin-bottom:10px;">Create Carrier Account</h2>
-        <p class="form-note" style="margin-bottom:14px;">
-          Request access to the RoYo Logistics carrier portal.
-        </p>
+    <main class="auth-card">
+      <h1>Create Carrier Account</h1>
+      <p class="muted">Create your carrier profile to access loads and lanes.</p>
 
-        <form action="https://formspree.io/f/manrvnbe" method="POST">
-          <label>
-            Company Name
-            <input type="text" name="company" required />
-          </label>
+      <form class="auth-form" action="#" method="post" id="carrierSignupForm">
+        <label>Company name</label>
+        <input id="carrierCompany" type="text" placeholder="Your company name" required />
 
-          <label>
-            Contact Name
-            <input type="text" name="name" required />
-          </label>
+        <label>Contact name</label>
+        <input id="carrierContact" type="text" placeholder="Full name" required />
 
-          <label>
-            Email
-            <input type="email" name="email" required />
-          </label>
+        <label>Email</label>
+        <input id="carrierEmail" type="email" placeholder="name@company.com" required />
 
-          <label>
-            Phone
-            <input type="text" name="phone" />
-          </label>
+        <label>Phone</label>
+        <input id="carrierPhone" type="text" placeholder="+998 XX XXX XX XX" required />
 
-          <label>
-            Equipment Type
-            <input type="text" name="equipment" placeholder="Dry Van, Reefer, Flatbed" />
-          </label>
+        <label>Equipment type</label>
+        <input id="carrierEquipment" type="text" placeholder="Dry Van, Reefer, Flatbed" />
 
-          <button type="submit" class="btn btn-fullwidth">Request Carrier Access</button>
-        </form>
+        <label>Password</label>
+        <input id="carrierPassword" type="password" placeholder="••••••••" minlength="6" required />
 
-        <div style="margin-top:12px;">
-          <a href="login.html" class="btn btn-outline btn-fullwidth">← Back to Login</a>
+        <button id="carrierSignupBtn" type="submit" class="btn primary btn-fullwidth">
+          Create account
+        </button>
+
+        <p id="carrierSignupMsg" class="form-note" style="display:none;"></p>
+
+        <div class="row" style="justify-content:flex-start; gap:10px;">
+          <a href="login.html" class="link">← Back to Login</a>
         </div>
-      </div>
-    </div>
-  </main>
+      </form>
+
+      <footer class="auth-foot">
+        <span>By continuing you agree to our</span>
+        <a class="link" href="terms.html">Terms</a>
+        <span>and</span>
+        <a class="link" href="privacy.html">Privacy Policy</a>.
+      </footer>
+    </main>
+  </div>
+
+  <!-- Firebase signup logic -->
+  <script type="module" src="carrier-signup-auth.js"></script>
 </body>
 </html>
