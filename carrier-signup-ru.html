@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Аккаунт перевозчика – RoYo Logistics</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="top-bar">
+    <div class="container top-bar-inner">
+      <div class="logo">
+        <img src="logo.png" class="logo-img" alt="RoYo Logistics logo" />
+        <span class="logo-text">RoYo Logistics</span>
+      </div>
+      <div class="lang-switch">
+        <a href="carrier-signup.html">EN</a>
+        <a href="carrier-signup-ru.html" class="active">RU</a>
+        <a href="carrier-signup-uz.html">UZ</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="section">
+    <div class="container">
+      <div class="hero-card" style="max-width:720px;margin:0 auto;">
+        <h2 style="margin-bottom:10px;">Создать аккаунт перевозчика</h2>
+        <p class="form-note" style="margin-bottom:14px;">Оставьте заявку на доступ в кабинет перевозчика.</p>
+
+        <form action="https://formspree.io/f/manrvnbe" method="POST">
+          <label>Компания
+            <input type="text" name="company" required />
+          </label>
+          <label>Контактное лицо
+            <input type="text" name="name" required />
+          </label>
+          <label>Email
+            <input type="email" name="email" required />
+          </label>
+          <label>Телефон
+            <input type="text" name="phone" />
+          </label>
+          <label>Тип транспорта
+            <input type="text" name="equipment" placeholder="Тент, Рефрижератор, Борт, и т.д." />
+          </label>
+
+          <button type="submit" class="btn btn-fullwidth">Запросить доступ</button>
+        </form>
+
+        <div style="margin-top:12px;">
+          <a href="login-ru.html" class="btn btn-outline btn-fullwidth">← Назад к входу</a>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
