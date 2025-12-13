@@ -210,3 +210,16 @@ getEl("laneReset")?.addEventListener("click", () => {
 attachSearch("fromInput", "fromResults", "from");
 attachSearch("toInput", "toResults", "to");
 setApplyState();
+getEl("laneApply")?.addEventListener("click", () => {
+  if (!fromChoice || !toChoice) return;
+
+  const pickup = getEl("pickupInput");
+  const delivery = getEl("deliveryInput");
+
+  if (pickup) pickup.value = formatCity(fromChoice);
+  if (delivery) delivery.value = formatCity(toChoice);
+
+  localStorage.setItem("lane_from", fromChoice);
+  localStorage.setItem("lane_to", toChoice);
+});
+
