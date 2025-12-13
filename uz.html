@@ -75,58 +75,52 @@
         </div>
       </div>
 
-      <!-- Yuk jo‘natuvchi tezkor so‘rov -->
-      <div class="hero-card">
-        <h2>Yuk joylash / Narx so‘rash</h2>
+     <!-- Yuk / Transport qidirish -->
+<div class="hero-card">
+  <h2>Yuk qidirish / Tashuvchi topish</h2>
+  <p class="form-note" style="margin-top:-6px;">
+    Yuk yo‘nalishini tanlang: <strong>Qayerdan</strong> → <strong>Qayerga</strong>
+  </p>
 
-        <!-- Formspree: Shipper Load Request (UZ) -->
-        <form action="https://formspree.io/f/manrvnbe" method="POST">
-          <input type="hidden" name="type" value="Load Request" />
-          <input type="hidden" name="language" value="UZ" />
-          <input type="hidden" name="page" value="Homepage (UZ) – Load Request" />
-          <input type="hidden" name="platform" value="RoYo Logistics" />
-          <input type="hidden" name="_subject" value="Yangi yuk so‘rovi – RoYo Logistics (UZ)" />
-          <input type="hidden" name="_template" value="table" />
-
-          <label>
-            Yuk jo‘natuvchi (kompaniya)
-            <input type="text" name="shipper_company" placeholder="Kompaniya nomi" required />
-          </label>
-
-          <label>
-            Aloqa (telefon yoki email)
-            <input type="text" name="shipper_contact" placeholder="+998 XX XXX XX XX / email" required />
-          </label>
-
-          <label>
-            Qayerdan (O‘zbekiston)
-            <input type="text" name="pickup_city" id="pickupInput" placeholder="Quyida yo‘nalishdan tanlang" required />
-          </label>
-
-          <label>
-            Qayerga (O‘zbekiston)
-            <input type="text" name="delivery_city" id="deliveryInput" placeholder="Quyida yo‘nalishdan tanlang" required />
-          </label>
-
-          <label>
-            Yuk tavsifi
-            <input type="text" name="cargo_details" placeholder="Masalan: 2 palet, 800 kg, tent" required />
-          </label>
-
-          <label>
-            Yuklash sanasi
-            <input type="text" name="load_date" placeholder="Masalan: 2025-12-20" required />
-          </label>
-
-          <button type="submit" class="btn btn-fullwidth">So‘rov yuborish</button>
-
-          <p class="form-note">
-            So‘rov Formspree’ga tushadi (va email xabarnomalariga ham).
-          </p>
-        </form>
-      </div>
+  <div class="lane-search-grid" style="margin-top:14px;">
+    <div class="lane-field">
+      <label for="fromInput">Qayerdan</label>
+      <input
+        id="fromInput"
+        type="text"
+        placeholder="Shahar nomini yozing..."
+        autocomplete="off"
+      />
+      <div id="fromResults" class="lane-results"></div>
     </div>
-  </section>
+
+    <div class="lane-field">
+      <label for="toInput">Qayerga</label>
+      <input
+        id="toInput"
+        type="text"
+        placeholder="Shahar nomini yozing..."
+        autocomplete="off"
+      />
+      <div id="toResults" class="lane-results"></div>
+    </div>
+  </div>
+
+  <div class="lane-actions" style="margin-top:16px;">
+    <a href="login.html" class="btn primary" id="laneApply" aria-disabled="true">
+      Qidirish
+    </a>
+    <button class="btn btn-outline" id="laneReset" type="button">
+      Tozalash
+    </button>
+  </div>
+
+  <p class="form-note" style="margin-top:10px;">
+    Tashuvchilar yuklarni topadi · Yuk jo‘natuvchilar login orqali yuk joylaydi
+  </p>
+</div>
+
+      
 
   <!-- Qanday ishlaydi -->
   <section id="how" class="section section-muted">
