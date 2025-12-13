@@ -79,42 +79,49 @@
       <div class="hero-card">
         <h2>Yuk joylash / Narx so‘rash</h2>
 
-        <!-- Real form (mailto). Keyin CRM/API ga ulaymiz. -->
-        <form action="mailto:info@royologistics.com" method="post" enctype="text/plain">
+        <!-- Formspree: Shipper Load Request (UZ) -->
+        <form action="https://formspree.io/f/manrvnbe" method="POST">
+          <input type="hidden" name="type" value="Load Request" />
+          <input type="hidden" name="language" value="UZ" />
+          <input type="hidden" name="page" value="Homepage (UZ) – Load Request" />
+          <input type="hidden" name="platform" value="RoYo Logistics" />
+          <input type="hidden" name="_subject" value="Yangi yuk so‘rovi – RoYo Logistics (UZ)" />
+          <input type="hidden" name="_template" value="table" />
+
           <label>
             Yuk jo‘natuvchi (kompaniya)
-            <input type="text" name="Yuk_jonatuvchi" placeholder="Kompaniya nomi" required />
+            <input type="text" name="shipper_company" placeholder="Kompaniya nomi" required />
           </label>
 
           <label>
             Aloqa (telefon yoki email)
-            <input type="text" name="Aloqa" placeholder="+998 XX XXX XX XX / email" required />
+            <input type="text" name="shipper_contact" placeholder="+998 XX XXX XX XX / email" required />
           </label>
 
           <label>
             Qayerdan (O‘zbekiston)
-            <input type="text" name="Qayerdan" id="pickupInput" placeholder="Quyida yo‘nalishdan tanlang" required />
+            <input type="text" name="pickup_city" id="pickupInput" placeholder="Quyida yo‘nalishdan tanlang" required />
           </label>
 
           <label>
             Qayerga (O‘zbekiston)
-            <input type="text" name="Qayerga" id="deliveryInput" placeholder="Quyida yo‘nalishdan tanlang" required />
+            <input type="text" name="delivery_city" id="deliveryInput" placeholder="Quyida yo‘nalishdan tanlang" required />
           </label>
 
           <label>
             Yuk tavsifi
-            <input type="text" name="Yuk" placeholder="Masalan: 2 palet, 800 kg, tent" required />
+            <input type="text" name="cargo_details" placeholder="Masalan: 2 palet, 800 kg, tent" required />
           </label>
 
           <label>
             Yuklash sanasi
-            <input type="text" name="Sana" placeholder="Masalan: 2025-12-20" required />
+            <input type="text" name="load_date" placeholder="Masalan: 2025-12-20" required />
           </label>
 
           <button type="submit" class="btn btn-fullwidth">So‘rov yuborish</button>
 
           <p class="form-note">
-            So‘rov <a href="mailto:info@royologistics.com">info@royologistics.com</a> manziliga yuboriladi.
+            So‘rov Formspree’ga tushadi (va email xabarnomalariga ham).
           </p>
         </form>
       </div>
@@ -272,22 +279,31 @@
       <div class="contact-box">
         <h3>Xabar yuborish</h3>
 
-        <form action="mailto:info@royologistics.com" method="post" enctype="text/plain">
+        <!-- Formspree: Contact / Investor (UZ) -->
+        <form action="https://formspree.io/f/xqarnalq" method="POST">
+          <input type="hidden" name="type" value="Contact / Investor" />
+          <input type="hidden" name="language" value="UZ" />
+          <input type="hidden" name="page" value="Homepage (UZ) – Contact" />
+          <input type="hidden" name="platform" value="RoYo Logistics" />
+          <input type="hidden" name="_subject" value="Yangi xabar – RoYo Logistics (UZ)" />
+          <input type="hidden" name="_template" value="table" />
+
           <label>
             Ismingiz
-            <input type="text" name="Ism" placeholder="To‘liq ism" required />
+            <input type="text" name="name" placeholder="To‘liq ism" required />
           </label>
           <label>
             Aloqa (telefon yoki email)
-            <input type="text" name="Aloqa" placeholder="Siz bilan bog‘lanish usuli" required />
+            <input type="text" name="contact" placeholder="Siz bilan bog‘lanish usuli" required />
           </label>
           <label>
             Xabar
-            <textarea name="Xabar" rows="4" placeholder="Narx so‘rovi, hamkorlik yoki investorlik" required></textarea>
+            <textarea name="message" rows="4" placeholder="Narx so‘rovi, hamkorlik yoki investorlik" required></textarea>
           </label>
+
           <button type="submit" class="btn btn-fullwidth">Yuborish</button>
           <p class="form-note">
-            Xabar <a href="mailto:info@royologistics.com">info@royologistics.com</a> manziliga yuboriladi.
+            Xabar Formspree’ga tushadi (va email xabarnomalariga ham).
           </p>
         </form>
       </div>
