@@ -1,89 +1,212 @@
-// === Uzbekistan Cities (expandable list) ===
-// I included a strong nationwide set (major freight nodes + regional centers).
-// When you paste ru.html and uz.html, I’ll also localize city labels if needed.
-const UZ_CITIES = [
-  "Toshkent","Nurafshon","Yangiyo‘l","Chirchiq","Angren","Olmaliq","Bekobod","Ohangaron",
-  "Samarqand","Kattaqo‘rg‘on","Urgut","Jomboy","Ishtixon","Payariq",
-  "Buxoro","Kogon","G‘ijduvon","Vobkent","Qorako‘l","Gazli",
-  "Navoiy","Zarafshon","Uchquduq","Karmana","Nurota",
-  "Qarshi","Shahrisabz","G‘uzor","Koson","Kitob","Muborak",
-  "Termiz","Denov","Sherobod","Boysun","Jarqo‘rg‘on",
-  "Jizzax","Guliston","Sirdaryo","Yangiyer","Shirin",
-  "Andijon","Asaka","Xonobod","Shahrixon","Qo‘rg‘ontepa","Marhamat",
-  "Namangan","Chust","Pop","Uchqo‘rg‘on",
-  "Farg‘ona","Marg‘ilon","Qo‘qon","Quvasoy","Rishton","Oltiariq",
-  "Nukus","Xo‘jayli","To‘rtko‘l","Beruniy","Chimboy","Qo‘ng‘irot",
-  "Urganch","Xiva","Pitnak","Hazorasp","Shovot",
-  "Qo‘shko‘pir","Gurlan","Bog‘ot","Yangiariq","Xonqa"
+// ===== Cities dataset (UZ + KZ + KG + RU) =====
+const CITIES = [
+  // Uzbekistan (UZ)
+  { name: "Toshkent", country: "Uzbekistan" },
+  { name: "Samarqand", country: "Uzbekistan" },
+  { name: "Buxoro", country: "Uzbekistan" },
+  { name: "Navoiy", country: "Uzbekistan" },
+  { name: "Qarshi", country: "Uzbekistan" },
+  { name: "Termiz", country: "Uzbekistan" },
+  { name: "Jizzax", country: "Uzbekistan" },
+  { name: "Guliston", country: "Uzbekistan" },
+  { name: "Andijon", country: "Uzbekistan" },
+  { name: "Namangan", country: "Uzbekistan" },
+  { name: "Farg‘ona", country: "Uzbekistan" },
+  { name: "Qo‘qon", country: "Uzbekistan" },
+  { name: "Nukus", country: "Uzbekistan" },
+  { name: "Urganch", country: "Uzbekistan" },
+  { name: "Xiva", country: "Uzbekistan" },
+  { name: "Qo‘shko‘pir", country: "Uzbekistan" },
+
+  // Kazakhstan (KZ)
+  { name: "Almaty", country: "Kazakhstan" },
+  { name: "Astana", country: "Kazakhstan" },
+  { name: "Shymkent", country: "Kazakhstan" },
+  { name: "Karaganda", country: "Kazakhstan" },
+  { name: "Aktobe", country: "Kazakhstan" },
+  { name: "Atyrau", country: "Kazakhstan" },
+  { name: "Pavlodar", country: "Kazakhstan" },
+  { name: "Kostanay", country: "Kazakhstan" },
+  { name: "Kyzylorda", country: "Kazakhstan" },
+  { name: "Ust-Kamenogorsk", country: "Kazakhstan" },
+  { name: "Semey", country: "Kazakhstan" },
+  { name: "Taraz", country: "Kazakhstan" },
+
+  // Kyrgyzstan (KG)
+  { name: "Bishkek", country: "Kyrgyzstan" },
+  { name: "Osh", country: "Kyrgyzstan" },
+  { name: "Jalal-Abad", country: "Kyrgyzstan" },
+  { name: "Karakol", country: "Kyrgyzstan" },
+  { name: "Tokmok", country: "Kyrgyzstan" },
+  { name: "Naryn", country: "Kyrgyzstan" },
+
+  // Russia (RU)
+  { name: "Moscow", country: "Russia" },
+  { name: "Saint Petersburg", country: "Russia" },
+  { name: "Kazan", country: "Russia" },
+  { name: "Novosibirsk", country: "Russia" },
+  { name: "Yekaterinburg", country: "Russia" },
+  { name: "Krasnodar", country: "Russia" },
+  { name: "Rostov-on-Don", country: "Russia" },
+  { name: "Samara", country: "Russia" },
 ];
 
-function renderButtons(containerId, onPick) {
-  const root = document.getElementById(containerId);
-  if (!root) return;
-  root.innerHTML = "";
+// ===== Helpers =====
+function norm(s) {
+  return (s || "")
+    .toString()
+    .toLowerCase()
+    .replace(/[\u2018\u2019']/g, "'")
+    .replace(/\s+/g, " ")
+    .trim();
+}
 
-  UZ_CITIES.forEach(city => {
-    const b = document.createElement("button");
-    b.type = "button";
-    b.className = "city-btn";
-    b.textContent = city;
-    b.addEventListener("click", () => onPick(city, b));
-    root.appendChild(b);
+function formatCity(item) {
+  return `${item.name}, ${item.country}`;
+}
+
+function getEl(id) {
+  return document.getElementById(id);
+}
+
+// ===== Lanes (search dropdown) =====
+let fromChoice = null; // {name,country}
+let toChoice = null;
+
+function setApplyState() {
+  const applyBtn = getEl("laneApply");
+  if (!applyBtn) return;
+  const ok =
+    fromChoice &&
+    toChoice &&
+    !(fromChoice.name === toChoice.name && fromChoice.country === toChoice.country);
+  applyBtn.disabled = !ok;
+}
+
+function closeResults(box) {
+  if (!box) return;
+  box.style.display = "none";
+  box.innerHTML = "";
+}
+
+function openResults(box) {
+  if (!box) return;
+  box.style.display = "block";
+}
+
+function renderResults(box, items, onPick) {
+  if (!box) return;
+
+  box.innerHTML = "";
+  if (items.length === 0) {
+    const empty = document.createElement("div");
+    empty.className = "lane-result empty";
+    empty.textContent = "No matches";
+    box.appendChild(empty);
+    openResults(box);
+    return;
+  }
+
+  items.slice(0, 12).forEach((item) => {
+    const row = document.createElement("button");
+    row.type = "button";
+    row.className = "lane-result";
+    row.textContent = formatCity(item);
+    row.addEventListener("click", () => onPick(item));
+    box.appendChild(row);
+  });
+
+  openResults(box);
+}
+
+function attachSearch(inputId, resultsId, side) {
+  const input = getEl(inputId);
+  const results = getEl(resultsId);
+  if (!input || !results) return;
+
+  input.addEventListener("input", () => {
+    const q = norm(input.value);
+    if (!q) {
+      closeResults(results);
+      return;
+    }
+
+    const matches = CITIES.filter((c) => norm(c.name).includes(q) || norm(c.country).includes(q));
+    renderResults(results, matches, (picked) => {
+      input.value = formatCity(picked);
+      closeResults(results);
+
+      if (side === "from") fromChoice = picked;
+      if (side === "to") toChoice = picked;
+
+      // store
+      localStorage.setItem("lane_from", fromChoice ? formatCity(fromChoice) : "");
+      localStorage.setItem("lane_to", toChoice ? formatCity(toChoice) : "");
+
+      setApplyState();
+    });
+  });
+
+  input.addEventListener("focus", () => {
+    const q = norm(input.value);
+    if (!q) return;
+    const matches = CITIES.filter((c) => norm(c.name).includes(q) || norm(c.country).includes(q));
+    renderResults(results, matches, (picked) => {
+      input.value = formatCity(picked);
+      closeResults(results);
+
+      if (side === "from") fromChoice = picked;
+      if (side === "to") toChoice = picked;
+
+      localStorage.setItem("lane_from", fromChoice ? formatCity(fromChoice) : "");
+      localStorage.setItem("lane_to", toChoice ? formatCity(toChoice) : "");
+
+      setApplyState();
+    });
   });
 }
 
-function clearActive(containerId) {
-  const root = document.getElementById(containerId);
-  if (!root) return;
-  root.querySelectorAll(".city-btn").forEach(b => b.classList.remove("active"));
-}
+// Click outside -> close dropdowns
+document.addEventListener("click", (e) => {
+  const fromBox = getEl("fromResults");
+  const toBox = getEl("toResults");
+  const fromInput = getEl("fromInput");
+  const toInput = getEl("toInput");
 
-let fromCity = null;
-let toCity = null;
-
-function refreshLane() {
-  const fromEl = document.getElementById("fromSelected");
-  const toEl = document.getElementById("toSelected");
-  const applyBtn = document.getElementById("laneApply");
-
-  if (fromEl) fromEl.textContent = fromCity || "—";
-  if (toEl) toEl.textContent = toCity || "—";
-
-  if (applyBtn) applyBtn.disabled = !(fromCity && toCity && fromCity !== toCity);
-}
-
-renderButtons("fromCities", (city, btn) => {
-  fromCity = city;
-  clearActive("fromCities");
-  btn.classList.add("active");
-  refreshLane();
+  if (fromBox && fromInput && !fromBox.contains(e.target) && e.target !== fromInput) closeResults(fromBox);
+  if (toBox && toInput && !toBox.contains(e.target) && e.target !== toInput) closeResults(toBox);
 });
 
-renderButtons("toCities", (city, btn) => {
-  toCity = city;
-  clearActive("toCities");
-  btn.classList.add("active");
-  refreshLane();
+// Apply lane to hero form
+getEl("laneApply")?.addEventListener("click", () => {
+  if (!fromChoice || !toChoice) return;
+
+  const pickup = getEl("pickupInput");
+  const delivery = getEl("deliveryInput");
+
+  if (pickup) pickup.value = formatCity(fromChoice);
+  if (delivery) delivery.value = formatCity(toChoice);
 });
 
-document.getElementById("laneReset")?.addEventListener("click", () => {
-  fromCity = null;
-  toCity = null;
-  clearActive("fromCities");
-  clearActive("toCities");
-  refreshLane();
+// Reset
+getEl("laneReset")?.addEventListener("click", () => {
+  fromChoice = null;
+  toChoice = null;
+
+  localStorage.removeItem("lane_from");
+  localStorage.removeItem("lane_to");
+
+  const fromInput = getEl("fromInput");
+  const toInput = getEl("toInput");
+  if (fromInput) fromInput.value = "";
+  if (toInput) toInput.value = "";
+
+  closeResults(getEl("fromResults"));
+  closeResults(getEl("toResults"));
+  setApplyState();
 });
 
-document.getElementById("laneApply")?.addEventListener("click", () => {
-  if (!fromCity || !toCity) return;
-
-  // Fill hero form fields
-  const pickup = document.getElementById("pickupInput");
-  const delivery = document.getElementById("deliveryInput");
-  if (pickup) pickup.value = fromCity + ", Uzbekistan";
-  if (delivery) delivery.value = toCity + ", Uzbekistan";
-
-  // Store for later pages
-  localStorage.setItem("lane_from", fromCity);
-  localStorage.setItem("lane_to", toCity);
-});
+// Init (only if lanes inputs exist on the page)
+attachSearch("fromInput", "fromResults", "from");
+attachSearch("toInput", "toResults", "to");
+setApplyState();
