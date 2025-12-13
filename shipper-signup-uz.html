@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Yuk jo‘natuvchi hisobi – RoYo Logistics</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="top-bar">
+    <div class="container top-bar-inner">
+      <div class="logo">
+        <img src="logo.png" class="logo-img" alt="RoYo Logistics logo" />
+        <span class="logo-text">RoYo Logistics</span>
+      </div>
+      <div class="lang-switch">
+        <a href="shipper-signup.html">EN</a>
+        <a href="shipper-signup-ru.html">RU</a>
+        <a href="shipper-signup-uz.html" class="active">UZ</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="section">
+    <div class="container">
+      <div class="hero-card" style="max-width:720px;margin:0 auto;">
+        <h2 style="margin-bottom:10px;">Yuk jo‘natuvchi hisobini yaratish</h2>
+        <p class="form-note" style="margin-bottom:14px;">Yuk jo‘natuvchi kabinetiga kirish uchun so‘rov qoldiring.</p>
+
+        <form action="https://formspree.io/f/xqarnalq" method="POST">
+          <label>Kompaniya nomi
+            <input type="text" name="company" required />
+          </label>
+          <label>Aloqa shaxsi
+            <input type="text" name="name" required />
+          </label>
+          <label>Email
+            <input type="email" name="email" required />
+          </label>
+          <label>Telefon
+            <input type="text" name="phone" />
+          </label>
+          <label>Jo‘natmalar turi
+            <input type="text" name="shipping_type" placeholder="FTL, LTL, doimiy yo‘nalishlar" />
+          </label>
+
+          <button type="submit" class="btn btn-fullwidth">Kirish uchun so‘rov yuborish</button>
+        </form>
+
+        <div style="margin-top:12px;">
+          <a href="login-uz.html" class="btn btn-outline btn-fullwidth">← Kirishga qaytish</a>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
