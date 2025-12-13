@@ -9,171 +9,321 @@
 </head>
 <body>
 
-<!-- Header -->
-<header class="top-bar">
-  <div class="container top-bar-inner">
-    <div class="logo">
-      <img src="logo.png" class="logo-img" alt="RoYo Logistics logo" />
-      <span class="logo-text">RoYo Logistics</span>
+  <!-- Шапка -->
+  <header class="top-bar">
+    <div class="container top-bar-inner">
+      <div class="logo">
+        <img src="logo.png" class="logo-img" alt="RoYo Logistics logo" />
+        <span class="logo-text">RoYo Logistics</span>
+      </div>
+
+      <!-- Desktop nav -->
+      <nav class="nav">
+        <a href="#how">Как это работает</a>
+        <a href="#services">Сервисы</a>
+        <a href="#lanes">Маршруты</a>
+        <a href="#investors">Инвесторам</a>
+        <a href="#contact">Контакты</a>
+        <a href="login-ru.html" class="nav-login">Вход</a>
+      </nav>
+
+      <!-- Language switch (desktop) -->
+      <div class="lang-switch">
+        <a href="index.html">EN</a>
+        <a href="ru.html" class="active">RU</a>
+        <a href="uz.html">UZ</a>
+      </div>
+
+      <!-- Mobile menu button -->
+      <button class="menu-toggle" aria-label="Open menu">☰</button>
     </div>
 
-    <nav class="nav">
+    <!-- Mobile dropdown -->
+    <div class="mobile-menu">
       <a href="#how">Как это работает</a>
       <a href="#services">Сервисы</a>
       <a href="#lanes">Маршруты</a>
       <a href="#investors">Инвесторам</a>
       <a href="#contact">Контакты</a>
-      <a href="login-ru.html" class="nav-login">Вход</a>
-    </nav>
-
-    <div class="lang-switch">
-      <a href="index.html">EN</a>
-      <a href="ru.html" class="active">RU</a>
-      <a href="uz.html">UZ</a>
+      <a href="login-ru.html">Вход</a>
+      <div class="mobile-lang">
+        <a href="index.html">EN</a>
+        <a href="ru.html" class="active">RU</a>
+        <a href="uz.html">UZ</a>
+      </div>
     </div>
+  </header>
 
-    <button class="menu-toggle" aria-label="Open menu">☰</button>
-  </div>
+  <!-- Герой -->
+  <section class="hero">
+    <div class="container hero-inner">
+      <div class="hero-text">
+        <h1>Грузоперевозки проще для перевозчиков и грузоотправителей</h1>
+        <p>
+          Разместите груз, получите ставки, выберите перевозчика и ведите статус доставки —
+          понятным и быстрым способом. Начинаем с маршрутов по Узбекистану.
+        </p>
 
-  <div class="mobile-menu">
-    <a href="#how">Как это работает</a>
-    <a href="#services">Сервисы</a>
-    <a href="#lanes">Маршруты</a>
-    <a href="#investors">Инвесторам</a>
-    <a href="#contact">Контакты</a>
-    <a href="login-ru.html">Вход</a>
-    <div class="mobile-lang">
-      <a href="index.html">EN</a>
-      <a href="ru.html" class="active">RU</a>
-      <a href="uz.html">UZ</a>
+        <div class="hero-actions">
+          <a href="login-ru.html" class="btn">Вход</a>
+          <a href="#lanes" class="btn btn-outline">Выбрать маршрут</a>
+        </div>
+
+        <div class="hero-tags">
+          <span>Ставки от перевозчиков</span>
+          <span>Размещение грузов</span>
+          <span>Прозрачные статусы</span>
+        </div>
+      </div>
+
+      <!-- Быстрая заявка грузоотправителя -->
+      <div class="hero-card">
+        <h2>Разместить груз / запросить ставку</h2>
+
+        <!-- Formspree: Load Request (RU) -->
+        <form action="https://formspree.io/f/manrvnbe" method="POST">
+          <input type="hidden" name="type" value="Load Request" />
+          <input type="hidden" name="language" value="RU" />
+          <input type="hidden" name="page" value="Homepage (RU) – Load Request" />
+          <input type="hidden" name="platform" value="RoYo Logistics" />
+          <input type="hidden" name="_subject" value="Новая заявка на груз – RoYo Logistics (RU)" />
+          <input type="hidden" name="_template" value="table" />
+
+          <label>
+            Грузоотправитель (компания)
+            <input type="text" name="shipper_company" placeholder="Название компании" required />
+          </label>
+
+          <label>
+            Контакт (телефон или email)
+            <input type="text" name="shipper_contact" placeholder="+998 XX XXX XX XX / email" required />
+          </label>
+
+          <label>
+            Город отправления (Узбекистан)
+            <input type="text" name="pickup_city" id="pickupInput" placeholder="Выберите ниже в маршрутах" required />
+          </label>
+
+          <label>
+            Город доставки (Узбекистан)
+            <input type="text" name="delivery_city" id="deliveryInput" placeholder="Выберите ниже в маршрутах" required />
+          </label>
+
+          <label>
+            Описание груза
+            <input type="text" name="cargo_details" placeholder="Например: 2 паллеты, 800 кг, тент" required />
+          </label>
+
+          <label>
+            Дата загрузки
+            <input type="text" name="load_date" placeholder="Например: 2025-12-20" required />
+          </label>
+
+          <button type="submit" class="btn btn-fullwidth">Отправить запрос</button>
+
+          <p class="form-note">
+            Заявка поступит в Formspree (и на email-уведомления).
+          </p>
+        </form>
+      </div>
     </div>
-  </div>
-</header>
+  </section>
 
-<!-- Hero -->
-<section class="hero">
-  <div class="container hero-inner">
-    <div class="hero-text">
-      <h1>Грузоперевозки проще для перевозчиков и грузоотправителей</h1>
-      <p>
-        Разместите груз, получите ставки, забронируйте перевозчика и отслеживайте доставку —
-        просто и понятно. Начинаем с Узбекистана.
+  <!-- Как это работает -->
+  <section id="how" class="section section-muted">
+    <div class="container">
+      <h2 class="section-title">Как это работает</h2>
+      <p class="section-subtitle">
+        Логика как у DAT / Central Dispatch, но проще и понятнее.
       </p>
 
-      <div class="hero-actions">
-        <a href="login-ru.html" class="btn">Вход</a>
-        <a href="#lanes" class="btn btn-outline">Выбрать маршрут</a>
+      <div class="steps">
+        <div class="step">
+          <span class="step-number">1</span>
+          <h3>Грузоотправитель размещает груз</h3>
+          <p>Выберите маршрут Откуда → Куда, укажите параметры и отправьте заявку.</p>
+        </div>
+        <div class="step">
+          <span class="step-number">2</span>
+          <h3>Перевозчики предлагают ставку</h3>
+          <p>Перевозчики выбирают подходящие направления и отправляют цену.</p>
+        </div>
+        <div class="step">
+          <span class="step-number">3</span>
+          <h3>Статус и документы</h3>
+          <p>Подтверждение загрузки, в пути, доставлено — базовые документы в одном месте.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Сервисы -->
+  <section id="services" class="section">
+    <div class="container">
+      <h2 class="section-title">Основные сервисы</h2>
+      <p class="section-subtitle">
+        Фокус на грузоперевозках и маршрутах по Узбекистану.
+      </p>
+
+      <div class="grid-3">
+        <div class="card">
+          <h3>FTL и LTL</h3>
+          <p>
+            Полная загрузка (FTL) и сборный груз (LTL) с понятным выбором маршрута и ставки.
+          </p>
+        </div>
+        <div class="card">
+          <h3>Сеть перевозчиков</h3>
+          <p>
+            Профили перевозчиков, доступность по направлениям, ставки и бронирование.
+          </p>
+        </div>
+        <div class="card">
+          <h3>Диспетчеризация и координация</h3>
+          <p>
+            Чёткая коммуникация, подтверждение загрузки/выгрузки и прозрачные обновления статуса.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Маршруты (From/To селектор) -->
+  <section id="lanes" class="section lanes">
+    <div class="container">
+      <h2 class="section-title">Выберите маршрут (Узбекистан)</h2>
+      <p class="section-subtitle">
+        Нажмите город для <strong>Откуда</strong>, затем выберите город для <strong>Куда</strong>.
+        Выбор можно применить к форме заявки выше.
+      </p>
+
+      <div class="lanes-grid">
+        <div class="lane-box">
+          <h3>Откуда</h3>
+          <div class="lane-selected" id="fromSelected">—</div>
+          <div class="city-buttons" id="fromCities"></div>
+        </div>
+
+        <div class="lane-box">
+          <h3>Куда</h3>
+          <div class="lane-selected" id="toSelected">—</div>
+          <div class="city-buttons" id="toCities"></div>
+        </div>
       </div>
 
-      <div class="hero-tags">
-        <span>Ставки от перевозчиков</span>
-        <span>Размещение грузов</span>
-        <span>Прозрачные статусы</span>
+      <div class="lane-actions">
+        <button class="btn primary" id="laneApply" disabled>Применить маршрут к форме</button>
+        <button class="btn btn-outline" id="laneReset" type="button">Сброс</button>
+        <a class="btn" href="login-ru.html">Войти для размещения/ставок</a>
       </div>
     </div>
+  </section>
 
-    <!-- Shipper form -->
-    <div class="hero-card">
-      <h2>Разместить груз / запросить ставку</h2>
+  <!-- Инвесторам -->
+  <section id="investors" class="section">
+    <div class="container">
+      <h2 class="section-title">Инвесторам и кредиторам</h2>
+      <p class="section-subtitle">
+        RoYo Logistics строит масштабируемую платформу грузоперевозок с понятными процессами и прозрачной экономикой.
+      </p>
 
-      <form action="https://formspree.io/f/manrvnbe" method="POST">
-        <input type="hidden" name="language" value="RU" />
-        <input type="hidden" name="_subject" value="Новая заявка – RoYo Logistics (RU)" />
+      <div class="grid-3">
+        <div class="card">
+          <h3>Понятное использование капитала</h3>
+          <p>
+            Средства направляются на продукт, подключение перевозчиков/грузоотправителей, операционное развитие и рост.
+          </p>
+        </div>
+        <div class="card">
+          <h3>Операционная дисциплина</h3>
+          <p>
+            Стандартизированные статусы, управляемость маршрутов и измеряемая эффективность.
+          </p>
+        </div>
+        <div class="card">
+          <h3>Масштабируемая модель</h3>
+          <p>
+            Доход от комиссии и опциональные платные инструменты для участников рынка.
+          </p>
+        </div>
+      </div>
 
-        <label>
-          Компания
-          <input type="text" name="company" required />
-        </label>
-
-        <label>
-          Контакт
-          <input type="text" name="contact" required />
-        </label>
-
-        <label>
-          Откуда
-          <input type="text" name="from" id="pickupInput" required />
-        </label>
-
-        <label>
-          Куда
-          <input type="text" name="to" id="deliveryInput" required />
-        </label>
-
-        <label>
-          Груз
-          <input type="text" name="cargo" required />
-        </label>
-
-        <label>
-          Дата
-          <input type="text" name="date" required />
-        </label>
-
-        <button type="submit" class="btn btn-fullwidth">Отправить</button>
-      </form>
+      <p class="section-subtitle" style="margin-top: 18px;">
+        Запросить презентацию или бизнес-план:
+        <a href="mailto:info@royologistics.com">info@royologistics.com</a>.
+      </p>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- How -->
-<section id="how" class="section section-muted">
-  <div class="container">
-    <h2 class="section-title">Как это работает</h2>
-    <div class="steps">
-      <div class="step"><span class="step-number">1</span><h3>Размещение</h3></div>
-      <div class="step"><span class="step-number">2</span><h3>Ставки</h3></div>
-      <div class="step"><span class="step-number">3</span><h3>Доставка</h3></div>
+  <!-- Контакты -->
+  <section id="contact" class="section section-muted">
+    <div class="container contact-inner">
+      <div>
+        <h2 class="section-title">Контакты RoYo Logistics</h2>
+        <p class="section-subtitle">
+          Запрос ставки, партнёрство или материалы для инвесторов.
+        </p>
+        <ul class="contact-list">
+          <li><strong>Компания:</strong> RoYo Logistics</li>
+          <li><strong>Телефон:</strong> <a href="tel:+18889590849">(888) 959-0849</a></li>
+          <li><strong>Email:</strong> <a href="mailto:info@royologistics.com">info@royologistics.com</a></li>
+          <li><strong>Адрес:</strong> 5830 E 2nd St, Casper, WY 82609</li>
+        </ul>
+      </div>
+
+      <div class="contact-box">
+        <h3>Отправить сообщение</h3>
+
+        <!-- Formspree: Contact / Investor (RU) -->
+        <form action="https://formspree.io/f/xqarnalq" method="POST">
+          <input type="hidden" name="type" value="Contact / Investor" />
+          <input type="hidden" name="language" value="RU" />
+          <input type="hidden" name="page" value="Homepage (RU) – Contact" />
+          <input type="hidden" name="platform" value="RoYo Logistics" />
+          <input type="hidden" name="_subject" value="Новое сообщение – RoYo Logistics (RU)" />
+          <input type="hidden" name="_template" value="table" />
+
+          <label>
+            Ваше имя
+            <input type="text" name="name" placeholder="Полное имя" required />
+          </label>
+          <label>
+            Контакт (телефон или email)
+            <input type="text" name="contact" placeholder="Удобный способ связи" required />
+          </label>
+          <label>
+            Сообщение
+            <textarea name="message" rows="4" placeholder="Ставка, партнёрство или запрос для инвесторов" required></textarea>
+          </label>
+
+          <button type="submit" class="btn btn-fullwidth">Отправить</button>
+          <p class="form-note">
+            Сообщение появится в Formspree (и придёт уведомление на email).
+          </p>
+        </form>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- Lanes -->
-<section id="lanes" class="section lanes">
-  <div class="container">
-    <h2 class="section-title">Маршруты</h2>
-    <div class="lane-actions">
-      <a href="login-ru.html" class="btn">Войти для размещения и ставок</a>
+  <!-- Подвал -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <p>© <span id="year"></span> RoYo Logistics. Все права защищены.</p>
+      <p>Сайт на GitHub Pages · Домен на Squarespace.</p>
     </div>
-  </div>
-</section>
+  </footer>
 
-<!-- Contact -->
-<section id="contact" class="section section-muted">
-  <div class="container contact-inner">
-    <div>
-      <h2 class="section-title">Контакты</h2>
-      <ul class="contact-list">
-        <li>Email: <a href="mailto:info@royologistics.com">info@royologistics.com</a></li>
-      </ul>
-    </div>
+  <!-- Скрипты -->
+  <script src="app.js"></script>
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
 
-    <div class="contact-box">
-      <form action="https://formspree.io/f/xqarnalq" method="POST">
-        <input type="hidden" name="language" value="RU" />
-        <label>Имя <input type="text" name="name" required /></label>
-        <label>Контакт <input type="text" name="contact" required /></label>
-        <label>Сообщение <textarea name="message" required></textarea></label>
-        <button type="submit" class="btn btn-fullwidth">Отправить</button>
-      </form>
-    </div>
-  </div>
-</section>
-
-<footer class="footer">
-  <div class="container footer-inner">
-    <p>© <span id="year"></span> RoYo Logistics</p>
-  </div>
-</footer>
-
-<script src="app.js"></script>
-<script>
-  document.getElementById("year").textContent = new Date().getFullYear();
-  document.querySelector(".menu-toggle")
-    .addEventListener("click", () =>
-      document.querySelector(".mobile-menu").classList.toggle("open")
-    );
-</script>
+    const toggle = document.querySelector(".menu-toggle");
+    const mobileMenu = document.querySelector(".mobile-menu");
+    if (toggle && mobileMenu) {
+      toggle.addEventListener("click", () => mobileMenu.classList.toggle("open"));
+    }
+  </script>
 
 </body>
 </html>
