@@ -1,9 +1,44 @@
 <!DOCTYPE html>
-<html>
-<head><meta charset="UTF-8"><title>Carrier Signup</title></head>
-<body style="font-family:Arial;padding:40px;">
-  <h1>Create Carrier Account</h1>
-  <p>Signup will be connected later.</p>
-  <a href="login.html">← Back to Login</a>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Create Carrier Account – RoYo Logistics</title>
+</head>
+<body>
+
+<h1>Create Carrier Account</h1>
+<p>Request access to the RoYo Logistics carrier portal.</p>
+
+<form action="https://formspree.io/f/manrvnbe" method="POST">
+  <label>
+    Company Name<br>
+    <input type="text" name="company" required>
+  </label><br><br>
+
+  <label>
+    Contact Name<br>
+    <input type="text" name="name" required>
+  </label><br><br>
+
+  <label>
+    Email<br>
+    <input type="email" name="email" required>
+  </label><br><br>
+
+  <label>
+    Phone<br>
+    <input type="text" name="phone">
+  </label><br><br>
+
+  <label>
+    Equipment Type<br>
+    <input type="text" name="equipment" placeholder="Dry Van, Reefer, Flatbed">
+  </label><br><br>
+
+  <button type="submit">Request Carrier Access</button>
+</form>
+
+<p><a href="login.html">← Back to Login</a></p>
+
 </body>
 </html>
