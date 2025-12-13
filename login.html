@@ -6,6 +6,7 @@
   <title>RoYo Logistics — Login</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
+
 <body class="auth-body">
   <div class="auth-wrap">
 
@@ -30,53 +31,91 @@
       <p class="muted">Choose your portal to continue.</p>
 
       <div class="role-grid">
-        <!-- CARRIER -->
+
+        <!-- ================= CARRIER ================= -->
         <section class="role-card">
           <div class="role-head">
             <span class="pill">Carrier</span>
             <h2>Carrier Portal</h2>
           </div>
 
-          <form class="auth-form" action="#" method="post">
+          <form class="auth-form" id="carrierLoginForm">
             <label>Email</label>
-            <input type="email" placeholder="name@company.com" required>
+            <input
+              id="carrierEmail"
+              type="email"
+              placeholder="name@company.com"
+              required
+            />
 
             <label>Password</label>
-            <input type="password" placeholder="••••••••" required>
+            <input
+              id="carrierPassword"
+              type="password"
+              placeholder="••••••••"
+              required
+            />
 
             <div class="row">
-              <label class="check"><input type="checkbox"><span>Remember me</span></label>
+              <label class="check">
+                <input type="checkbox">
+                <span>Remember me</span>
+              </label>
               <a href="#" class="link">Forgot password?</a>
             </div>
 
-            <a href="carrier.html" class="btn primary">Log in as Carrier</a>
-            <a href="carrier-signup.html" class="btn ghost">Create Carrier Account</a>
+            <button type="submit" class="btn primary">
+              Log in as Carrier
+            </button>
+
+            <a href="carrier-signup.html" class="btn ghost">
+              Create Carrier Account
+            </a>
           </form>
         </section>
 
-        <!-- SHIPPER -->
+        <!-- ================= SHIPPER ================= -->
         <section class="role-card">
           <div class="role-head">
             <span class="pill alt">Shipper</span>
             <h2>Shipper Portal</h2>
           </div>
 
-          <form class="auth-form" action="#" method="post">
+          <form class="auth-form" id="shipperLoginForm">
             <label>Email</label>
-            <input type="email" placeholder="name@company.com" required>
+            <input
+              id="shipperEmail"
+              type="email"
+              placeholder="name@company.com"
+              required
+            />
 
             <label>Password</label>
-            <input type="password" placeholder="••••••••" required>
+            <input
+              id="shipperPassword"
+              type="password"
+              placeholder="••••••••"
+              required
+            />
 
             <div class="row">
-              <label class="check"><input type="checkbox"><span>Remember me</span></label>
+              <label class="check">
+                <input type="checkbox">
+                <span>Remember me</span>
+              </label>
               <a href="#" class="link">Forgot password?</a>
             </div>
 
-            <a href="shipper.html" class="btn primary">Log in as Shipper</a>
-            <a href="shipper-signup.html" class="btn ghost">Create Shipper Account</a>
+            <button type="submit" class="btn primary">
+              Log in as Shipper
+            </button>
+
+            <a href="shipper-signup.html" class="btn ghost">
+              Create Shipper Account
+            </a>
           </form>
         </section>
+
       </div>
 
       <footer class="auth-foot">
@@ -87,5 +126,9 @@
       </footer>
     </main>
   </div>
+
+  <!-- Firebase Login Logic -->
+  <script type="module" src="login-auth.js"></script>
+
 </body>
 </html>
