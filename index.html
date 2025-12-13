@@ -75,63 +75,52 @@
         </div>
       </div>
 
-      <!-- Shipper quick post -->
-      <div class="hero-card">
-        <h2>Post a Load / Request a Rate</h2>
+     <!-- Search Loads / Trucks -->
+<div class="hero-card">
+  <h2>Search Loads / Find a Truck</h2>
+  <p class="form-note" style="margin-top:-6px;">
+    Choose where you are shipping <strong>from</strong> and <strong>to</strong>.
+  </p>
 
-        <!-- Formspree: Shipper Load Request -->
-        <form action="https://formspree.io/f/manrvnbe" method="POST">
-          <!-- Helpful routing/meta -->
-          <input type="hidden" name="type" value="Load Request" />
-          <input type="hidden" name="language" value="EN" />
-          <input type="hidden" name="page" value="Homepage (EN) – Load Request" />
-          <input type="hidden" name="platform" value="RoYo Logistics" />
-          <input type="hidden" name="_subject" value="New Load Request – RoYo Logistics (EN)" />
-          <input type="hidden" name="_template" value="table" />
-
-          <label>
-            Shipper name / company
-            <input type="text" name="shipper_company" placeholder="Your company name" required />
-          </label>
-
-          <label>
-            Contact (phone or email)
-            <input type="text" name="shipper_contact" placeholder="+998 XX XXX XX XX / email" required />
-          </label>
-
-          <label>
-            Pickup city (Uzbekistan)
-            <input type="text" name="pickup_city" id="pickupInput" placeholder="Choose from lane selector below" required />
-          </label>
-
-          <label>
-            Delivery city (Uzbekistan)
-            <input type="text" name="delivery_city" id="deliveryInput" placeholder="Choose from lane selector below" required />
-          </label>
-
-          <label>
-            Cargo details
-            <input type="text" name="cargo_details" placeholder="e.g., 2 pallets, 800 kg, dry van" required />
-          </label>
-
-          <label>
-            Load date
-            <input type="text" name="load_date" placeholder="e.g., 2025-12-20" required />
-          </label>
-
-          <button type="submit" class="btn btn-fullwidth">
-            Send Request
-          </button>
-
-
-          <p class="form-note">
-            Submitted requests are delivered to your Formspree inbox and email notifications.
-          </p>
-        </form>
-      </div>
+  <div class="lane-search-grid" style="margin-top:14px;">
+    <div class="lane-field">
+      <label for="fromInput">From</label>
+      <input
+        id="fromInput"
+        type="text"
+        placeholder="Start typing a city..."
+        autocomplete="off"
+      />
+      <div id="fromResults" class="lane-results"></div>
     </div>
-  </section>
 
+    <div class="lane-field">
+      <label for="toInput">To</label>
+      <input
+        id="toInput"
+        type="text"
+        placeholder="Start typing a city..."
+        autocomplete="off"
+      />
+      <div id="toResults" class="lane-results"></div>
+    </div>
+  </div>
+
+  <div class="lane-actions" style="margin-top:16px;">
+    <a href="login.html" class="btn primary" id="laneApply" aria-disabled="true">
+      Search
+    </a>
+    <button class="btn btn-outline" id="laneReset" type="button">
+      Reset
+    </button>
+  </div>
+
+  <p class="form-note" style="margin-top:10px;">
+    Carriers find loads · Shippers post cargo after login.
+  </p>
+</div>
+
+      
   <!-- How it works -->
   <section id="how" class="section section-muted">
     <div class="container">
