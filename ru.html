@@ -188,36 +188,48 @@
     </div>
   </section>
 
-  <!-- Маршруты (From/To селектор) -->
-  <section id="lanes" class="section lanes">
-    <div class="container">
-      <h2 class="section-title">Выберите маршрут (Узбекистан)</h2>
-      <p class="section-subtitle">
-        Нажмите город для <strong>Откуда</strong>, затем выберите город для <strong>Куда</strong>.
-        Выбор можно применить к форме заявки выше.
-      </p>
+<!-- Маршруты (Поиск и выбор) -->
+<section id="lanes" class="section lanes">
+  <div class="container">
+    <h2 class="section-title">Выберите маршрут</h2>
+    <p class="section-subtitle">
+      Начните вводить и выберите города для <strong>Откуда</strong> и <strong>Куда</strong>.
+      Выбор подставится в форму заявки.
+    </p>
 
-      <div class="lanes-grid">
-        <div class="lane-box">
-          <h3>Откуда</h3>
-          <div class="lane-selected" id="fromSelected">—</div>
-          <div class="city-buttons" id="fromCities"></div>
-        </div>
-
-        <div class="lane-box">
-          <h3>Куда</h3>
-          <div class="lane-selected" id="toSelected">—</div>
-          <div class="city-buttons" id="toCities"></div>
-        </div>
+    <div class="lane-search-grid">
+      <div class="lane-search-box">
+        <label class="lane-label">Откуда</label>
+        <input
+          id="fromInput"
+          class="lane-input"
+          type="text"
+          placeholder="Начните вводить город…"
+          autocomplete="off"
+        />
+        <div id="fromResults" class="lane-results" style="display:none;"></div>
       </div>
 
-      <div class="lane-actions">
-        <button class="btn primary" id="laneApply" disabled>Применить маршрут к форме</button>
-        <button class="btn btn-outline" id="laneReset" type="button">Сброс</button>
-        <a class="btn" href="login-ru.html">Войти для размещения/ставок</a>
+      <div class="lane-search-box">
+        <label class="lane-label">Куда</label>
+        <input
+          id="toInput"
+          class="lane-input"
+          type="text"
+          placeholder="Начните вводить город…"
+          autocomplete="off"
+        />
+        <div id="toResults" class="lane-results" style="display:none;"></div>
       </div>
     </div>
-  </section>
+
+    <div class="lane-actions">
+      <button class="btn primary" id="laneApply" disabled>Применить к форме</button>
+      <button class="btn btn-outline" id="laneReset" type="button">Сброс</button>
+      <a class="btn" href="login.html">Войти</a>
+    </div>
+  </div>
+</section>
 
   <!-- Инвесторам -->
   <section id="investors" class="section">
