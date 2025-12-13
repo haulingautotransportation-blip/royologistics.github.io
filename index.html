@@ -197,36 +197,48 @@
     </div>
   </section>
 
-  <!-- Lanes (Uzbekistan cities buttons From -> To) -->
-  <section id="lanes" class="section lanes">
-    <div class="container">
-      <h2 class="section-title">Select a Lane (Uzbekistan)</h2>
-      <p class="section-subtitle">
-        Click a city for <strong>From</strong>, then click a city for <strong>To</strong>.
-        This selection also fills your request form automatically.
-      </p>
+ <!-- Lanes (Search & Select) -->
+<section id="lanes" class="section lanes">
+  <div class="container">
+    <h2 class="section-title">Select a Lane</h2>
+    <p class="section-subtitle">
+      Type and pick cities for <strong>From</strong> and <strong>To</strong>. This will fill the request form.
+    </p>
 
-      <div class="lanes-grid">
-        <div class="lane-box">
-          <h3>From</h3>
-          <div class="lane-selected" id="fromSelected">—</div>
-          <div class="city-buttons" id="fromCities"></div>
-        </div>
-
-        <div class="lane-box">
-          <h3>To</h3>
-          <div class="lane-selected" id="toSelected">—</div>
-          <div class="city-buttons" id="toCities"></div>
-        </div>
+    <div class="lane-search-grid">
+      <div class="lane-search-box">
+        <label class="lane-label">From</label>
+        <input
+          id="fromInput"
+          class="lane-input"
+          type="text"
+          placeholder="Start typing a city…"
+          autocomplete="off"
+        />
+        <div id="fromResults" class="lane-results" style="display:none;"></div>
       </div>
 
-      <div class="lane-actions">
-        <button class="btn primary" id="laneApply" disabled>Apply lane to form</button>
-        <button class="btn btn-outline" id="laneReset" type="button">Reset</button>
-        <a class="btn" href="login.html">Login to post/quote</a>
+      <div class="lane-search-box">
+        <label class="lane-label">To</label>
+        <input
+          id="toInput"
+          class="lane-input"
+          type="text"
+          placeholder="Start typing a city…"
+          autocomplete="off"
+        />
+        <div id="toResults" class="lane-results" style="display:none;"></div>
       </div>
     </div>
-  </section>
+
+    <div class="lane-actions">
+      <button class="btn primary" id="laneApply" disabled>Apply lane to form</button>
+      <button class="btn btn-outline" id="laneReset" type="button">Reset</button>
+      <a class="btn" href="login.html">Login</a>
+    </div>
+  </div>
+</section>
+
 
   <!-- Investors -->
   <section id="investors" class="section">
