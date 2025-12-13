@@ -3,17 +3,6 @@ import {
   signInWithEmailAndPassword
 } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
 
-// ---- IMPORTANT ----
-// This script expects these input IDs in login.html:
-//
-// Carrier portal:
-//   id="carrierEmail"   id="carrierPassword"   button id="carrierLoginBtn"
-//
-// Shipper portal:
-//   id="shipperEmail"   id="shipperPassword"   button id="shipperLoginBtn"
-//
-// If your inputs don’t have these IDs yet, just add them in the HTML (no other change).
-
 function byId(id) {
   return document.getElementById(id);
 }
@@ -40,12 +29,13 @@ async function doLogin(role) {
   }
 }
 
-byId("carrierLoginBtn")?.addEventListener("click", (e) => {
+// Listen to FORM submits (works with Enter key + button)
+byId("carrierLoginForm")?.addEventListener("submit", (e) => {
   e.preventDefault();
   doLogin("carrier");
 });
 
-byId("shipperLoginBtn")?.addEventListener("click", (e) => {
+byId("shipperLoginForm")?.addEventListener("submit", (e) => {
   e.preventDefault();
   doLogin("shipper");
 });
