@@ -76,58 +76,51 @@
         </div>
       </div>
 
-      <!-- Быстрая заявка грузоотправителя -->
-      <div class="hero-card">
-        <h2>Разместить груз / запросить ставку</h2>
+     <!-- Поиск грузов / транспорта -->
+<div class="hero-card">
+  <h2>Поиск грузов / Найти перевозчика</h2>
+  <p class="form-note" style="margin-top:-6px;">
+    Выберите направление перевозки: <strong>Откуда</strong> → <strong>Куда</strong>
+  </p>
 
-        <!-- Formspree: Load Request (RU) -->
-        <form action="https://formspree.io/f/manrvnbe" method="POST">
-          <input type="hidden" name="type" value="Load Request" />
-          <input type="hidden" name="language" value="RU" />
-          <input type="hidden" name="page" value="Homepage (RU) – Load Request" />
-          <input type="hidden" name="platform" value="RoYo Logistics" />
-          <input type="hidden" name="_subject" value="Новая заявка на груз – RoYo Logistics (RU)" />
-          <input type="hidden" name="_template" value="table" />
-
-          <label>
-            Грузоотправитель (компания)
-            <input type="text" name="shipper_company" placeholder="Название компании" required />
-          </label>
-
-          <label>
-            Контакт (телефон или email)
-            <input type="text" name="shipper_contact" placeholder="+998 XX XXX XX XX / email" required />
-          </label>
-
-          <label>
-            Город отправления (Узбекистан)
-            <input type="text" name="pickup_city" id="pickupInput" placeholder="Выберите ниже в маршрутах" required />
-          </label>
-
-          <label>
-            Город доставки (Узбекистан)
-            <input type="text" name="delivery_city" id="deliveryInput" placeholder="Выберите ниже в маршрутах" required />
-          </label>
-
-          <label>
-            Описание груза
-            <input type="text" name="cargo_details" placeholder="Например: 2 паллеты, 800 кг, тент" required />
-          </label>
-
-          <label>
-            Дата загрузки
-            <input type="text" name="load_date" placeholder="Например: 2025-12-20" required />
-          </label>
-
-          <button type="submit" class="btn btn-fullwidth">Отправить запрос</button>
-
-          <p class="form-note">
-            Заявка поступит в Formspree (и на email-уведомления).
-          </p>
-        </form>
-      </div>
+  <div class="lane-search-grid" style="margin-top:14px;">
+    <div class="lane-field">
+      <label for="fromInput">Откуда</label>
+      <input
+        id="fromInput"
+        type="text"
+        placeholder="Начните вводить город..."
+        autocomplete="off"
+      />
+      <div id="fromResults" class="lane-results"></div>
     </div>
-  </section>
+
+    <div class="lane-field">
+      <label for="toInput">Куда</label>
+      <input
+        id="toInput"
+        type="text"
+        placeholder="Начните вводить город..."
+        autocomplete="off"
+      />
+      <div id="toResults" class="lane-results"></div>
+    </div>
+  </div>
+
+  <div class="lane-actions" style="margin-top:16px;">
+    <a href="login.html" class="btn primary" id="laneApply" aria-disabled="true">
+      Поиск
+    </a>
+    <button class="btn btn-outline" id="laneReset" type="button">
+      Сброс
+    </button>
+  </div>
+
+  <p class="form-note" style="margin-top:10px;">
+    Перевозчики находят грузы · Грузоотправители размещают заявки после входа
+  </p>
+</div>
+
 
   <!-- Как это работает -->
   <section id="how" class="section section-muted">
