@@ -31,31 +31,32 @@
           Request access to the RoYo Logistics shipper portal.
         </p>
 
-        <!-- Keep your Formspree endpoint -->
-        <form action="https://formspree.io/f/xqarnalq" method="POST">
+        <!-- Firebase Signup Form -->
+        <form id="shipperSignupForm">
           <label>
             <span data-i18n="lbl_company">Company Name</span>
-            <input type="text" name="company" required />
+            <input id="shipperCompany" type="text" name="company" required />
           </label>
 
           <label>
             <span data-i18n="lbl_contact">Contact Name</span>
-            <input type="text" name="name" required />
+            <input id="shipperContact" type="text" name="name" required />
           </label>
 
           <label>
             <span data-i18n="lbl_email">Email</span>
-            <input type="email" name="email" required />
+            <input id="shipperEmail" type="email" name="email" required />
           </label>
 
           <label>
             <span data-i18n="lbl_phone">Phone</span>
-            <input type="text" name="phone" />
+            <input id="shipperPhone" type="text" name="phone" />
           </label>
 
           <label>
             <span data-i18n="lbl_shipping">Shipping Type</span>
             <input
+              id="shipperShippingType"
               type="text"
               name="shipping_type"
               placeholder="FTL, LTL, Regular lanes"
@@ -63,9 +64,16 @@
             />
           </label>
 
+          <label>
+            <span data-i18n="lbl_password">Password</span>
+            <input id="shipperPassword" type="password" placeholder="••••••••" minlength="6" required />
+          </label>
+
           <button type="submit" class="btn btn-fullwidth" data-i18n="btn_request">
-            Request Shipper Access
+            Create Shipper Account
           </button>
+
+          <p id="shipperSignupMsg" class="form-note" style="display:none;"></p>
         </form>
 
         <div style="margin-top:12px;">
@@ -83,40 +91,43 @@
       en: {
         brand_name: "RoYo Logistics",
         title: "Create Shipper Account",
-        subtitle: "Request access to the RoYo Logistics shipper portal.",
+        subtitle: "Create your shipper profile to post and track shipments.",
         lbl_company: "Company Name",
         lbl_contact: "Contact Name",
         lbl_email: "Email",
         lbl_phone: "Phone",
         lbl_shipping: "Shipping Type",
         ph_shipping: "FTL, LTL, Regular lanes",
-        btn_request: "Request Shipper Access",
+        lbl_password: "Password",
+        btn_request: "Create Shipper Account",
         back_login: "← Back to Login"
       },
       ru: {
         brand_name: "RoYo Logistics",
         title: "Регистрация грузоотправителя",
-        subtitle: "Запросите доступ к кабинету грузоотправителя RoYo Logistics.",
+        subtitle: "Создайте профиль, чтобы размещать и отслеживать перевозки.",
         lbl_company: "Название компании",
         lbl_contact: "Контактное лицо",
         lbl_email: "Эл. почта",
         lbl_phone: "Телефон",
         lbl_shipping: "Тип перевозки",
         ph_shipping: "FTL, LTL, регулярные направления",
-        btn_request: "Запросить доступ",
+        lbl_password: "Пароль",
+        btn_request: "Создать аккаунт",
         back_login: "← Назад к входу"
       },
       uz: {
         brand_name: "RoYo Logistics",
         title: "Yuk jo‘natuvchi ro‘yxatdan o‘tish",
-        subtitle: "RoYo Logistics yuk jo‘natuvchi portaliga kirish uchun so‘rov yuboring.",
+        subtitle: "Yuk joylash va kuzatish uchun profil yarating.",
         lbl_company: "Kompaniya nomi",
         lbl_contact: "Aloqa shaxsi",
         lbl_email: "Email",
         lbl_phone: "Telefon",
         lbl_shipping: "Yuk turi",
         ph_shipping: "FTL, LTL, doimiy yo‘nalishlar",
-        btn_request: "Kirish so‘rovi",
+        lbl_password: "Parol",
+        btn_request: "Hisob yaratish",
         back_login: "← Kirish sahifasiga"
       }
     };
@@ -124,19 +135,16 @@
     function applyLang(lang) {
       const dict = i18n[lang] || i18n.en;
 
-      // Text nodes
       document.querySelectorAll("[data-i18n]").forEach(el => {
         const key = el.getAttribute("data-i18n");
         if (dict[key]) el.textContent = dict[key];
       });
 
-      // Placeholders
       document.querySelectorAll("[data-i18n-ph]").forEach(el => {
         const key = el.getAttribute("data-i18n-ph");
         if (dict[key]) el.setAttribute("placeholder", dict[key]);
       });
 
-      // Active button
       document.querySelectorAll(".lang-btn").forEach(b => {
         b.classList.toggle("active", b.dataset.lang === lang);
       });
@@ -150,5 +158,8 @@
 
     applyLang(localStorage.getItem("lang") || "en");
   </script>
+
+  <!-- Firebase signup logic -->
+  <script type="module" src="shipper-signup-auth.js"></script>
 </body>
 </html>
