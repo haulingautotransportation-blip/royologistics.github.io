@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Shipper Dashboard – RoYo Logistics</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <main class="container" style="padding: 80px 20px; max-width: 1100px;">
+    <div style="display:flex; align-items:center; gap:12px;">
+      <h1 data-i18n="title">Shipper Dashboard</h1>
+      <span style="margin-left:auto; color:#cbd5e1;" id="userEmail"></span>
+      <button id="logoutBtn" class="btn ghost">Logout</button>
+    </div>
+
+    <!-- Language switch -->
+    <div style="display:flex; gap:10px; margin: 14px 0 26px;">
+      <button type="button" class="lang-btn active" data-lang="en">EN</button>
+      <button type="button" class="lang-btn" data-lang="ru">RU</button>
+      <button type="button" class="lang-btn" data-lang="uz">UZ</button>
+    </div>
+
+    <p class="subtitle" data-i18n="subtitle">
+      Manage your shipments, quotes, and payments.
+    </p>
+
+    <div class="dashboard-grid">
+      <div class="dashboard-card">
+        <h3 data-i18n="card_create">Create Shipment</h3>
+        <p data-i18n="card_create_desc">Post a new shipment request.</p>
+      </div>
+
+      <div class="dashboard-card">
+        <h3 data-i18n="card_quotes">Quotes</h3>
+        <p data-i18n="card_quotes_desc">Review carrier offers.</p>
+      </div>
+
+      <div class="dashboard-card">
+        <h3 data-i18n="card_active">Active Shipments</h3>
+        <p data-i18n="card_active_desc">Track current shipments.</p>
+      </div>
+
+      <div class="dashboard-card">
+        <h3 data-i18n="card_docs">Documents</h3>
+        <p data-i18n="card_docs_desc">Manage BOLs and invoices.</p>
+      </div>
+
+      <div class="dashboard-card">
+        <h3 data-i18n="card_payments">Payments</h3>
+        <p data-i18n="card_payments_desc">View payment history.</p>
+      </div>
+
+      <div class="dashboard-card">
+        <h3 data-i18n="card_support">Support</h3>
+        <p data-i18n="card_support_desc">Contact support.</p>
+      </div>
+    </div>
+
+    <a href="index.html" style="display:inline-block;margin-top:40px;" data-i18n="back_home">
+      ← Back to Home
+    </a>
+  </main>
+
+  <!-- AUTH + ROLE PROTECTION -->
+  <script type="module">
+    import { auth, db } from "./firebase.js";
+    import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+    import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+
+    const emailEl = document.getElementById("userEmail");
+
+    async function getRole(uid) {
+      const snap = await getDoc(doc(db, "users", uid));
+      return snap.exists() ? snap.data().role : null;
+    }
+
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        window.location.replace("login.html");
+        return;
+      }
+
+      emailEl.textContent = user.email || "";
+
+      const role = await getRole(user.uid);
+      if (role !== "shipper") {
+        window.location.replace("login.html");
+      }
+    });
+
+    document.getElementById("logoutBtn").addEventListener("click", async () => {
+      await signOut(auth);
+      window.location.replace("login.html");
+    });
+  </script>
+
+  <!-- i18n -->
+  <script>
+    const i18n = {
+      en: {
+        title: "Shipper Dashboard",
+        subtitle: "Manage your shipments, quotes, and payments.",
+        card_create: "Create Shipment",
+        card_create_desc: "Post a new shipment request.",
+        card_quotes: "Quotes",
+        card_quotes_desc: "Review carrier offers.",
+        card_active: "Active Shipments",
+        card_active_desc: "Track current shipments.",
+        card_docs: "Documents",
+        card_docs_desc: "Manage BOLs and invoices.",
+        card_payments: "Payments",
+        card_payments_desc: "View payment history.",
+        card_support: "Support",
+        card_support_desc: "Contact support.",
+        back_home: "← Back to Home"
+      },
+      ru: {
+        title: "Кабинет грузоотправителя",
+        subtitle: "Управляйте перевозками, предложениями и оплатами.",
+        card_create: "Создать перевозку",
+        card_create_desc: "Разместите новый запрос на перевозку.",
+        card_quotes: "Предложения",
+        card_quotes_desc: "Просматривайте предложения перевозчиков.",
+        card_active: "Активные перевозки",
+        card_active_desc: "Отслеживайте текущие перевозки.",
+        card_docs: "Документы",
+        card_docs_desc: "Управление BOL и счетами.",
+        card_payments: "Платежи",
+        card_payments_desc: "История платежей.",
+        card_support: "Поддержка",
+        card_support_desc: "Связаться с поддержкой.",
+        back_home: "← На главную"
+      },
+      uz: {
+        title: "Yuk jo‘natuvchi paneli",
+        subtitle: "Yuklar, takliflar va to‘lovlarni boshqaring.",
+        card_create: "Yuk yaratish",
+        card_create_desc: "Yangi yuk so‘rovi yarating.",
+        card_quotes: "Takliflar",
+        card_quotes_desc: "Tashuvchilar takliflarini ko‘ring.",
+        card_active: "Faol yuklar",
+        card_active_desc: "Joriy yuklarni kuzating.",
+        card_docs: "Hujjatlar",
+        card_docs_desc: "BOL va invoice hujjatlari.",
+        card_payments: "To‘lovlar",
+        card_payments_desc: "To‘lovlar tarixi.",
+        card_support: "Yordam",
+        card_support_desc: "Yordam bilan bog‘lanish.",
+        back_home: "← Bosh sahifaga"
+      }
+    };
+
+    function applyLang(lang) {
+      const dict = i18n[lang] || i18n.en;
+      document.querySelectorAll("[data-i18n]").forEach(el => {
+        const key = el.getAttribute("data-i18n");
+        if (dict[key]) el.textContent = dict[key];
+      });
+      document.querySelectorAll(".lang-btn").forEach(b => {
+        b.classList.toggle("active", b.dataset.lang === lang);
+      });
+      localStorage.setItem("lang", lang);
+    }
+
+    document.querySelectorAll(".lang-btn").forEach(btn => {
+      btn.addEventListener("click", () => applyLang(btn.dataset.lang));
+    });
+
+    applyLang(localStorage.getItem("lang") || "en");
+  </script>
+</body>
+</html>
