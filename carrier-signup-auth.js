@@ -51,7 +51,7 @@ byId("carrierSignupForm")?.addEventListener("submit", async (e) => {
     });
 
     showMsg("Account created! Redirecting...");
-    window.location.href = "carrier.html";
+    window.location.href = "carrier-dashboard.html";
   } catch (err) {
     showMsg(err?.message || "Signup failed.", false);
   }
