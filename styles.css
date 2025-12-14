@@ -1001,4 +1001,24 @@ body {
   color: #ffffff;
   cursor: pointer;
 }
+/* TEXT VISIBILITY FIX */
+.dashboard-card h3 {
+  color: #0f172a;
+  font-weight: 600;
+}
+
+.dashboard-card p {
+  color: #374151;
+  line-height: 1.5;
+}
+
+/* Page title */
+main h1 {
+  color: #ffffff;
+}
+
+/* Subtitle text */
+.subtitle {
+  color: #cbd5e1;
+}
 
