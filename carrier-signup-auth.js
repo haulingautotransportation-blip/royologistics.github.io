@@ -12,7 +12,7 @@ function showMsg(text, ok = true) {
   el.style.display = "block";
   el.textContent = text;
   el.style.opacity = "0.95";
-  // If you want different colors later, we can style via CSS.
+  el.style.color = ok ? "#16a34a" : "#ef4444"; // green / red
 }
 
 byId("carrierSignupForm")?.addEventListener("submit", async (e) => {
