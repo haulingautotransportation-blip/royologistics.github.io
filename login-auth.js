@@ -1,35 +1,64 @@
-import { auth } from "./firebase.js";
-import {
-  signInWithEmailAndPassword
-} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+import { auth, db } from "./firebase.js";
+import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 
 function byId(id) {
   return document.getElementById(id);
 }
 
-async function doLogin(role) {
-  const emailEl = byId(role === "carrier" ? "carrierEmail" : "shipperEmail");
-  const passEl  = byId(role === "carrier" ? "carrierPassword" : "shipperPassword");
+function setMsg(text) {
+  // optional: you don't have a message box in login.html, so we use alert
+  alert(text);
+}
+
+async function getUserRole(uid) {
+  // We’ll read role from Firestore:
+  // users/{uid} { role: "carrier" | "shipper" }
+  const snap = await getDoc(doc(db, "users", uid));
+  if (!snap.exists()) return null;
+  const data = snap.data();
+  return data?.role || null;
+}
+
+async function doLogin(expectedRole) {
+  const emailEl = byId(expectedRole === "carrier" ? "carrierEmail" : "shipperEmail");
+  const passEl  = byId(expectedRole === "carrier" ? "carrierPassword" : "shipperPassword");
 
   const email = (emailEl?.value || "").trim();
   const pass  = passEl?.value || "";
 
   if (!email || !pass) {
-    alert("Please enter email and password.");
+    setMsg("Please enter email and password.");
     return;
   }
 
   try {
-    await signInWithEmailAndPassword(auth, email, pass);
+    const cred = await signInWithEmailAndPassword(auth, email, pass);
 
-    // Redirect after login
-    window.location.href = role === "carrier" ? "carrier.html" : "shipper.html";
+    // Check role from Firestore
+    const role = await getUserRole(cred.user.uid);
+
+    if (!role) {
+      setMsg("Your account profile is not set up yet. Please contact support.");
+      return;
+    }
+
+    // If user used the wrong portal
+    if (role !== expectedRole) {
+      setMsg(`This account is a "${role}". Please log in using the ${role} portal.`);
+      return;
+    }
+
+    // Correct redirect
+    window.location.href =
+      role === "carrier" ? "carrier-dashboard.html" : "shipper-dashboard.html";
+
   } catch (err) {
-    alert(err?.message || "Login failed.");
+    setMsg(err?.message || "Login failed.");
   }
 }
 
-// Listen to FORM submits (works with Enter key + button)
+// Forms
 byId("carrierLoginForm")?.addEventListener("submit", (e) => {
   e.preventDefault();
   doLogin("carrier");
