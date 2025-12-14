@@ -24,6 +24,7 @@
 
     <p class="subtitle" data-i18n="subtitle">Welcome to your carrier workspace</p>
 
+    <!-- Top cards -->
     <div class="dashboard-grid">
       <div class="dashboard-card">
         <h3 data-i18n="card_profile">Carrier Profile</h3>
@@ -62,20 +63,76 @@
       </div>
     </div>
 
+    <!-- REAL DATA: Open Loads list -->
+    <section style="margin-top: 28px;">
+      <h2 style="color:#fff; margin-bottom: 10px;" data-i18n="loads_list_title">Available Loads</h2>
+
+      <div id="loadsList" class="dashboard-grid"></div>
+
+      <p id="loadsEmpty" style="color:#cbd5e1; display:none;" data-i18n="loads_empty">
+        No open loads right now.
+      </p>
+    </section>
+
     <a href="index.html" style="display:inline-block;margin-top:40px;" data-i18n="back_home">← Back to Home</a>
   </main>
 
-  <!-- AUTH + ROLE PROTECTION (carrier only) -->
+  <!-- AUTH + ROLE PROTECTION + FIRESTORE LOADS -->
   <script type="module">
     import { auth, db } from "./firebase.js";
     import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
-    import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+    import {
+      doc, getDoc,
+      collection, query, where, orderBy, limit, getDocs
+    } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 
     const emailEl = document.getElementById("userEmail");
 
     async function getRole(uid) {
       const snap = await getDoc(doc(db, "users", uid));
       return snap.exists() ? snap.data().role : null;
+    }
+
+    async function loadOpenLoads() {
+      const loadsList = document.getElementById("loadsList");
+      const loadsEmpty = document.getElementById("loadsEmpty");
+      if (!loadsList || !loadsEmpty) return;
+
+      loadsList.innerHTML = "";
+
+      const q = query(
+        collection(db, "loads"),
+        where("status", "==", "open"),
+        orderBy("createdAt", "desc"),
+        limit(12)
+      );
+
+      const snap = await getDocs(q);
+
+      if (snap.empty) {
+        loadsEmpty.style.display = "block";
+        return;
+      }
+
+      loadsEmpty.style.display = "none";
+
+      snap.forEach(docc => {
+        const d = docc.data();
+        const pickup = d.pickupCity || "-";
+        const delivery = d.deliveryCity || "-";
+        const equipment = d.equipment || "-";
+        const price = (d.price ?? "-");
+
+        const card = document.createElement("div");
+        card.className = "dashboard-card";
+        card.innerHTML = `
+          <h3>${pickup} → ${delivery}</h3>
+          <p>Equipment: ${equipment}</p>
+          <p>Price: $${price}</p>
+          <button type="button">View</button>
+        `;
+        loadsList.appendChild(card);
+      });
     }
 
     onAuthStateChanged(auth, async (user) => {
@@ -89,7 +146,11 @@
       const role = await getRole(user.uid);
       if (role !== "carrier") {
         window.location.replace("login.html");
+        return;
       }
+
+      // ✅ load Firestore data after role check
+      await loadOpenLoads();
     });
 
     document.getElementById("logoutBtn").addEventListener("click", async () => {
@@ -123,7 +184,9 @@
         btn_upload: "Upload",
         btn_view: "View",
         btn_contact: "Contact",
-        back_home: "← Back to Home"
+        back_home: "← Back to Home",
+        loads_list_title: "Available Loads",
+        loads_empty: "No open loads right now."
       },
       ru: {
         title: "Кабинет перевозчика",
@@ -147,7 +210,9 @@
         btn_upload: "Загрузить",
         btn_view: "Смотреть",
         btn_contact: "Связаться",
-        back_home: "← На главную"
+        back_home: "← На главную",
+        loads_list_title: "Доступные грузы",
+        loads_empty: "Сейчас нет доступных грузов."
       },
       uz: {
         title: "Tashuvchi paneli",
@@ -171,7 +236,9 @@
         btn_upload: "Yuklash",
         btn_view: "Ko‘rish",
         btn_contact: "Bog‘lanish",
-        back_home: "← Bosh sahifaga"
+        back_home: "← Bosh sahifaga",
+        loads_list_title: "Mavjud yuklar",
+        loads_empty: "Hozircha ochiq yuklar yo‘q."
       }
     };
 
