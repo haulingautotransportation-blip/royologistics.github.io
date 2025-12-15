@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Shipments – RoYo Logistics</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<main class="container" style="padding:80px 20px; max-width:1100px;">
+  <div style="display:flex; align-items:center; gap:12px; margin-bottom:18px;">
+    <a href="carrier-dashboard.html" class="btn ghost">← Back</a>
+    <h1 style="margin:0;">My Shipments</h1>
+    <span id="userEmail" style="margin-left:auto; color:#cbd5e1;"></span>
+    <button id="logoutBtn" class="btn ghost">Logout</button>
+  </div>
+
+  <p class="subtitle">Track your active, completed, and pending shipments.</p>
+
+  <div style="display:flex; gap:10px; flex-wrap:wrap; margin: 10px 0 18px;">
+    <button class="btn btn-small btn-outline filter-btn active" data-filter="all">All</button>
+    <button class="btn btn-small btn-outline filter-btn" data-filter="active">Active</button>
+    <button class="btn btn-small btn-outline filter-btn" data-filter="pending">Pending</button>
+    <button class="btn btn-small btn-outline filter-btn" data-filter="completed">Completed</button>
+  </div>
+
+  <div id="shipmentsList" class="dashboard-grid"></div>
+
+  <p id="shipmentsEmpty" style="color:#cbd5e1; display:none;">
+    No shipments yet.
+  </p>
+</main>
+
+<script type="module" src="shipments.js"></script>
+</body>
+</html>
