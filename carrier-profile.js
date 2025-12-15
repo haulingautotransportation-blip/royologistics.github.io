@@ -13,20 +13,20 @@ const fields = [
 ];
 
 function msg(text) {
-  statusEl.textContent = text;
+  if (statusEl) statusEl.textContent = text;
 }
 
-logoutBtn.onclick = async () => {
+logoutBtn?.addEventListener("click", async () => {
   await signOut(auth);
   window.location.href = "login.html";
-};
+});
 
 onAuthStateChanged(auth, async (user) => {
   if (!user) {
     window.location.href = "login.html";
     return;
   }
-  userEmailEl.textContent = `Logged in as: ${user.email}`;
+  if (userEmailEl) userEmailEl.textContent = `Logged in as: ${user.email || ""}`;
   await loadProfile(user.uid);
 });
 
@@ -37,22 +37,25 @@ async function loadProfile(uid) {
 
   const data = snap.data();
   fields.forEach(id => {
-    if (document.getElementById(id))
-      document.getElementById(id).value = data[id] || "";
+    const el = document.getElementById(id);
+    if (el) el.value = data[id] || "";
   });
+
   msg("Profile loaded");
 }
 
-form.addEventListener("submit", async (e) => {
+form?.addEventListener("submit", async (e) => {
   e.preventDefault();
   const user = auth.currentUser;
   if (!user) return;
 
   msg("Saving...");
+
   const payload = { updatedAt: serverTimestamp() };
 
   fields.forEach(id => {
-    payload[id] = document.getElementById(id).value || "";
+    const el = document.getElementById(id);
+    payload[id] = el ? (el.value || "") : "";
   });
 
   await setDoc(doc(db, "carriers", user.uid), payload, { merge: true });
