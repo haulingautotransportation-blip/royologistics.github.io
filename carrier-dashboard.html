@@ -145,6 +145,9 @@
       }
 
       emailEl.textContent = user.email ? `Logged in as: ${user.email}` : "";
+      console.log("AUTH USER OBJECT:", user);
+      console.log("Your UID:", user.uid);
+  
 
       const role = await getRole(user.uid);
       if (role !== "carrier") {
