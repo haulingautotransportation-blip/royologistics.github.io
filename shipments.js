@@ -63,14 +63,16 @@ function setupFilters() {
 }
 
 async function loadShipments(uid) {
-  // Only shipments belonging to this carrier
-  const q = query(
-  collection(db, "shipments"),
-  where("carrierId", "==", uid)
-);
+  console.log("Filtering shipments for UID:", uid);
 
+  const q = query(
+    collection(db, "shipments"),
+    where("carrierId", "==", uid)
+  );
 
   const snap = await getDocs(q);
+  console.log("Found shipments:", snap.size);
+
   allShipments = snap.docs.map(d => {
     const data = d.data();
     const createdAt = data.createdAt?.toDate ? data.createdAt.toDate() : null;
@@ -83,6 +85,7 @@ async function loadShipments(uid) {
 
   render();
 }
+
 
 onAuthStateChanged(auth, async (user) => {
   if (!user) {
