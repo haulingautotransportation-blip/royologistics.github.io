@@ -95,8 +95,5 @@ onAuthStateChanged(auth, async (user) => {
   emailEl.textContent = `Logged in as: ${user.email}`;
   setupFilters();
 
-  /* 🔴 TEMP: comment this out for now */
-  // await loadShipments(user.uid);
+await loadShipments(user.uid);
 
-  render();
-});
