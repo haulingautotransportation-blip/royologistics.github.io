@@ -22,14 +22,6 @@ logoutBtn?.addEventListener("click", async () => {
 function render() {
   listEl.innerHTML = "";
 
-  /* 🔴 TEMP TEST SHIPMENT — REMOVE LATER */
-  allShipments = [{
-    pickupCity: "Test City",
-    deliveryCity: "Test City 2",
-    price: 999,
-    status: "active",
-    createdAtText: "TEST SHIPMENT"
-  }];
 
   const filtered = allShipments.filter(s => {
     if (currentFilter === "all") return true;
