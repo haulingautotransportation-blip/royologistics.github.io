@@ -65,10 +65,10 @@ function setupFilters() {
 async function loadShipments(uid) {
   // Only shipments belonging to this carrier
   const q = query(
-    collection(db, "shipments"),
-    where("carrierId", "==", uid),
-    orderBy("createdAt", "desc")
-  );
+  collection(db, "shipments"),
+  where("carrierId", "==", uid)
+);
+
 
   const snap = await getDocs(q);
   allShipments = snap.docs.map(d => {
