@@ -28,38 +28,39 @@
     <div class="dashboard-grid">
       <div class="dashboard-card">
         <h3 data-i18n="card_profile">Carrier Profile</h3>
-        <p data-i18n="card_profile_desc">Manage company info, MC/DOT, insurance, and contact details.</p>
-        <button data-i18n="btn_open">Open</button>
+        <p data-i18n="card_profile_desc">Manage company info, vehicle details, and contacts.</p>
+        <!-- ✅ FIX: use <a> so it ALWAYS works on GitHub Pages -->
+        <a class="btn" href="carrier-profile.html" data-i18n="btn_open">Open</a>
       </div>
 
       <div class="dashboard-card">
         <h3 data-i18n="card_loads">Available Loads</h3>
         <p data-i18n="card_loads_desc">Browse and accept available shipments in real time.</p>
-        <button id="btnGoLoads" data-i18n="btn_view_loads">View Loads</button>
+        <button id="btnGoLoads" type="button" class="btn" data-i18n="btn_view_loads">View Loads</button>
       </div>
 
       <div class="dashboard-card">
         <h3 data-i18n="card_shipments">My Shipments</h3>
         <p data-i18n="card_shipments_desc">Track active, completed, and pending loads.</p>
-        <button data-i18n="btn_track">Track</button>
+        <a class="btn" href="shipments.html" data-i18n="btn_track">Track</a>
       </div>
 
       <div class="dashboard-card">
         <h3 data-i18n="card_docs">Documents</h3>
-        <p data-i18n="card_docs_desc">Upload insurance, W-9, and compliance documents.</p>
-        <button data-i18n="btn_upload">Upload</button>
+        <p data-i18n="card_docs_desc">Upload insurance and compliance documents.</p>
+        <a class="btn" href="documents.html" data-i18n="btn_upload">Upload</a>
       </div>
 
       <div class="dashboard-card">
         <h3 data-i18n="card_payments">Payments</h3>
         <p data-i18n="card_payments_desc">View payment history and upcoming settlements.</p>
-        <button data-i18n="btn_view">View</button>
+        <a class="btn" href="payments.html" data-i18n="btn_view">View</a>
       </div>
 
       <div class="dashboard-card">
         <h3 data-i18n="card_support">Support</h3>
         <p data-i18n="card_support_desc">Contact dispatch or account support.</p>
-        <button data-i18n="btn_contact">Contact</button>
+        <a class="btn" href="support.html" data-i18n="btn_contact">Contact</a>
       </div>
     </div>
 
@@ -74,7 +75,7 @@
       </p>
     </section>
 
-    <a href="index.html" style="display:inline-block;margin-top:40px;" data-i18n="back_home">← Back to Home</a>
+    <a href="index.html" style="display:inline-block;margin-top:40px; color:#bfdbfe;" data-i18n="back_home">← Back to Home</a>
   </main>
 
   <!-- AUTH + ROLE PROTECTION + FIRESTORE LOADS + CLICK HANDLER -->
@@ -129,7 +130,7 @@
           <h3>${pickup} → ${delivery}</h3>
           <p>Equipment: ${equipment}</p>
           <p>Price: $${price}</p>
-          <button type="button">View</button>
+          <button type="button" class="btn btn-small">View</button>
         `;
         loadsList.appendChild(card);
       });
@@ -172,13 +173,13 @@
         logout: "Logout",
         subtitle: "Welcome to your carrier workspace",
         card_profile: "Carrier Profile",
-        card_profile_desc: "Manage company info, MC/DOT, insurance, and contact details.",
+        card_profile_desc: "Manage company info, vehicle details, and contacts.",
         card_loads: "Available Loads",
         card_loads_desc: "Browse and accept available shipments in real time.",
         card_shipments: "My Shipments",
         card_shipments_desc: "Track active, completed, and pending loads.",
         card_docs: "Documents",
-        card_docs_desc: "Upload insurance, W-9, and compliance documents.",
+        card_docs_desc: "Upload insurance and compliance documents.",
         card_payments: "Payments",
         card_payments_desc: "View payment history and upcoming settlements.",
         card_support: "Support",
@@ -198,17 +199,17 @@
         logout: "Выйти",
         subtitle: "Добро пожаловать в рабочее пространство перевозчика",
         card_profile: "Профиль перевозчика",
-        card_profile_desc: "Управляйте данными компании, MC/DOT, страховкой и контактами.",
+        card_profile_desc: "Данные компании, авто и контакты.",
         card_loads: "Доступные грузы",
         card_loads_desc: "Просматривайте и принимайте перевозки в реальном времени.",
         card_shipments: "Мои перевозки",
         card_shipments_desc: "Отслеживайте активные, завершённые и ожидающие рейсы.",
         card_docs: "Документы",
-        card_docs_desc: "Загружайте страховку, W-9 и документы по комплаенсу.",
+        card_docs_desc: "Загружайте страховку и документы по комплаенсу.",
         card_payments: "Платежи",
         card_payments_desc: "Смотрите историю выплат и предстоящие расчёты.",
         card_support: "Поддержка",
-        card_support_desc: "Свяжитесь с диспетчером или службой поддержки.",
+        card_support_desc: "Свяжитесь с диспетчером или поддержкой.",
         btn_open: "Открыть",
         btn_view_loads: "Смотреть грузы",
         btn_track: "Отслеживать",
@@ -224,13 +225,13 @@
         logout: "Chiqish",
         subtitle: "Tashuvchi ish maydoniga xush kelibsiz",
         card_profile: "Tashuvchi profili",
-        card_profile_desc: "Kompaniya ma’lumotlari, MC/DOT, sug‘urta va kontaktlarni boshqaring.",
+        card_profile_desc: "Kompaniya, transport va kontakt ma’lumotlarini boshqaring.",
         card_loads: "Mavjud yuklar",
         card_loads_desc: "Yuklarni ko‘ring va real vaqtda qabul qiling.",
         card_shipments: "Mening yuklarim",
         card_shipments_desc: "Faol, yakunlangan va kutilayotgan yuklarni kuzating.",
         card_docs: "Hujjatlar",
-        card_docs_desc: "Sug‘urta, W-9 va moslik (compliance) hujjatlarini yuklang.",
+        card_docs_desc: "Sug‘urta va moslik (compliance) hujjatlarini yuklang.",
         card_payments: "To‘lovlar",
         card_payments_desc: "To‘lovlar tarixini va yaqin to‘lovlarni ko‘ring.",
         card_support: "Yordam",
