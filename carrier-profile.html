@@ -10,10 +10,17 @@
 
 <main class="container" style="padding:80px 20px; max-width:1100px;">
   <div style="display:flex; align-items:center; gap:12px; margin-bottom:18px;">
-    <a href="carrier-dashboard.html" class="btn ghost">← Back</a>
-    <h1 style="margin:0;">Carrier Profile</h1>
+    <a href="carrier-dashboard.html" class="btn ghost" data-i18n="back">← Back</a>
+    <h1 style="margin:0;" data-i18n="title">Carrier Profile</h1>
     <span id="userEmail" style="margin-left:auto; color:#cbd5e1;"></span>
-    <button id="logoutBtn" class="btn ghost">Logout</button>
+    <button id="logoutBtn" class="btn ghost" type="button" data-i18n="logout">Logout</button>
+  </div>
+
+  <!-- Language switch -->
+  <div style="display:flex; gap:10px; margin: 14px 0 26px;">
+    <button type="button" class="lang-btn active" data-lang="en">EN</button>
+    <button type="button" class="lang-btn" data-lang="ru">RU</button>
+    <button type="button" class="lang-btn" data-lang="uz">UZ</button>
   </div>
 
   <div class="card" style="padding:20px;">
@@ -21,23 +28,23 @@
 
       <!-- BASIC INFO -->
       <div style="grid-column:span 2;">
-        <label>Company or Driver Name</label>
+        <label data-i18n="lbl_name">Company or Driver Name</label>
         <input id="name" class="input" required placeholder="Driver name or company" />
       </div>
 
       <div>
-        <label>Phone (Telegram / WhatsApp)</label>
+        <label data-i18n="lbl_phone">Phone (Telegram / WhatsApp)</label>
         <input id="phone" class="input" placeholder="+998…" />
       </div>
 
       <div>
-        <label>Email (optional)</label>
+        <label data-i18n="lbl_email">Email (optional)</label>
         <input id="email" class="input" type="email" />
       </div>
 
       <!-- VEHICLE -->
       <div>
-        <label>Vehicle Type</label>
+        <label data-i18n="lbl_vehicleType">Vehicle Type</label>
         <select id="vehicleType" class="input">
           <option>Gazel</option>
           <option>Isuzu</option>
@@ -49,7 +56,7 @@
       </div>
 
       <div>
-        <label>Body Type</label>
+        <label data-i18n="lbl_bodyType">Body Type</label>
         <select id="bodyType" class="input">
           <option>Tarpaulin (Tent)</option>
           <option>Box</option>
@@ -59,34 +66,34 @@
       </div>
 
       <div>
-        <label>Capacity (tons)</label>
+        <label data-i18n="lbl_capacity">Capacity (tons)</label>
         <input id="capacity" class="input" type="number" step="0.1" />
       </div>
 
       <div>
-        <label>Plate Number</label>
+        <label data-i18n="lbl_plate">Plate Number</label>
         <input id="plate" class="input" placeholder="01A123BC" />
       </div>
 
       <!-- DOCUMENTS -->
       <div>
-        <label>Driver License / Passport ID</label>
+        <label data-i18n="lbl_license">Driver License / Passport ID</label>
         <input id="license" class="input" />
       </div>
 
       <div>
-        <label>Insurance Expiry</label>
+        <label data-i18n="lbl_insExpiry">Insurance Expiry</label>
         <input id="insuranceExpiry" class="input" type="date" />
       </div>
 
       <!-- OPERATIONS -->
       <div>
-        <label>Base City</label>
+        <label data-i18n="lbl_city">Base City</label>
         <input id="city" class="input" placeholder="Tashkent" />
       </div>
 
       <div>
-        <label>Routes</label>
+        <label data-i18n="lbl_routes">Routes</label>
         <select id="routes" class="input">
           <option>Uzbekistan only</option>
           <option>UZ–KZ</option>
@@ -96,7 +103,7 @@
       </div>
 
       <div>
-        <label>Payment Preference</label>
+        <label data-i18n="lbl_payment">Payment Preference</label>
         <select id="payment" class="input">
           <option>Cash</option>
           <option>Bank Transfer</option>
@@ -105,12 +112,13 @@
       </div>
 
       <div style="grid-column:span 2;">
-        <label>Notes</label>
+        <label data-i18n="lbl_notes">Notes</label>
         <textarea id="notes" class="input" rows="4"></textarea>
       </div>
 
-      <div style="grid-column:span 2; display:flex; gap:12px;">
-        <button class="btn" type="button" onclick="location.href='carrier-profile.html'">Open</button>
+      <div style="grid-column:span 2; display:flex; gap:12px; align-items:center;">
+        <!-- ✅ FIX: this should SAVE, not "Open" -->
+        <button class="btn" type="submit" data-i18n="btn_save">Save Profile</button>
         <span id="status" style="color:#cbd5e1;"></span>
       </div>
 
@@ -119,5 +127,90 @@
 </main>
 
 <script type="module" src="carrier-profile.js"></script>
+
+<!-- i18n -->
+<script>
+  const i18n = {
+    en: {
+      back: "← Back",
+      title: "Carrier Profile",
+      logout: "Logout",
+      lbl_name: "Company or Driver Name",
+      lbl_phone: "Phone (Telegram / WhatsApp)",
+      lbl_email: "Email (optional)",
+      lbl_vehicleType: "Vehicle Type",
+      lbl_bodyType: "Body Type",
+      lbl_capacity: "Capacity (tons)",
+      lbl_plate: "Plate Number",
+      lbl_license: "Driver License / Passport ID",
+      lbl_insExpiry: "Insurance Expiry",
+      lbl_city: "Base City",
+      lbl_routes: "Routes",
+      lbl_payment: "Payment Preference",
+      lbl_notes: "Notes",
+      btn_save: "Save Profile"
+    },
+    ru: {
+      back: "← Назад",
+      title: "Профиль перевозчика",
+      logout: "Выйти",
+      lbl_name: "Компания или имя водителя",
+      lbl_phone: "Телефон (Telegram / WhatsApp)",
+      lbl_email: "Email (необязательно)",
+      lbl_vehicleType: "Тип транспорта",
+      lbl_bodyType: "Тип кузова",
+      lbl_capacity: "Грузоподъёмность (тонн)",
+      lbl_plate: "Госномер",
+      lbl_license: "Права / Паспорт ID",
+      lbl_insExpiry: "Срок страховки",
+      lbl_city: "Базовый город",
+      lbl_routes: "Маршруты",
+      lbl_payment: "Способ оплаты",
+      lbl_notes: "Примечания",
+      btn_save: "Сохранить"
+    },
+    uz: {
+      back: "← Orqaga",
+      title: "Tashuvchi profili",
+      logout: "Chiqish",
+      lbl_name: "Kompaniya yoki haydovchi nomi",
+      lbl_phone: "Telefon (Telegram / WhatsApp)",
+      lbl_email: "Email (ixtiyoriy)",
+      lbl_vehicleType: "Transport turi",
+      lbl_bodyType: "Kuzov turi",
+      lbl_capacity: "Yuk sig‘imi (tonna)",
+      lbl_plate: "Davlat raqami",
+      lbl_license: "Guvohnoma / Pasport ID",
+      lbl_insExpiry: "Sug‘urta muddati",
+      lbl_city: "Baza shahri",
+      lbl_routes: "Yo‘nalishlar",
+      lbl_payment: "To‘lov turi",
+      lbl_notes: "Izohlar",
+      btn_save: "Saqlash"
+    }
+  };
+
+  function applyLang(lang) {
+    const dict = i18n[lang] || i18n.en;
+
+    document.querySelectorAll("[data-i18n]").forEach(el => {
+      const key = el.getAttribute("data-i18n");
+      if (dict[key]) el.textContent = dict[key];
+    });
+
+    document.querySelectorAll(".lang-btn").forEach(b => {
+      b.classList.toggle("active", b.dataset.lang === lang);
+    });
+
+    localStorage.setItem("lang", lang);
+  }
+
+  document.querySelectorAll(".lang-btn").forEach(btn => {
+    btn.addEventListener("click", () => applyLang(btn.dataset.lang));
+  });
+
+  applyLang(localStorage.getItem("lang") || "en");
+</script>
+
 </body>
 </html>
