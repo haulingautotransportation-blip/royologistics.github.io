@@ -5,38 +5,53 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>My Shipments – RoYo Logistics</title>
   <link rel="stylesheet" href="styles.css" />
+
+  <!-- STOP PAGE & BUTTON JUMPING -->
+  <style>
+    html { scrollbar-gutter: stable; }
+    body { overflow-y: scroll; }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    button, .btn {
+      border: 1px solid transparent;
+      padding: 10px 14px;
+      transform: none !important;
+    }
+
+    button:hover, .btn:hover {
+      padding: 10px 14px;
+      border: 1px solid transparent;
+      transform: none !important;
+    }
+  </style>
 </head>
 <body>
 
-  <main id="page" class="container" style="padding: 80px 20px; max-width: 1100px; display:none;">
-    <h1 data-i18n="myShipments">My Shipments</h1>
+  <!-- PAGE -->
+  <main id="page" class="container" style="padding:80px 20px; max-width:1100px; display:none;">
 
-    <div id="shipmentsEmpty" style="margin-top:20px; display:none;" data-i18n="noShipments">
+    <h1>My Shipments</h1>
+
+    <div id="shipmentsEmpty" style="display:none; margin-top:20px;">
       No accepted shipments yet.
     </div>
 
     <div id="shipmentsList" style="margin-top:20px;"></div>
+
   </main>
 
-  <!-- Language logic -->
-  <script>
-    window.uiText = {
-      myShipments: { en: "My Shipments", ru: "Мои перевозки", uz: "Mening yuklarim" },
-      noShipments: { en: "No accepted shipments yet.", ru: "Пока нет принятых перевозок.", uz: "Hozircha qabul qilingan yuklar yo‘q." }
-    };
-
-    const lang = localStorage.getItem("lang") || "en";
-    document.querySelectorAll("[data-i18n]").forEach(el => {
-      const key = el.getAttribute("data-i18n");
-      if (window.uiText[key]?.[lang]) el.textContent = window.uiText[key][lang];
-    });
-  </script>
-
+  <!-- FIREBASE LOGIC -->
   <script type="module">
     import { auth, db } from "./firebase.js";
     import {
-      collection, query, where, orderBy, getDocs,
-      doc, updateDoc
+      collection,
+      query,
+      where,
+      orderBy,
+      getDocs,
+      doc,
+      updateDoc
     } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
     import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
 
@@ -55,70 +70,67 @@
         return;
       }
 
-      const q = query(
-        collection(db, "loads"),
-        where("acceptedBy", "==", currentUser.uid),
-        orderBy("acceptedAt", "desc")
-      );
+      try {
+        const q = query(
+          collection(db, "loads"),
+          where("acceptedBy", "==", currentUser.uid),
+          orderBy("acceptedAt", "desc")
+        );
 
-      const snap = await getDocs(q);
+        const snap = await getDocs(q);
 
-      if (snap.empty) {
-        shipmentsEmpty.style.display = "block";
-        return;
-      }
-
-      snap.forEach(docc => {
-        const d = docc.data();
-        const st = d.status || "accepted";
-
-        const card = document.createElement("div");
-        card.style.padding = "12px";
-        card.style.border = "1px solid #e5e7eb";
-        card.style.borderRadius = "8px";
-        card.style.marginBottom = "10px";
-
-        card.innerHTML = `
-          <div>
-            <strong>${d.pickupCity || "-"}</strong> → <strong>${d.deliveryCity || "-"}</strong>
-          </div>
-
-          <div style="margin-top:8px;">
-            <span class="status-badge status-${st}">
-              ${d.currentStatus || "Accepted"}
-            </span>
-
-            ${st !== "delivered"
-              ? `<button class="btn" style="margin-left:10px" data-advance="1">Update Status</button>`
-              : ""
-            }
-          </div>
-        `;
-
-        const btn = card.querySelector('[data-advance="1"]');
-        if (btn) {
-          btn.addEventListener("click", async () => {
-            btn.disabled = true; // prevents double-click jump
-            const next =
-              st === "accepted" ? { status: "in_transit", currentStatus: "In Transit" } :
-              st === "in_transit" ? { status: "delivered", currentStatus: "Delivered" } :
-              null;
-
-            if (!next) return;
-
-            await updateDoc(doc(db, "loads", docc.id), next);
-            await loadShipments(); // ✅ refresh UI without reloading URL
-          });
+        if (snap.empty) {
+          shipmentsEmpty.style.display = "block";
+          return;
         }
 
-        shipmentsList.appendChild(card);
-      });
+        snap.forEach(docc => {
+          const d = docc.data();
+          const st = d.status || "accepted";
+
+          const card = document.createElement("div");
+          card.style.border = "1px solid #e5e7eb";
+          card.style.borderRadius = "8px";
+          card.style.padding = "12px";
+          card.style.marginBottom = "10px";
+
+          card.innerHTML = `
+            <div><strong>${d.pickupCity || "-"}</strong> → <strong>${d.deliveryCity || "-"}</strong></div>
+            <div style="margin-top:8px;">
+              <span class="status-badge status-${st}">${d.currentStatus || "Accepted"}</span>
+              ${st !== "delivered" ? `<button class="btn" data-id="${docc.id}">Update Status</button>` : ""}
+            </div>
+          `;
+
+          const btn = card.querySelector("button");
+          if (btn) {
+            btn.onclick = async () => {
+              btn.disabled = true;
+
+              const next =
+                st === "accepted"
+                  ? { status: "in_transit", currentStatus: "In Transit" }
+                  : { status: "delivered", currentStatus: "Delivered" };
+
+              await updateDoc(doc(db, "loads", docc.id), next);
+              loadShipments(); // NO RELOAD
+            };
+          }
+
+          shipmentsList.appendChild(card);
+        });
+
+      } catch (e) {
+        shipmentsEmpty.style.display = "block";
+        shipmentsEmpty.textContent = "Error loading shipments";
+        console.error(e);
+      }
     }
 
-    onAuthStateChanged(auth, async user => {
+    onAuthStateChanged(auth, user => {
       currentUser = user || null;
       page.style.display = "block";
-      await loadShipments();
+      loadShipments();
     });
   </script>
 
