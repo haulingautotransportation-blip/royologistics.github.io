@@ -1021,4 +1021,26 @@ main h1 {
 .subtitle {
   color: #cbd5e1;
 }
+.status-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.status-accepted {
+  background: #e0f2fe;
+  color: #0369a1;
+}
+
+.status-in_transit {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.status-delivered {
+  background: #dcfce7;
+  color: #166534;
+}
 
