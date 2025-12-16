@@ -152,7 +152,11 @@
           <h3>${pickup} → ${delivery}</h3>
           <p>Equipment: ${equipment}</p>
           <p>Price: $${price}</p>
-          <button type="button" class="btn btn-small">View</button>
+          <button type="button" class="btn btn-small"
+  onclick="location.href='load.html?id=${docc.id}'">
+  View
+</button>
+
         `;
         loadsList.appendChild(card);
       });
