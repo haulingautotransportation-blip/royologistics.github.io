@@ -1064,6 +1064,33 @@ body { overflow-y: scroll; }
   padding: 10px 14px;              /* never changes */
   transform: none !important;      /* never changes */
 }
+/* === HARD FIX: stop all hover jumping / shaking === */
+html { scrollbar-gutter: stable !important; }
+body { overflow-y: scroll !important; }
+
+button, .btn, .lang-btn, a {
+  transform: none !important;
+  transition: none !important;
+  letter-spacing: normal !important;
+  font-weight: 600 !important;
+}
+
+button, .btn, .lang-btn {
+  border-width: 1px !important;
+  border-style: solid !important;
+  border-color: transparent !important;
+  padding: 10px 14px !important;
+  line-height: 1 !important;
+  box-sizing: border-box !important;
+}
+
+button:hover, .btn:hover, .lang-btn:hover {
+  transform: none !important;
+  transition: none !important;
+  border-width: 1px !important;
+  padding: 10px 14px !important;
+  letter-spacing: normal !important;
+}
 
 
 
