@@ -1046,4 +1046,24 @@ main h1 {
 html { scrollbar-gutter: stable; }
 body { overflow-y: scroll; }
 
+/* STOP BUTTON JUMPING ON HOVER */
+*, *::before, *::after { box-sizing: border-box; }
+
+.btn, button, .lang-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;   /* border always exists */
+  padding: 10px 14px;
+  line-height: 1;
+  transform: none !important;      /* kill scale/translate hover effects */
+}
+
+.btn:hover, button:hover, .lang-btn:hover {
+  border-width: 1px;               /* never changes */
+  padding: 10px 14px;              /* never changes */
+  transform: none !important;      /* never changes */
+}
+
+
 
