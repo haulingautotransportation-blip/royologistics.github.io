@@ -1043,4 +1043,7 @@ main h1 {
   background: #dcfce7;
   color: #166534;
 }
+html { scrollbar-gutter: stable; }
+body { overflow-y: scroll; }
+
 
