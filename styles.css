@@ -1043,53 +1043,24 @@ main h1 {
   background: #dcfce7;
   color: #166534;
 }
+/* FINAL – stable hover, no jumping */
 html { scrollbar-gutter: stable; }
 body { overflow-y: scroll; }
 
-/* STOP BUTTON JUMPING ON HOVER */
-*, *::before, *::after { box-sizing: border-box; }
-
-.btn, button, .lang-btn {
+button, .btn, .lang-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid transparent;   /* border always exists */
+
+  border: 1px solid transparent;
   padding: 10px 14px;
   line-height: 1;
-  transform: none !important;      /* kill scale/translate hover effects */
-}
-
-.btn:hover, button:hover, .lang-btn:hover {
-  border-width: 1px;               /* never changes */
-  padding: 10px 14px;              /* never changes */
-  transform: none !important;      /* never changes */
-}
-/* === HARD FIX: stop all hover jumping / shaking === */
-html { scrollbar-gutter: stable !important; }
-body { overflow-y: scroll !important; }
-
-button, .btn, .lang-btn, a {
-  transform: none !important;
-  transition: none !important;
-  letter-spacing: normal !important;
-  font-weight: 600 !important;
-}
-
-button, .btn, .lang-btn {
-  border-width: 1px !important;
-  border-style: solid !important;
-  border-color: transparent !important;
-  padding: 10px 14px !important;
-  line-height: 1 !important;
-  box-sizing: border-box !important;
+  box-sizing: border-box;
 }
 
 button:hover, .btn:hover, .lang-btn:hover {
-  transform: none !important;
-  transition: none !important;
-  border-width: 1px !important;
-  padding: 10px 14px !important;
-  letter-spacing: normal !important;
+  border-width: 1px;
+  padding: 10px 14px;
 }
 
 
