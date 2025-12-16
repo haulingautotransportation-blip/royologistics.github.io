@@ -25,13 +25,11 @@
     <p class="subtitle" data-i18n="subtitle">Welcome to your carrier workspace</p>
     <p id="profileMini" style="color:#cbd5e1; margin-top:8px; opacity:.95;"></p>
 
-
     <!-- Top cards -->
     <div class="dashboard-grid">
       <div class="dashboard-card">
         <h3 data-i18n="card_profile">Carrier Profile</h3>
         <p data-i18n="card_profile_desc">Manage company info, vehicle details, and contacts.</p>
-        <!-- ✅ FIX: use <a> so it ALWAYS works on GitHub Pages -->
         <a class="btn" href="carrier-profile.html" data-i18n="btn_open">Open</a>
       </div>
 
@@ -80,7 +78,7 @@
     <a href="index.html" style="display:inline-block;margin-top:40px; color:#bfdbfe;" data-i18n="back_home">← Back to Home</a>
   </main>
 
-  <!-- AUTH + ROLE PROTECTION + FIRESTORE LOADS + CLICK HANDLER -->
+  <!-- AUTH + ROLE PROTECTION + FIRESTORE LOADS + MINI PROFILE -->
   <script type="module">
     import { auth, db } from "./firebase.js";
     import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
@@ -90,10 +88,32 @@
     } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 
     const emailEl = document.getElementById("userEmail");
- 
+    const profileMini = document.getElementById("profileMini");
+
     async function getRole(uid) {
       const snap = await getDoc(doc(db, "users", uid));
       return snap.exists() ? snap.data().role : null;
+    }
+
+    async function loadMiniProfile(uid) {
+      if (!profileMini) return;
+
+      const snap = await getDoc(doc(db, "carriers", uid));
+      if (!snap.exists()) {
+        profileMini.textContent = "";
+        return;
+      }
+
+      const d = snap.data();
+      const name = d.name || "";
+      const vehicle = d.vehicleType || "";
+
+      profileMini.textContent =
+        name && vehicle
+          ? `Profile: ${name} • ${vehicle}`
+          : name
+          ? `Profile: ${name}`
+          : "";
     }
 
     async function loadOpenLoads() {
@@ -145,9 +165,6 @@
       }
 
       emailEl.textContent = user.email ? `Logged in as: ${user.email}` : "";
-      console.log("AUTH USER OBJECT:", user);
-      console.log("Your UID:", user.uid);
-  
 
       const role = await getRole(user.uid);
       if (role !== "carrier") {
@@ -155,6 +172,7 @@
         return;
       }
 
+      await loadMiniProfile(user.uid);
       await loadOpenLoads();
     });
 
@@ -164,7 +182,7 @@
       window.location.replace("login.html");
     });
 
-    // ✅ Scroll to Available Loads section
+    // Scroll to loads
     document.getElementById("btnGoLoads")?.addEventListener("click", () => {
       document.getElementById("loadsSection")?.scrollIntoView({ behavior: "smooth" });
     });
