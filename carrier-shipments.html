@@ -10,10 +10,8 @@
 
   <main class="container" style="padding: 80px 20px; max-width: 1100px;">
 
-    <!-- Page title -->
     <h1 data-i18n="myShipments">My Shipments</h1>
 
-    <!-- Empty state -->
     <div
       id="shipmentsEmpty"
       style="margin-top:20px; display:none;"
@@ -22,14 +20,13 @@
       No accepted shipments yet.
     </div>
 
-    <!-- Shipments list -->
     <div id="shipmentsList" style="margin-top:20px;">
       <!-- Shipments will load here -->
     </div>
 
   </main>
 
-  <!-- Language logic (simple, reuse later) -->
+  <!-- Language logic -->
   <script>
     const uiText = {
       myShipments: {
@@ -53,62 +50,87 @@
       }
     });
   </script>
-<script type="module">
-  import { auth, db } from "./firebase.js";
-  import {
-    collection,
-    query,
-    where,
-    orderBy,
-    getDocs
-  } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
-  import {
-    onAuthStateChanged
-  } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
 
-  const shipmentsList = document.getElementById("shipmentsList");
-  const shipmentsEmpty = document.getElementById("shipmentsEmpty");
+  <!-- Firebase: load shipments + update status -->
+  <script type="module">
+    import { auth, db } from "./firebase.js";
+    import {
+      collection,
+      query,
+      where,
+      orderBy,
+      getDocs,
+      doc,
+      updateDoc
+    } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+    import {
+      onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
 
-  onAuthStateChanged(auth, async user => {
-    if (!user) return;
+    const shipmentsList = document.getElementById("shipmentsList");
+    const shipmentsEmpty = document.getElementById("shipmentsEmpty");
 
-    const q = query(
-      collection(db, "loads"),
-      where("acceptedBy", "==", user.uid),
-      orderBy("acceptedAt", "desc")
-    );
+    async function advanceStatus(loadId, current) {
+      const next =
+        current === "accepted" ? { status: "in_transit", currentStatus: "In Transit" } :
+        current === "in_transit" ? { status: "delivered", currentStatus: "Delivered" } :
+        null;
 
-    const snap = await getDocs(q);
+      if (!next) return;
 
-    if (snap.empty) {
-      shipmentsEmpty.style.display = "block";
-      return;
+      await updateDoc(doc(db, "loads", loadId), next);
+      location.reload();
     }
 
-    shipmentsEmpty.style.display = "none";
+    onAuthStateChanged(auth, async user => {
+      if (!user) return;
 
-    snap.forEach(doc => {
-      const d = doc.data();
+      const q = query(
+        collection(db, "loads"),
+        where("acceptedBy", "==", user.uid),
+        orderBy("acceptedAt", "desc")
+      );
 
-      const div = document.createElement("div");
-      div.style.padding = "12px";
-      div.style.border = "1px solid #e5e7eb";
-      div.style.borderRadius = "8px";
-      div.style.marginBottom = "10px";
+      const snap = await getDocs(q);
 
-      div.innerHTML = `
-  <strong>${d.pickupCity || "-"}</strong> →
-  <strong>${d.deliveryCity || "-"}</strong><br>
-  <span class="status-badge status-${d.status || "accepted"}">
-    ${d.currentStatus || "Accepted"}
-  </span>
-`;
+      if (snap.empty) {
+        shipmentsEmpty.style.display = "block";
+        return;
+      }
 
+      shipmentsEmpty.style.display = "none";
 
-      shipmentsList.appendChild(div);
+      snap.forEach(docc => {
+        const d = docc.data();
+        const st = d.status || "accepted";
+
+        const div = document.createElement("div");
+        div.style.padding = "12px";
+        div.style.border = "1px solid #e5e7eb";
+        div.style.borderRadius = "8px";
+        div.style.marginBottom = "10px";
+
+        div.innerHTML = `
+          <strong>${d.pickupCity || "-"}</strong> →
+          <strong>${d.deliveryCity || "-"}</strong><br>
+
+          <span class="status-badge status-${st}">
+            ${d.currentStatus || "Accepted"}
+          </span>
+
+          ${st !== "delivered"
+            ? `<button class="btn" style="margin-left:10px" data-advance="1">Update Status</button>`
+            : ""
+          }
+        `;
+
+        const btn = div.querySelector('[data-advance="1"]');
+        if (btn) btn.addEventListener("click", () => advanceStatus(docc.id, st));
+
+        shipmentsList.appendChild(div);
+      });
     });
-  });
-</script>
+  </script>
 
 </body>
 </html>
