@@ -53,6 +53,59 @@
       }
     });
   </script>
+<script type="module">
+  import { auth, db } from "./firebase.js";
+  import {
+    collection,
+    query,
+    where,
+    orderBy,
+    getDocs
+  } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+  import {
+    onAuthStateChanged
+  } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+
+  const shipmentsList = document.getElementById("shipmentsList");
+  const shipmentsEmpty = document.getElementById("shipmentsEmpty");
+
+  onAuthStateChanged(auth, async user => {
+    if (!user) return;
+
+    const q = query(
+      collection(db, "loads"),
+      where("acceptedBy", "==", user.uid),
+      orderBy("acceptedAt", "desc")
+    );
+
+    const snap = await getDocs(q);
+
+    if (snap.empty) {
+      shipmentsEmpty.style.display = "block";
+      return;
+    }
+
+    shipmentsEmpty.style.display = "none";
+
+    snap.forEach(doc => {
+      const d = doc.data();
+
+      const div = document.createElement("div");
+      div.style.padding = "12px";
+      div.style.border = "1px solid #e5e7eb";
+      div.style.borderRadius = "8px";
+      div.style.marginBottom = "10px";
+
+      div.innerHTML = `
+        <strong>${d.pickupCity || "-"}</strong> →
+        <strong>${d.deliveryCity || "-"}</strong><br>
+        Status: ${d.currentStatus || "Accepted"}
+      `;
+
+      shipmentsList.appendChild(div);
+    });
+  });
+</script>
 
 </body>
 </html>
