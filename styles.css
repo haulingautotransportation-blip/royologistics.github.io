@@ -1062,6 +1062,28 @@ button:hover, .btn:hover, .lang-btn:hover {
   border-width: 1px;
   padding: 10px 14px;
 }
+/* TEMP TEST: DISABLE ALL HOVER ANIMATIONS (stops jumping) */
+*,
+*::before,
+*::after {
+  box-sizing: border-box !important;
+  transition: none !important;
+  animation: none !important;
+}
+
+*:hover,
+*:focus,
+*:focus-visible {
+  transform: none !important;
+}
+
+/* stop hover border/padding changes causing layout shift */
+button, .btn, .lang-btn, a {
+  border-width: 1px !important;
+  padding: 10px 14px !important;
+  letter-spacing: normal !important;
+  font-weight: 600 !important;
+}
 
 
 
