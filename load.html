@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Load Details – RoYo Logistics</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<main class="container" style="padding:80px 20px; max-width:1100px;">
+  <div style="display:flex; align-items:center; gap:12px; margin-bottom:14px;">
+    <a href="carrier-dashboard.html" class="btn ghost" data-i18n="back">← Back</a>
+    <h1 style="margin:0;" data-i18n="title">Load Details</h1>
+    <span id="userEmail" style="margin-left:auto; color:#cbd5e1;"></span>
+    <button id="logoutBtn" class="btn ghost" data-i18n="logout">Logout</button>
+  </div>
+
+  <!-- Language switch -->
+  <div style="display:flex; gap:10px; margin: 0 0 18px;">
+    <button type="button" class="lang-btn active" data-lang="en">EN</button>
+    <button type="button" class="lang-btn" data-lang="ru">RU</button>
+    <button type="button" class="lang-btn" data-lang="uz">UZ</button>
+  </div>
+
+  <p class="subtitle" data-i18n="subtitle">Review the load and accept it if you want.</p>
+
+  <div class="card" style="padding:20px; border-radius:18px;">
+    <div id="loadBox" style="display:grid; gap:10px;">
+      <p style="color:#cbd5e1;" id="statusText"></p>
+
+      <div class="dashboard-card" style="margin-top:6px;">
+        <h3 id="routeTitle" style="margin:0 0 10px;">—</h3>
+        <p><b data-i18n="pickup">Pickup:</b> <span id="pickupCity">—</span></p>
+        <p><b data-i18n="delivery">Delivery:</b> <span id="deliveryCity">—</span></p>
+        <p><b data-i18n="equipment">Equipment:</b> <span id="equipment">—</span></p>
+        <p><b data-i18n="price">Price:</b> $<span id="price">—</span></p>
+        <p><b data-i18n="load_status">Status:</b> <span id="loadStatus">—</span></p>
+
+        <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:14px;">
+          <button id="acceptBtn" class="btn" type="button" data-i18n="accept">Accept Load</button>
+          <a href="carrier-dashboard.html#loadsSection" class="btn ghost" data-i18n="view_more">View More Loads</a>
+        </div>
+
+        <p id="msg" style="margin-top:12px; color:#cbd5e1;"></p>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script type="module">
+  import { auth, db } from "./firebase.js";
+  import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+  import {
+    doc, getDoc, setDoc, updateDoc, serverTimestamp,
+    collection, runTransaction
+  } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+
+  const emailEl = document.getElementById("userEmail");
+  const logoutBtn = document.getElementById("logoutBtn");
+  const statusText = document.getElementById("statusText");
+  const msgEl = document.getElementById("msg");
+
+  const routeTitle = document.getElementById("routeTitle");
+  const pickupCityEl = document.getElementById("pickupCity");
+  const deliveryCityEl = document.getElementById("deliveryCity");
+  const equipmentEl = document.getElementById("equipment");
+  const priceEl = document.getElementById("price");
+  const loadStatusEl = document.getElementById("loadStatus");
+
+  const acceptBtn = document.getElementById("acceptBtn");
+
+  function getParam(name){
+    const u = new URL(window.location.href);
+    return u.searchParams.get(name);
+  }
+
+  function say(text){ msgEl.textContent = text || ""; }
+
+  async function getRole(uid) {
+    const snap = await getDoc(doc(db, "users", uid));
+    return snap.exists() ? snap.data().role : null;
+  }
+
+  async function loadOneLoad(loadId){
+    const ref = doc(db, "loads", loadId);
+    const snap = await getDoc(ref);
+    if (!snap.exists()){
+      statusText.textContent = "Load not found.";
+      acceptBtn.disabled = true;
+      return null;
+    }
+    const d = snap.data();
+
+    const pickup = d.pickupCity || "-";
+    const delivery = d.deliveryCity || "-";
+    const equipment = d.equipment || "-";
+    const price = (d.price ?? "-");
+    const st = (d.status || "-");
+
+    routeTitle.textContent = `${pickup} → ${delivery}`;
+    pickupCityEl.textContent = pickup;
+    deliveryCityEl.textContent = delivery;
+    equipmentEl.textContent = equipment;
+    priceEl.textContent = price;
+    loadStatusEl.textContent = st;
+
+    // only allow accept if open
+    if (String(st).toLowerCase() !== "open") {
+      acceptBtn.disabled = true;
+      say("This load is not open anymore.");
+    } else {
+      acceptBtn.disabled = false;
+      say("");
+    }
+
+    return { ref, data: d };
+  }
+
+  logoutBtn?.addEventListener("click", async () => {
+    await signOut(auth);
+    window.location.replace("login.html");
+  });
+
+  let currentUser = null;
+  let currentLoadId = null;
+
+  onAuthStateChanged(auth, async (user) => {
+    if (!user) {
+      window.location.replace("login.html");
+      return;
+    }
+    currentUser = user;
+    emailEl.textContent = user.email ? `Logged in as: ${user.email}` : "";
+
+    const role = await getRole(user.uid);
+    if (role !== "carrier") {
+      window.location.replace("login.html");
+      return;
+    }
+
+    currentLoadId = getParam("id");
+    if (!currentLoadId) {
+      statusText.textContent = "Missing load id in URL. Example: load.html?id=XXXX";
+      acceptBtn.disabled = true;
+      return;
+    }
+
+    statusText.textContent = "Loading…";
+    await loadOneLoad(currentLoadId);
+    statusText.textContent = "";
+  });
+
+  acceptBtn?.addEventListener("click", async () => {
+    if (!currentUser || !currentLoadId) return;
+
+    acceptBtn.disabled = true;
+    say("Accepting…");
+
+    const loadRef = doc(db, "loads", currentLoadId);
+
+    try {
+      await runTransaction(db, async (tx) => {
+        const loadSnap = await tx.get(loadRef);
+        if (!loadSnap.exists()) throw new Error("Load not found");
+
+        const load = loadSnap.data();
+        const st = String(load.status || "").toLowerCase();
+
+        if (st !== "open") {
+          throw new Error("This load is not open anymore.");
+        }
+
+        // Create shipment doc
+        const shipmentRef = doc(collection(db, "shipments")); // auto-id
+        tx.set(shipmentRef, {
+          loadId: currentLoadId,
+          carrierId: currentUser.uid,
+          pickupCity: load.pickupCity || "",
+          deliveryCity: load.deliveryCity || "",
+          equipment: load.equipment || "",
+          price: load.price ?? null,
+          status: "active",
+          createdAt: serverTimestamp()
+        });
+
+        // Update load status + assign carrier
+        tx.update(loadRef, {
+          status: "assigned",
+          assignedCarrierId: currentUser.uid,
+          assignedAt: serverTimestamp()
+        });
+      });
+
+      say("Accepted ✅ Shipment created.");
+      // refresh view
+      await loadOneLoad(currentLoadId);
+
+    } catch (e) {
+      acceptBtn.disabled = false;
+      say(e?.message || "Error accepting load.");
+    }
+  });
+</script>
+
+<!-- i18n -->
+<script>
+  const i18n = {
+    en: {
+      back: "← Back",
+      title: "Load Details",
+      logout: "Logout",
+      subtitle: "Review the load and accept it if you want.",
+      pickup: "Pickup",
+      delivery: "Delivery",
+      equipment: "Equipment",
+      price: "Price",
+      load_status: "Status",
+      accept: "Accept Load",
+      view_more: "View More Loads"
+    },
+    ru: {
+      back: "← Назад",
+      title: "Детали груза",
+      logout: "Выйти",
+      subtitle: "Проверьте груз и примите его, если хотите.",
+      pickup: "Загрузка",
+      delivery: "Выгрузка",
+      equipment: "Тип кузова",
+      price: "Цена",
+      load_status: "Статус",
+      accept: "Принять груз",
+      view_more: "Смотреть другие грузы"
+    },
+    uz: {
+      back: "← Orqaga",
+      title: "Yuk tafsilotlari",
+      logout: "Chiqish",
+      subtitle: "Yukni ko‘rib chiqing va xohlasangiz qabul qiling.",
+      pickup: "Yuklash",
+      delivery: "Tushirish",
+      equipment: "Transport turi",
+      price: "Narx",
+      load_status: "Holat",
+      accept: "Yukni qabul qilish",
+      view_more: "Boshqa yuklarni ko‘rish"
+    }
+  };
+
+  function applyLang(lang) {
+    const dict = i18n[lang] || i18n.en;
+
+    document.querySelectorAll("[data-i18n]").forEach(el => {
+      const key = el.getAttribute("data-i18n");
+      if (dict[key]) el.textContent = dict[key];
+    });
+
+    document.querySelectorAll(".lang-btn").forEach(b => {
+      b.classList.toggle("active", b.dataset.lang === lang);
+    });
+
+    localStorage.setItem("lang", lang);
+  }
+
+  document.querySelectorAll(".lang-btn").forEach(btn => {
+    btn.addEventListener("click", () => applyLang(btn.dataset.lang));
+  });
+
+  applyLang(localStorage.getItem("lang") || "en");
+</script>
+
+</body>
+</html>
