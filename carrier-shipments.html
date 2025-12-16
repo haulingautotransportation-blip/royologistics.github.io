@@ -97,10 +97,13 @@
       div.style.marginBottom = "10px";
 
       div.innerHTML = `
-        <strong>${d.pickupCity || "-"}</strong> →
-        <strong>${d.deliveryCity || "-"}</strong><br>
-        Status: ${d.currentStatus || "Accepted"}
-      `;
+  <strong>${d.pickupCity || "-"}</strong> →
+  <strong>${d.deliveryCity || "-"}</strong><br>
+  <span class="status-badge status-${d.status || "accepted"}">
+    ${d.currentStatus || "Accepted"}
+  </span>
+`;
+
 
       shipmentsList.appendChild(div);
     });
