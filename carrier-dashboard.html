@@ -90,6 +90,31 @@
     const emailEl = document.getElementById("userEmail");
     const profileMini = document.getElementById("profileMini");
 
+    // language-aware labels for dynamic text
+    const uiText = {
+      lang: localStorage.getItem("lang") || "en",
+      profileLabel: {
+        en: "Profile",
+        ru: "Профиль",
+        uz: "Profil"
+      },
+      equipmentLabel: {
+        en: "Equipment",
+        ru: "Кузов",
+        uz: "Transport"
+      },
+      priceLabel: {
+        en: "Price",
+        ru: "Цена",
+        uz: "Narx"
+      },
+      viewBtn: {
+        en: "View",
+        ru: "Смотреть",
+        uz: "Ko‘rish"
+      }
+    };
+
     async function getRole(uid) {
       const snap = await getDoc(doc(db, "users", uid));
       return snap.exists() ? snap.data().role : null;
@@ -108,11 +133,14 @@
       const name = d.name || "";
       const vehicle = d.vehicleType || "";
 
+      const lang = localStorage.getItem("lang") || "en";
+      const label = uiText.profileLabel[lang] || uiText.profileLabel.en;
+
       profileMini.textContent =
         name && vehicle
-          ? `Profile: ${name} • ${vehicle}`
+          ? `${label}: ${name} • ${vehicle}`
           : name
-          ? `Profile: ${name}`
+          ? `${label}: ${name}`
           : "";
     }
 
@@ -139,6 +167,11 @@
 
       loadsEmpty.style.display = "none";
 
+      const lang = localStorage.getItem("lang") || "en";
+      const equipmentLabel = uiText.equipmentLabel[lang] || uiText.equipmentLabel.en;
+      const priceLabel = uiText.priceLabel[lang] || uiText.priceLabel.en;
+      const viewBtnText = uiText.viewBtn[lang] || uiText.viewBtn.en;
+
       snap.forEach(docc => {
         const d = docc.data();
         const pickup = d.pickupCity || "-";
@@ -150,13 +183,11 @@
         card.className = "dashboard-card";
         card.innerHTML = `
           <h3>${pickup} → ${delivery}</h3>
-          <p>Equipment: ${equipment}</p>
-          <p>Price: $${price}</p>
-          <button type="button" class="btn btn-small"
-  onclick="location.href='load.html?id=${docc.id}'">
-  View
-</button>
-
+          <p>${equipmentLabel}: ${equipment}</p>
+          <p>${priceLabel}: $${price}</p>
+          <button type="button" class="btn btn-small" onclick="location.href='load.html?id=${docc.id}'">
+            ${viewBtnText}
+          </button>
         `;
         loadsList.appendChild(card);
       });
@@ -189,6 +220,14 @@
     // Scroll to loads
     document.getElementById("btnGoLoads")?.addEventListener("click", () => {
       document.getElementById("loadsSection")?.scrollIntoView({ behavior: "smooth" });
+    });
+
+    // update dynamic labels when language changes
+    window.addEventListener("storage", async (e) => {
+      if (e.key === "lang") {
+        await loadMiniProfile(auth.currentUser?.uid);
+        await loadOpenLoads();
+      }
     });
   </script>
 
@@ -288,6 +327,10 @@
       });
 
       localStorage.setItem("lang", lang);
+
+      // reload page dynamic parts (mini profile + loads) will update due to storage listener,
+      // but some browsers don't fire storage in same tab, so we force reload:
+      location.reload();
     }
 
     document.querySelectorAll(".lang-btn").forEach(btn => {
