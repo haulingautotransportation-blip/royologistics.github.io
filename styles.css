@@ -1053,8 +1053,7 @@ button:hover, .btn:hover, .lang-btn:hover {
   border-color: currentColor;
 }
 
-}
-/* === FIX DASHBOARD CARD TEXT VISIBILITY === */
+}/* === FIX DASHBOARD CARD TEXT VISIBILITY === */
 .dashboard-card {
   color: #0f172a; /* dark slate */
 }
