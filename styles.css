@@ -1103,3 +1103,8 @@ button, .btn, .lang-btn, a {
 
 .dashboard-card .btn.ghost { color: #0f172a; }
 
+.dashboard-card p {
+  color: #475569 !important;
+  opacity: 1 !important;
+}
+
