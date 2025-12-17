@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Carrier Dashboard – RoYo Logistics</title>
-  <!-- <link rel="stylesheet" href="styles.css" /> -->
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 
@@ -17,7 +17,7 @@
 
     <!-- Language switch -->
     <div style="display:flex; gap:10px; margin: 14px 0 26px;">
-      <button type="button" class="lang-btn active" data-lang="en">EN</button>
+      <button type="button" class="lang-btn" data-lang="en">EN</button>
       <button type="button" class="lang-btn" data-lang="ru">RU</button>
       <button type="button" class="lang-btn" data-lang="uz">UZ</button>
     </div>
@@ -42,7 +42,7 @@
       <div class="dashboard-card">
         <h3 data-i18n="card_shipments">My Shipments</h3>
         <p data-i18n="card_shipments_desc">Track active, completed, and pending loads.</p>
-        <a class="btn" href="shipments.html" data-i18n="btn_track">Track</a>
+        <a class="btn" href="carrier-shipments.html" data-i18n="btn_track">Track</a>
       </div>
 
       <div class="dashboard-card">
@@ -92,27 +92,10 @@
 
     // language-aware labels for dynamic text
     const uiText = {
-      lang: localStorage.getItem("lang") || "en",
-      profileLabel: {
-        en: "Profile",
-        ru: "Профиль",
-        uz: "Profil"
-      },
-      equipmentLabel: {
-        en: "Equipment",
-        ru: "Кузов",
-        uz: "Transport"
-      },
-      priceLabel: {
-        en: "Price",
-        ru: "Цена",
-        uz: "Narx"
-      },
-      viewBtn: {
-        en: "View",
-        ru: "Смотреть",
-        uz: "Ko‘rish"
-      }
+      profileLabel: { en: "Profile", ru: "Профиль", uz: "Profil" },
+      equipmentLabel: { en: "Equipment", ru: "Кузов", uz: "Transport" },
+      priceLabel: { en: "Price", ru: "Цена", uz: "Narx" },
+      viewBtn: { en: "View", ru: "Смотреть", uz: "Ko‘rish" }
     };
 
     async function getRole(uid) {
@@ -137,11 +120,9 @@
       const label = uiText.profileLabel[lang] || uiText.profileLabel.en;
 
       profileMini.textContent =
-        name && vehicle
-          ? `${label}: ${name} • ${vehicle}`
-          : name
-          ? `${label}: ${name}`
-          : "";
+        name && vehicle ? `${label}: ${name} • ${vehicle}`
+        : name ? `${label}: ${name}`
+        : "";
     }
 
     async function loadOpenLoads() {
@@ -193,24 +174,17 @@
       });
     }
 
-  onAuthStateChanged(auth, async (user) => {
-  if (!user) {
-    window.location.replace("login.html");
-    return;
-  }
+    // expose a refresh function for language switching (NO reload)
+    window.__refreshCarrierDashboard = async () => {
+      if (!auth.currentUser) return;
+      await loadMiniProfile(auth.currentUser.uid);
+      await loadOpenLoads();
+    };
 
-  emailEl.textContent = user.email ? `Logged in as: ${user.email}` : "";
-
-  const role = await getRole(user.uid);
-  if (role !== "carrier") {
-    window.location.replace("login.html");
-    return;
-  }
-
-  await loadMiniProfile(user.uid);
-  await loadOpenLoads();
-});
-
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        window.location.replace("login.html");
+        return;
       }
 
       emailEl.textContent = user.email ? `Logged in as: ${user.email}` : "";
@@ -234,14 +208,6 @@
     // Scroll to loads
     document.getElementById("btnGoLoads")?.addEventListener("click", () => {
       document.getElementById("loadsSection")?.scrollIntoView({ behavior: "smooth" });
-    });
-
-    // update dynamic labels when language changes
-    window.addEventListener("storage", async (e) => {
-      if (e.key === "lang") {
-        await loadMiniProfile(auth.currentUser?.uid);
-        await loadOpenLoads();
-      }
     });
   </script>
 
@@ -342,9 +308,8 @@
 
       localStorage.setItem("lang", lang);
 
-      // reload page dynamic parts (mini profile + loads) will update due to storage listener,
-      // but some browsers don't fire storage in same tab, so we force reload:
-      location.reload();
+      // refresh dynamic parts WITHOUT reload
+      if (window.__refreshCarrierDashboard) window.__refreshCarrierDashboard();
     }
 
     document.querySelectorAll(".lang-btn").forEach(btn => {
