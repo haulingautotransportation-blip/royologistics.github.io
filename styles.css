@@ -1175,6 +1175,39 @@ a.btn.ghost {
 .card a.btn:hover {
   opacity: 1 !important;
 }
+/* ===== HARD OVERRIDE: button text inside cards must stay visible ===== */
+
+/* Any real button/link button inside cards */
+.card button,
+.card .btn,
+.card a.btn {
+  color: #fff !important;
+  opacity: 1 !important;
+  background: #0b2a6f !important;          /* ensures it’s not “transparent” */
+  border-color: rgba(255,255,255,.25) !important;
+}
+
+/* Text inside the button (this beats .card * rules) */
+.card button *,
+.card .btn *,
+.card a.btn * {
+  color: #fff !important;
+  opacity: 1 !important;
+}
+
+/* Keep hover consistent */
+.card button:hover,
+.card .btn:hover,
+.card a.btn:hover {
+  color: #fff !important;
+  opacity: 1 !important;
+}
+.card button:hover *,
+.card .btn:hover *,
+.card a.btn:hover * {
+  color: #fff !important;
+  opacity: 1 !important;
+}
 
 
 
