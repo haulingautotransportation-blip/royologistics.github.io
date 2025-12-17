@@ -1152,6 +1152,29 @@ a.btn.ghost {
 .loads-section h3 {
   color: #ffffff !important;
 }
+/* ===== FIX: invisible button text until hover ===== */
+
+/* Pills / status / action buttons inside shipment cards */
+.card button,
+.card .btn,
+.card a.btn {
+  color: #ffffff !important;
+  opacity: 1 !important;
+}
+
+/* If the button is light/outline style */
+.card .btn.ghost,
+.card button.ghost {
+  color: #0f172a !important;
+  opacity: 1 !important;
+}
+
+/* Kill hover-only visibility tricks */
+.card button:hover,
+.card .btn:hover,
+.card a.btn:hover {
+  opacity: 1 !important;
+}
 
 
 
