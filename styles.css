@@ -1136,6 +1136,22 @@ a.btn.ghost {
   background: rgba(255,255,255,.18) !important;
   border-color: rgba(255,255,255,.65) !important;
 }
+/* ===== FIX: Available Loads section text on dark background ===== */
+#loadsSection,
+#loadsList,
+#loadsEmpty,
+.available-loads,
+.loads-section {
+  color: #e2e8f0 !important;
+  opacity: 1 !important;
+}
+
+#loadsSection h2,
+#loadsSection h3,
+.loads-section h2,
+.loads-section h3 {
+  color: #ffffff !important;
+}
 
 
 
