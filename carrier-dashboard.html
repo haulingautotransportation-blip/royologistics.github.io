@@ -16,17 +16,35 @@
     </div>
 
     <!-- Language switch -->
-    <div style="display:flex; gap:10px; margin: 14px 0 26px;">
+    <div style="display:flex; gap:10px; margin: 14px 0 18px;">
       <button type="button" class="lang-btn" data-lang="en">EN</button>
       <button type="button" class="lang-btn" data-lang="ru">RU</button>
       <button type="button" class="lang-btn" data-lang="uz">UZ</button>
     </div>
 
     <p class="subtitle" data-i18n="subtitle">Welcome to your carrier workspace</p>
-    <p id="profileMini" style="color:#cbd5e1; margin-top:8px; opacity:.95;"></p>
+
+    <!-- Counters -->
+    <div class="dashboard-grid" style="margin-top:14px;">
+      <div class="dashboard-card">
+        <h3 data-i18n="openLoads">Open Loads</h3>
+        <p style="font-size:32px; margin:8px 0 0; color:#fff;">
+          <span id="openLoadsCount">—</span>
+        </p>
+        <p style="color:#cbd5e1; margin-top:8px;" data-i18n="openLoadsHint">Available right now</p>
+      </div>
+
+      <div class="dashboard-card">
+        <h3 data-i18n="myActive">My Active Shipments</h3>
+        <p style="font-size:32px; margin:8px 0 0; color:#fff;">
+          <span id="activeShipmentsCount">—</span>
+        </p>
+        <p style="color:#cbd5e1; margin-top:8px;" data-i18n="myActiveHint">Accepted / In Transit</p>
+      </div>
+    </div>
 
     <!-- Top cards -->
-    <div class="dashboard-grid">
+    <div class="dashboard-grid" style="margin-top:18px;">
       <div class="dashboard-card">
         <h3 data-i18n="card_profile">Carrier Profile</h3>
         <p data-i18n="card_profile_desc">Manage company info, vehicle details, and contacts.</p>
@@ -78,7 +96,6 @@
     <a href="index.html" style="display:inline-block;margin-top:40px; color:#bfdbfe;" data-i18n="back_home">← Back to Home</a>
   </main>
 
-  <!-- AUTH + ROLE PROTECTION + FIRESTORE LOADS + MINI PROFILE -->
   <script type="module">
     import { auth, db } from "./firebase.js";
     import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
@@ -88,11 +105,10 @@
     } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 
     const emailEl = document.getElementById("userEmail");
-    const profileMini = document.getElementById("profileMini");
+    const openLoadsCountEl = document.getElementById("openLoadsCount");
+    const activeShipmentsCountEl = document.getElementById("activeShipmentsCount");
 
-    // language-aware labels for dynamic text
     const uiText = {
-      profileLabel: { en: "Profile", ru: "Профиль", uz: "Profil" },
       equipmentLabel: { en: "Equipment", ru: "Кузов", uz: "Transport" },
       priceLabel: { en: "Price", ru: "Цена", uz: "Narx" },
       viewBtn: { en: "View", ru: "Смотреть", uz: "Ko‘rish" }
@@ -103,26 +119,22 @@
       return snap.exists() ? snap.data().role : null;
     }
 
-    async function loadMiniProfile(uid) {
-      if (!profileMini) return;
+    async function refreshCounts(uid) {
+      // open loads count
+      const openQ = query(collection(db, "loads"), where("status", "==", "open"));
+      const openSnap = await getDocs(openQ);
+      openLoadsCountEl.textContent = openSnap.size;
 
-      const snap = await getDoc(doc(db, "carriers", uid));
-      if (!snap.exists()) {
-        profileMini.textContent = "";
-        return;
-      }
-
-      const d = snap.data();
-      const name = d.name || "";
-      const vehicle = d.vehicleType || "";
-
-      const lang = localStorage.getItem("lang") || "en";
-      const label = uiText.profileLabel[lang] || uiText.profileLabel.en;
-
-      profileMini.textContent =
-        name && vehicle ? `${label}: ${name} • ${vehicle}`
-        : name ? `${label}: ${name}`
-        : "";
+      // active shipments count for this carrier
+      // (we count accepted + in_transit by checking status IN code)
+      const myQ = query(collection(db, "loads"), where("acceptedBy", "==", uid));
+      const mySnap = await getDocs(myQ);
+      let active = 0;
+      mySnap.forEach(d => {
+        const st = (d.data().status || "").toLowerCase();
+        if (st === "accepted" || st === "in_transit") active++;
+      });
+      activeShipmentsCountEl.textContent = active;
     }
 
     async function loadOpenLoads() {
@@ -162,22 +174,25 @@
 
         const card = document.createElement("div");
         card.className = "dashboard-card";
+
         card.innerHTML = `
           <h3>${pickup} → ${delivery}</h3>
           <p>${equipmentLabel}: ${equipment}</p>
           <p>${priceLabel}: $${price}</p>
-          <button type="button" class="btn btn-small" onclick="location.href='load.html?id=${docc.id}'">
-            ${viewBtnText}
-          </button>
+          <button type="button" class="btn btn-small" data-view="1">${viewBtnText}</button>
         `;
+
+        card.querySelector('[data-view="1"]')?.addEventListener("click", () => {
+          window.location.href = `load.html?id=${docc.id}`;
+        });
+
         loadsList.appendChild(card);
       });
     }
 
-    // expose a refresh function for language switching (NO reload)
     window.__refreshCarrierDashboard = async () => {
       if (!auth.currentUser) return;
-      await loadMiniProfile(auth.currentUser.uid);
+      await refreshCounts(auth.currentUser.uid);
       await loadOpenLoads();
     };
 
@@ -195,29 +210,30 @@
         return;
       }
 
-      await loadMiniProfile(user.uid);
+      await refreshCounts(user.uid);
       await loadOpenLoads();
     });
 
-    // Logout
     document.getElementById("logoutBtn")?.addEventListener("click", async () => {
       await signOut(auth);
       window.location.replace("login.html");
     });
 
-    // Scroll to loads
     document.getElementById("btnGoLoads")?.addEventListener("click", () => {
       document.getElementById("loadsSection")?.scrollIntoView({ behavior: "smooth" });
     });
   </script>
 
-  <!-- i18n -->
   <script>
     const i18n = {
       en: {
         title: "Carrier Dashboard",
         logout: "Logout",
         subtitle: "Welcome to your carrier workspace",
+        openLoads: "Open Loads",
+        openLoadsHint: "Available right now",
+        myActive: "My Active Shipments",
+        myActiveHint: "Accepted / In Transit",
         card_profile: "Carrier Profile",
         card_profile_desc: "Manage company info, vehicle details, and contacts.",
         card_loads: "Available Loads",
@@ -244,6 +260,10 @@
         title: "Кабинет перевозчика",
         logout: "Выйти",
         subtitle: "Добро пожаловать в рабочее пространство перевозчика",
+        openLoads: "Открытые грузы",
+        openLoadsHint: "Доступно сейчас",
+        myActive: "Мои активные",
+        myActiveHint: "Принято / В пути",
         card_profile: "Профиль перевозчика",
         card_profile_desc: "Данные компании, авто и контакты.",
         card_loads: "Доступные грузы",
@@ -270,6 +290,10 @@
         title: "Tashuvchi paneli",
         logout: "Chiqish",
         subtitle: "Tashuvchi ish maydoniga xush kelibsiz",
+        openLoads: "Ochiq yuklar",
+        openLoadsHint: "Hozir mavjud",
+        myActive: "Faol yuklarim",
+        myActiveHint: "Qabul qilingan / Yo‘lda",
         card_profile: "Tashuvchi profili",
         card_profile_desc: "Kompaniya, transport va kontakt ma’lumotlarini boshqaring.",
         card_loads: "Mavjud yuklar",
@@ -277,7 +301,7 @@
         card_shipments: "Mening yuklarim",
         card_shipments_desc: "Faol, yakunlangan va kutilayotgan yuklarni kuzating.",
         card_docs: "Hujjatlar",
-        card_docs_desc: "Sug‘urta va moslik (compliance) hujjatlarini yuklang.",
+        card_docs_desc: "Sug‘urta va moslik hujjatlarini yuklang.",
         card_payments: "To‘lovlar",
         card_payments_desc: "To‘lovlar tarixini va yaqin to‘lovlarni ko‘ring.",
         card_support: "Yordam",
@@ -307,8 +331,6 @@
       });
 
       localStorage.setItem("lang", lang);
-
-      // refresh dynamic parts WITHOUT reload
       if (window.__refreshCarrierDashboard) window.__refreshCarrierDashboard();
     }
 
