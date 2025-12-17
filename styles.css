@@ -1084,3 +1084,33 @@ button, .btn, .lang-btn, a {
   letter-spacing: normal !important;
   font-weight: 600 !important;
 }
+/* ===== Card text visibility (safe, scoped) ===== */
+.dashboard-card,
+.card {
+  color: #0f172a;              /* main text */
+}
+
+.dashboard-card .muted,
+.dashboard-card .subtitle,
+.dashboard-card small,
+.dashboard-card p,
+.card .muted,
+.card .subtitle,
+.card small,
+.card p {
+  color: #475569;              /* readable gray */
+  opacity: 1;                  /* no !important, no global */
+}
+
+/* Buttons inside cards (so Open/Track/Upload always visible) */
+.dashboard-card .btn,
+.dashboard-card button,
+.card .btn,
+.card button,
+.card a.btn {
+  color: #ffffff;
+}
+.dashboard-card .btn.ghost,
+.card .btn.ghost {
+  color: #0f172a;
+}
