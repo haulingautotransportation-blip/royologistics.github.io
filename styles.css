@@ -1043,229 +1043,44 @@ main h1 {
   background: #dcfce7;
   color: #166534;
 }
-/* Prevent button jump without killing animations */
+/* FINAL – stable hover, no jumping */
+html { scrollbar-gutter: stable; }
+body { overflow-y: scroll; }
+
 button, .btn, .lang-btn {
-  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
   border: 1px solid transparent;
+  padding: 10px 14px;
+  line-height: 1;
+  box-sizing: border-box;
 }
 
 button:hover, .btn:hover, .lang-btn:hover {
-  border-color: currentColor;
+  border-width: 1px;
+  padding: 10px 14px;
+}
+/* TEMP TEST: DISABLE ALL HOVER ANIMATIONS (stops jumping) */
+*,
+*::before,
+*::after {
+  box-sizing: border-box !important;
+  transition: none !important;
+  animation: none !important;
 }
 
-/* ===== FORCE FIX: make ALL text inside white cards readable ===== */
-
-/* Target common dashboard card containers + any card inside main container */
-.container .dashboard-card,
-.container .card,
-.container .panel,
-.container .tile,
-.container section,
-.container article,
-.container .box {
-  color: #0f172a !important;
-  opacity: 1 !important;   /* important: fixes parent opacity issue */
+*:hover,
+*:focus,
+*:focus-visible {
+  transform: none !important;
 }
 
-/* Force all text inside those areas */
-.container .dashboard-card *,
-.container .card *,
-.container .panel *,
-.container .tile *,
-.container section *,
-.container article *,
-.container .box * {
-  color: #0f172a !important;
-  opacity: 1 !important;
+/* stop hover border/padding changes causing layout shift */
+button, .btn, .lang-btn, a {
+  border-width: 1px !important;
+  padding: 10px 14px !important;
+  letter-spacing: normal !important;
+  font-weight: 600 !important;
 }
-
-/* If you have "muted" text helper class */
-.muted, .subtitle, small {
-  color: #475569 !important;
-  opacity: 1 !important;
-}
-/* ===== FIX: button text became dark due to forced card text rules ===== */
-
-/* Primary/filled buttons */
-button,
-.btn,
-.lang-btn,
-a.btn {
-  color: #ffffff !important;
-}
-
-/* If you have outline/ghost buttons that should stay dark text on light bg */
-.btn.ghost,
-button.ghost,
-a.btn.ghost {
-  color: #0f172a !important;
-}
-/* ===== FINAL OVERRIDE: restore button label color everywhere ===== */
-
-/* All button-like elements */
-.container button,
-.container .btn,
-.container .lang-btn,
-.container a.btn,
-.dashboard-card button,
-.dashboard-card .btn,
-.dashboard-card a.btn {
-  color: #fff !important;
-}
-
-/* Text inside buttons (spans/icons/etc) */
-.container button *,
-.container .btn *,
-.container .lang-btn *,
-.container a.btn *,
-.dashboard-card button *,
-.dashboard-card .btn *,
-.dashboard-card a.btn * {
-  color: #fff !important;
-  opacity: 1 !important;
-}
-/* ===== FIX: language buttons on dark header ===== */
-.lang-btn {
-  color: #ffffff !important;
-  border: 1px solid rgba(255,255,255,.35) !important;
-  background: rgba(255,255,255,.08) !important;
-  opacity: 1 !important;
-}
-
-.lang-btn.active {
-  background: rgba(255,255,255,.18) !important;
-  border-color: rgba(255,255,255,.65) !important;
-}
-/* ===== FIX: Available Loads section text on dark background ===== */
-#loadsSection,
-#loadsList,
-#loadsEmpty,
-.available-loads,
-.loads-section {
-  color: #e2e8f0 !important;
-  opacity: 1 !important;
-}
-
-#loadsSection h2,
-#loadsSection h3,
-.loads-section h2,
-.loads-section h3 {
-  color: #ffffff !important;
-}
-/* ===== FIX: invisible button text until hover ===== */
-
-/* Pills / status / action buttons inside shipment cards */
-.card button,
-.card .btn,
-.card a.btn {
-  color: #ffffff !important;
-  opacity: 1 !important;
-}
-
-/* If the button is light/outline style */
-.card .btn.ghost,
-.card button.ghost {
-  color: #0f172a !important;
-  opacity: 1 !important;
-}
-
-/* Kill hover-only visibility tricks */
-.card button:hover,
-.card .btn:hover,
-.card a.btn:hover {
-  opacity: 1 !important;
-}
-/* ===== HARD OVERRIDE: button text inside cards must stay visible ===== */
-
-/* Any real button/link button inside cards */
-.card button,
-.card .btn,
-.card a.btn {
-  color: #fff !important;
-  opacity: 1 !important;
-  background: #0b2a6f !important;          /* ensures it’s not “transparent” */
-  border-color: rgba(255,255,255,.25) !important;
-}
-
-/* Text inside the button (this beats .card * rules) */
-.card button *,
-.card .btn *,
-.card a.btn * {
-  color: #fff !important;
-  opacity: 1 !important;
-}
-
-/* Keep hover consistent */
-.card button:hover,
-.card .btn:hover,
-.card a.btn:hover {
-  color: #fff !important;
-  opacity: 1 !important;
-}
-.card button:hover *,
-.card .btn:hover *,
-.card a.btn:hover * {
-  color: #fff !important;
-  opacity: 1 !important;
-}
-/* ===== GLOBAL BUTTON VISIBILITY FIX (dark + white areas) ===== */
-
-/* 1) Default: on dark backgrounds, ghost buttons must be WHITE */
-.btn.ghost,
-button.ghost,
-a.btn.ghost,
-.outline-btn,
-.ghost-btn {
-  color: #ffffff !important;
-  opacity: 1 !important;
-  border-color: rgba(255,255,255,.35) !important;
-  background: rgba(255,255,255,.06) !important;
-}
-
-.btn.ghost * ,
-button.ghost * ,
-a.btn.ghost * ,
-.outline-btn * ,
-.ghost-btn * {
-  color: #ffffff !important;
-  opacity: 1 !important;
-}
-
-/* 2) Inside white cards: ghost buttons should be DARK (so readable) */
-.card .btn.ghost,
-.card button.ghost,
-.card a.btn.ghost,
-.card .outline-btn,
-.card .ghost-btn {
-  color: #0f172a !important;
-  border-color: rgba(15,23,42,.25) !important;
-  background: rgba(15,23,42,.06) !important;
-}
-
-.card .btn.ghost *,
-.card button.ghost *,
-.card a.btn.ghost *,
-.card .outline-btn *,
-.card .ghost-btn * {
-  color: #0f172a !important;
-}
-/* ===== FIX: dropdown / input text invisible inside white shipment cards ===== */
-
-.card select,
-.card option,
-.card input,
-.card textarea {
-  color: #0f172a !important;
-  background: #ffffff !important;
-  opacity: 1 !important;
-  -webkit-text-fill-color: #0f172a !important; /* fixes Safari/Chrome autofill weirdness */
-}
-
-/* If the select is styled like a pill */
-.card select {
-  border: 1px solid rgba(15,23,42,.25) !important;
-}
-
-
-
-
