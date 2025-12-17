@@ -1112,4 +1112,9 @@ button, .btn, .lang-btn, a {
   color: #475569 !important;
   opacity: 1 !important;
 }
+/* FORCE visibility of helper text inside dashboard cards */
+.dashboard-card span {
+  color: #475569 !important;
+  opacity: 1 !important;
+}
 
