@@ -1208,6 +1208,63 @@ a.btn.ghost {
   color: #fff !important;
   opacity: 1 !important;
 }
+/* ===== GLOBAL BUTTON VISIBILITY FIX (dark + white areas) ===== */
+
+/* 1) Default: on dark backgrounds, ghost buttons must be WHITE */
+.btn.ghost,
+button.ghost,
+a.btn.ghost,
+.outline-btn,
+.ghost-btn {
+  color: #ffffff !important;
+  opacity: 1 !important;
+  border-color: rgba(255,255,255,.35) !important;
+  background: rgba(255,255,255,.06) !important;
+}
+
+.btn.ghost * ,
+button.ghost * ,
+a.btn.ghost * ,
+.outline-btn * ,
+.ghost-btn * {
+  color: #ffffff !important;
+  opacity: 1 !important;
+}
+
+/* 2) Inside white cards: ghost buttons should be DARK (so readable) */
+.card .btn.ghost,
+.card button.ghost,
+.card a.btn.ghost,
+.card .outline-btn,
+.card .ghost-btn {
+  color: #0f172a !important;
+  border-color: rgba(15,23,42,.25) !important;
+  background: rgba(15,23,42,.06) !important;
+}
+
+.card .btn.ghost *,
+.card button.ghost *,
+.card a.btn.ghost *,
+.card .outline-btn *,
+.card .ghost-btn * {
+  color: #0f172a !important;
+}
+/* ===== FIX: dropdown / input text invisible inside white shipment cards ===== */
+
+.card select,
+.card option,
+.card input,
+.card textarea {
+  color: #0f172a !important;
+  background: #ffffff !important;
+  opacity: 1 !important;
+  -webkit-text-fill-color: #0f172a !important; /* fixes Safari/Chrome autofill weirdness */
+}
+
+/* If the select is styled like a pill */
+.card select {
+  border: 1px solid rgba(15,23,42,.25) !important;
+}
 
 
 
