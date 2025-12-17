@@ -26,10 +26,49 @@
   <!-- i18n (NO reload) -->
   <script>
     const i18n = {
-      en: { myShipments: "My Shipments", noShipments: "No accepted shipments yet.", backDash: "Back" },
-      ru: { myShipments: "Мои перевозки", noShipments: "Пока нет принятых перевозок.", backDash: "Назад" },
-      uz: { myShipments: "Mening yuklarim", noShipments: "Hozircha qabul qilingan yuklar yo‘q.", backDash: "Orqaga" }
+      en: {
+        myShipments: "My Shipments",
+        noShipments: "No accepted shipments yet.",
+        backDash: "Back",
+        open: "Open",
+        updateStatus: "Update Status",
+        accepted: "Accepted",
+        inTransit: "In Transit",
+        delivered: "Delivered",
+        errorLoading: "Error loading shipments"
+      },
+      ru: {
+        myShipments: "Мои перевозки",
+        noShipments: "Пока нет принятых перевозок.",
+        backDash: "Назад",
+        open: "Открыть",
+        updateStatus: "Обновить статус",
+        accepted: "Принято",
+        inTransit: "В пути",
+        delivered: "Доставлено",
+        errorLoading: "Ошибка загрузки перевозок"
+      },
+      uz: {
+        myShipments: "Mening yuklarim",
+        noShipments: "Hozircha qabul qilingan yuklar yo‘q.",
+        backDash: "Orqaga",
+        open: "Ochish",
+        updateStatus: "Statusni yangilash",
+        accepted: "Qabul qilindi",
+        inTransit: "Yo‘lda",
+        delivered: "Yetkazildi",
+        errorLoading: "Yuklarni yuklashda xatolik"
+      }
     };
+
+    function getLang() {
+      return localStorage.getItem("lang") || "en";
+    }
+
+    function t(key) {
+      const lang = getLang();
+      return (i18n[lang] && i18n[lang][key]) || i18n.en[key] || key;
+    }
 
     function applyLang(lang) {
       const dict = i18n[lang] || i18n.en;
@@ -40,14 +79,14 @@
       localStorage.setItem("lang", lang);
     }
 
-    applyLang(localStorage.getItem("lang") || "en");
+    applyLang(getLang());
   </script>
 
-  <!-- Firebase logic -->
+  <!-- Firebase logic (single source of truth) -->
   <script type="module">
     import { auth, db } from "./firebase.js";
     import {
-      collection, query, where, orderBy, getDocs,
+      collection, query, where, getDocs,
       doc, updateDoc
     } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
     import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
@@ -60,10 +99,31 @@
 
     function statusLabel(st){
       const s = (st || "accepted").toLowerCase();
-      if (s === "accepted") return "Accepted";
-      if (s === "in_transit") return "In Transit";
-      if (s === "delivered") return "Delivered";
+      if (s === "accepted") return window.t("accepted");
+      if (s === "in_transit") return window.t("inTransit");
+      if (s === "delivered") return window.t("delivered");
       return s;
+    }
+
+    async function getAcceptedLoadsForUser(user) {
+      // 1) Try UID match (your current design: acceptedBy == uid)
+      const qUid = query(
+        collection(db, "loads"),
+        where("acceptedBy", "==", user.uid)
+      );
+      const snapUid = await getDocs(qUid);
+      if (!snapUid.empty) return snapUid;
+
+      // 2) Fallback: some versions store acceptedByEmail instead
+      const email = (user.email || "").toLowerCase();
+      if (!email) return snapUid;
+
+      const qEmail = query(
+        collection(db, "loads"),
+        where("acceptedByEmail", "==", email)
+      );
+      const snapEmail = await getDocs(qEmail);
+      return snapEmail;
     }
 
     async function loadShipments() {
@@ -76,28 +136,31 @@
       }
 
       try {
-        const q = query(
-          collection(db, "loads"),
-          where("acceptedBy", "==", currentUser.uid),
-          orderBy("acceptedAt", "desc")
-        );
-
-        const snap = await getDocs(q);
+        const snap = await getAcceptedLoadsForUser(currentUser);
 
         if (snap.empty) {
           shipmentsEmpty.style.display = "block";
           return;
         }
 
+        // Client-side sort (avoid Firestore orderBy/index issues)
+        const rows = [];
         snap.forEach(docc => {
           const d = docc.data();
+          const acceptedAt = d.acceptedAt?.seconds ? d.acceptedAt.seconds : 0;
+          const createdAt = d.createdAt?.seconds ? d.createdAt.seconds : 0;
+          const sortKey = acceptedAt || createdAt || 0;
+          rows.push({ id: docc.id, data: d, sortKey });
+        });
+        rows.sort((a,b) => (b.sortKey || 0) - (a.sortKey || 0));
+
+        rows.forEach(({ id, data: d }) => {
           const st = (d.status || "accepted").toLowerCase();
+          const canUpdate = st !== "delivered";
 
           const card = document.createElement("div");
           card.className = "dashboard-card";
           card.style.marginBottom = "10px";
-
-          const canUpdate = st !== "delivered";
 
           card.innerHTML = `
             <h3 style="margin-bottom:8px;">
@@ -106,8 +169,8 @@
 
             <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
               <span class="status-badge status-${st}">${d.currentStatus || statusLabel(st)}</span>
-              ${canUpdate ? `<button class="btn btn-small" data-advance="1">Update Status</button>` : ""}
-              <a class="btn ghost btn-small" href="load.html?id=${docc.id}">Open</a>
+              ${canUpdate ? `<button class="btn btn-small" data-advance="1">${window.t("updateStatus")}</button>` : ""}
+              <a class="btn ghost btn-small" href="load.html?id=${id}">${window.t("open")}</a>
             </div>
           `;
 
@@ -118,11 +181,11 @@
 
               const next =
                 st === "accepted"
-                  ? { status: "in_transit", currentStatus: "In Transit" }
-                  : { status: "delivered", currentStatus: "Delivered" };
+                  ? { status: "in_transit", currentStatus: statusLabel("in_transit") }
+                  : { status: "delivered", currentStatus: statusLabel("delivered") };
 
               try {
-                await updateDoc(doc(db, "loads", docc.id), next);
+                await updateDoc(doc(db, "loads", id), next);
                 await loadShipments();
               } catch (e) {
                 console.error(e);
@@ -137,7 +200,7 @@
 
       } catch (e) {
         shipmentsEmpty.style.display = "block";
-        shipmentsEmpty.textContent = "Error loading shipments";
+        shipmentsEmpty.textContent = window.t("errorLoading");
         console.error(e);
       }
     }
@@ -148,6 +211,6 @@
       await loadShipments();
     });
   </script>
-<script type="module" src="carrier-shipments.js"></script>
+
 </body>
 </html>
