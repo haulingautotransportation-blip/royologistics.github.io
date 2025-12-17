@@ -1107,4 +1107,9 @@ button, .btn, .lang-btn, a {
   color: #475569 !important;
   opacity: 1 !important;
 }
+/* Make the “empty state” helper sentences visible */
+[id$="Empty"], .empty, .empty-state, .empty-text, .muted, .subtext {
+  color: #475569 !important;
+  opacity: 1 !important;
+}
 
