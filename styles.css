@@ -1043,46 +1043,34 @@ main h1 {
   background: #dcfce7;
   color: #166534;
 }
-/* FINAL – stable hover, no jumping */
-html { scrollbar-gutter: stable; }
-body { overflow-y: scroll; }
-
+/* Prevent button jump without killing animations */
 button, .btn, .lang-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  border: 1px solid transparent;
-  padding: 10px 14px;
-  line-height: 1;
   box-sizing: border-box;
+  border: 1px solid transparent;
 }
 
 button:hover, .btn:hover, .lang-btn:hover {
-  border-width: 1px;
-  padding: 10px 14px;
-}
-/* TEMP TEST: DISABLE ALL HOVER ANIMATIONS (stops jumping) */
-*,
-*::before,
-*::after {
-  box-sizing: border-box !important;
-  transition: none !important;
-  animation: none !important;
+  border-color: currentColor;
 }
 
-*:hover,
-*:focus,
-*:focus-visible {
-  transform: none !important;
+}
+/* === FIX DASHBOARD CARD TEXT VISIBILITY === */
+.dashboard-card {
+  color: #0f172a; /* dark slate */
 }
 
-/* stop hover border/padding changes causing layout shift */
-button, .btn, .lang-btn, a {
-  border-width: 1px !important;
-  padding: 10px 14px !important;
-  letter-spacing: normal !important;
-  font-weight: 600 !important;
+.dashboard-card p {
+  color: #334155; /* readable gray */
+  opacity: 1 !important;
+}
+
+.dashboard-card h3 {
+  color: #020617;
+}
+
+.dashboard-card .subtitle,
+.dashboard-card small {
+  color: #475569;
 }
 
 
