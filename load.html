@@ -52,8 +52,7 @@
   import { auth, db } from "./firebase.js";
   import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
   import {
-    doc, getDoc, setDoc, updateDoc, serverTimestamp,
-    collection, runTransaction
+    doc, getDoc, runTransaction, serverTimestamp
   } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 
   const emailEl = document.getElementById("userEmail");
@@ -85,11 +84,13 @@
   async function loadOneLoad(loadId){
     const ref = doc(db, "loads", loadId);
     const snap = await getDoc(ref);
+
     if (!snap.exists()){
       statusText.textContent = "Load not found.";
       acceptBtn.disabled = true;
       return null;
     }
+
     const d = snap.data();
 
     const pickup = d.pickupCity || "-";
@@ -130,6 +131,7 @@
       window.location.replace("login.html");
       return;
     }
+
     currentUser = user;
     emailEl.textContent = user.email ? `Logged in as: ${user.email}` : "";
 
@@ -167,38 +169,34 @@
         const load = loadSnap.data();
         const st = String(load.status || "").toLowerCase();
 
+        // Prevent 2 carriers accepting same load
         if (st !== "open") {
           throw new Error("This load is not open anymore.");
         }
 
-        // Create shipment doc
-        const shipmentRef = doc(collection(db, "shipments")); // auto-id
-        tx.set(shipmentRef, {
-          loadId: currentLoadId,
-          carrierId: currentUser.uid,
-          pickupCity: load.pickupCity || "",
-          deliveryCity: load.deliveryCity || "",
-          equipment: load.equipment || "",
-          price: load.price ?? null,
-          status: "active",
-          createdAt: serverTimestamp()
-        });
-
-        // Update load status + assign carrier
+        // ✅ This is what your My Shipments page expects (loads + acceptedBy/acceptedAt)
         tx.update(loadRef, {
-          status: "assigned",
+          status: "accepted",
+          acceptedBy: currentUser.uid,
+          acceptedAt: serverTimestamp(),
+          currentStatus: "Accepted",
+
+          // optional extra fields (nice to have)
           assignedCarrierId: currentUser.uid,
           assignedAt: serverTimestamp()
         });
       });
 
-      say("Accepted ✅ Shipment created.");
-      // refresh view
+      say("Accepted ✅ Moved to My Shipments.");
       await loadOneLoad(currentLoadId);
+
+      // Optional auto-redirect:
+      // window.location.href = "carrier-shipments.html";
 
     } catch (e) {
       acceptBtn.disabled = false;
       say(e?.message || "Error accepting load.");
+      console.error(e);
     }
   });
 </script>
