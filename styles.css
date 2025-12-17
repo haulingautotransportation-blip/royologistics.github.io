@@ -1124,6 +1124,18 @@ a.btn.ghost {
   color: #fff !important;
   opacity: 1 !important;
 }
+/* ===== FIX: language buttons on dark header ===== */
+.lang-btn {
+  color: #ffffff !important;
+  border: 1px solid rgba(255,255,255,.35) !important;
+  background: rgba(255,255,255,.08) !important;
+  opacity: 1 !important;
+}
+
+.lang-btn.active {
+  background: rgba(255,255,255,.18) !important;
+  border-color: rgba(255,255,255,.65) !important;
+}
 
 
 
