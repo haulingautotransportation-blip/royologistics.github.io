@@ -1084,6 +1084,22 @@ button:hover, .btn:hover, .lang-btn:hover {
   color: #475569 !important;
   opacity: 1 !important;
 }
+/* ===== FIX: button text became dark due to forced card text rules ===== */
+
+/* Primary/filled buttons */
+button,
+.btn,
+.lang-btn,
+a.btn {
+  color: #ffffff !important;
+}
+
+/* If you have outline/ghost buttons that should stay dark text on light bg */
+.btn.ghost,
+button.ghost,
+a.btn.ghost {
+  color: #0f172a !important;
+}
 
 
 
