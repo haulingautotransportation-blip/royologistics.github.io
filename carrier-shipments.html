@@ -15,11 +15,7 @@
       <a href="carrier-dashboard.html" class="btn ghost" style="margin-left:auto;" data-i18n="backDash">Back</a>
     </div>
 
-    <div
-      id="shipmentsEmpty"
-      style="display:none; margin-top:20px; color:#cbd5e1;"
-      data-i18n="noShipments"
-    >
+    <div id="shipmentsEmpty" style="display:none; margin-top:20px; color:#cbd5e1;" data-i18n="noShipments">
       No accepted shipments yet.
     </div>
 
@@ -62,6 +58,14 @@
 
     let currentUser = null;
 
+    function statusLabel(st){
+      const s = (st || "accepted").toLowerCase();
+      if (s === "accepted") return "Accepted";
+      if (s === "in_transit") return "In Transit";
+      if (s === "delivered") return "Delivered";
+      return s;
+    }
+
     async function loadShipments() {
       shipmentsList.innerHTML = "";
       shipmentsEmpty.style.display = "none";
@@ -87,11 +91,13 @@
 
         snap.forEach(docc => {
           const d = docc.data();
-          const st = d.status || "accepted";
+          const st = (d.status || "accepted").toLowerCase();
 
           const card = document.createElement("div");
-          card.className = "dashboard-card"; // uses your main site style
+          card.className = "dashboard-card";
           card.style.marginBottom = "10px";
+
+          const canUpdate = st !== "delivered";
 
           card.innerHTML = `
             <h3 style="margin-bottom:8px;">
@@ -99,8 +105,9 @@
             </h3>
 
             <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
-              <span class="status-badge status-${st}">${d.currentStatus || "Accepted"}</span>
-              ${st !== "delivered" ? `<button class="btn btn-small" data-advance="1">Update Status</button>` : ""}
+              <span class="status-badge status-${st}">${d.currentStatus || statusLabel(st)}</span>
+              ${canUpdate ? `<button class="btn btn-small" data-advance="1">Update Status</button>` : ""}
+              <a class="btn ghost btn-small" href="load.html?id=${docc.id}">Open</a>
             </div>
           `;
 
@@ -114,8 +121,14 @@
                   ? { status: "in_transit", currentStatus: "In Transit" }
                   : { status: "delivered", currentStatus: "Delivered" };
 
-              await updateDoc(doc(db, "loads", docc.id), next);
-              await loadShipments(); // refresh without reload
+              try {
+                await updateDoc(doc(db, "loads", docc.id), next);
+                await loadShipments();
+              } catch (e) {
+                console.error(e);
+                btn.disabled = false;
+                alert("Could not update status.");
+              }
             });
           }
 
