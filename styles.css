@@ -1053,24 +1053,38 @@ button:hover, .btn:hover, .lang-btn:hover {
   border-color: currentColor;
 }
 
-}/* === FIX DASHBOARD CARD TEXT VISIBILITY === */
-.dashboard-card {
-  color: #0f172a; /* dark slate */
+/* ===== FORCE FIX: make ALL text inside white cards readable ===== */
+
+/* Target common dashboard card containers + any card inside main container */
+.container .dashboard-card,
+.container .card,
+.container .panel,
+.container .tile,
+.container section,
+.container article,
+.container .box {
+  color: #0f172a !important;
+  opacity: 1 !important;   /* important: fixes parent opacity issue */
 }
 
-.dashboard-card p {
-  color: #334155; /* readable gray */
+/* Force all text inside those areas */
+.container .dashboard-card *,
+.container .card *,
+.container .panel *,
+.container .tile *,
+.container section *,
+.container article *,
+.container .box * {
+  color: #0f172a !important;
   opacity: 1 !important;
 }
 
-.dashboard-card h3 {
-  color: #020617;
+/* If you have "muted" text helper class */
+.muted, .subtitle, small {
+  color: #475569 !important;
+  opacity: 1 !important;
 }
 
-.dashboard-card .subtitle,
-.dashboard-card small {
-  color: #475569;
-}
 
 
 
