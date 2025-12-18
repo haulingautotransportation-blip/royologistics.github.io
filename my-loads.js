@@ -4,8 +4,7 @@ import {
   collection,
   query,
   where,
-  onSnapshot,
-  orderBy
+  onSnapshot
 } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 
 const loadsList = document.getElementById("loadsList");
@@ -13,7 +12,6 @@ const loadsEmpty = document.getElementById("loadsEmpty");
 const logoutBtn = document.getElementById("logoutBtn");
 const emailEl = document.getElementById("userEmail");
 
-// nice labels for shipper view
 function statusText(st) {
   const s = (st || "open").toLowerCase();
   if (s === "open") return "Open";
@@ -31,11 +29,10 @@ onAuthStateChanged(auth, (user) => {
 
   emailEl.textContent = user.email || "";
 
-  // LIVE updates (no refresh)
+  // ✅ NO orderBy (avoids index problems)
   const q = query(
     collection(db, "loads"),
-    where("shipperId", "==", user.uid),
-    orderBy("createdAt", "desc")
+    where("shipperId", "==", user.uid)
   );
 
   onSnapshot(q, (snap) => {
@@ -47,19 +44,23 @@ onAuthStateChanged(auth, (user) => {
       return;
     }
 
-    snap.forEach((docc) => {
+    // client-side sort by createdAt
+    const rows = [];
+    snap.forEach(docc => {
       const d = docc.data();
-      const st = statusText(d.status);
+      const t = d.createdAt?.seconds || 0;
+      rows.push({ id: docc.id, d, t });
+    });
+    rows.sort((a, b) => (b.t || 0) - (a.t || 0));
 
+    rows.forEach(({ d }) => {
       const card = document.createElement("div");
       card.className = "shipment-card";
       card.innerHTML = `
         <strong>${d.pickupCity || "-"} → ${d.deliveryCity || "-"}</strong><br>
         ${d.equipment || "-"} | $${d.price ?? "-"}<br>
-        Status: <b>${st}</b>
-        ${d.acceptedByEmail ? `<br>Carrier: <span style="opacity:.8">${d.acceptedByEmail}</span>` : ""}
+        Status: <b>${statusText(d.status)}</b>
       `;
-
       loadsList.appendChild(card);
     });
   });
