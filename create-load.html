@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Create Load – RoYo Logistics</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<main class="container" style="padding:80px 20px; max-width:800px;">
+  <h1>Create Load</h1>
+
+  <form id="loadForm" style="margin-top:30px; display:grid; gap:14px;">
+    <input required placeholder="Pickup city" id="pickup" />
+    <input required placeholder="Delivery city" id="delivery" />
+    <input required placeholder="Vehicle / Cargo type" id="equipment" />
+    <input required placeholder="Price ($)" type="number" id="price" />
+
+    <button class="btn primary" type="submit">Post Load</button>
+  </form>
+
+  <a href="shipper-dashboard.html" style="display:inline-block;margin-top:30px;">
+    ← Back to Dashboard
+  </a>
+</main>
+
+<script type="module" src="create-load.js"></script>
+</body>
+</html>
