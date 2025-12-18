@@ -979,6 +979,12 @@ body {
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 20px;
 }
+.dashboard-grid > a.dashboard-card{
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
 
 .dashboard-card {
   background: #ffffff;
@@ -990,6 +996,9 @@ body {
 
 .dashboard-card h3 {
   margin-top: 0;
+}
+.dashboard-card{
+  width: 100%;
 }
 
 .dashboard-card button {
