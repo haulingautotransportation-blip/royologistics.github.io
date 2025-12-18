@@ -1,82 +1,45 @@
 import { auth, db } from "./firebase.js";
-import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
-import {
-  collection,
-  query,
-  where,
-  getDocs,
-  orderBy,
-  updateDoc,
-  doc
-} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+import { addDoc, collection, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 
-const loadsList = document.getElementById("loadsList");
-const loadsEmpty = document.getElementById("loadsEmpty");
-const logoutBtn = document.getElementById("logoutBtn");
-const emailEl = document.getElementById("userEmail");
+const form = document.getElementById("loadForm");
 
-onAuthStateChanged(auth, async (user) => {
-  if (!user) {
+let readyUser = null;
+
+onAuthStateChanged(auth, (user) => {
+  readyUser = user || null;
+  if (!user) window.location.replace("login.html");
+});
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  if (!readyUser) {
+    alert("Please login again.");
     window.location.replace("login.html");
     return;
   }
 
-  emailEl.textContent = user.email || "";
+  const pickup = document.getElementById("pickup").value.trim();
+  const delivery = document.getElementById("delivery").value.trim();
+  const equipment = document.getElementById("equipment").value.trim();
+  const price = Number(document.getElementById("price").value);
 
-  const q = query(
-    collection(db, "loads"),
-    where("status", "==", "open"),
-    orderBy("createdAt", "desc")
-  );
-
-  const snap = await getDocs(q);
-
-  if (snap.empty) {
-    loadsEmpty.style.display = "block";
-    return;
-  }
-
-  loadsList.innerHTML = "";
-
-  snap.forEach(docc => {
-    const d = docc.data();
-
-    const card = document.createElement("div");
-    card.className = "shipment-card";
-
-    card.innerHTML = `
-      <strong>${d.pickupCity || "-"} → ${d.deliveryCity || "-"}</strong><br>
-      ${d.equipment || "-"} | $${d.price || "-"}<br>
-      Status: <b>${d.status}</b><br><br>
-      <button class="btn primary accept-btn">Accept Load</button>
-    `;
-
-    const btn = card.querySelector(".accept-btn");
-
-    btn.addEventListener("click", async () => {
-      btn.disabled = true;
-
-      try {
-        await updateDoc(doc(db, "loads", docc.id), {
-          status: "accepted",
-          acceptedBy: auth.currentUser.uid,
-          acceptedByEmail: auth.currentUser.email || "",
-          acceptedAt: new Date()
-        });
-
-        card.remove(); // remove from OPEN list
-      } catch (e) {
-        console.error(e);
-        btn.disabled = false;
-        alert("Could not accept load");
-      }
+  try {
+    await addDoc(collection(db, "loads"), {
+      pickupCity: pickup,
+      deliveryCity: delivery,
+      equipment,
+      price,
+      status: "open",
+      shipperId: readyUser.uid,
+      shipperEmail: (readyUser.email || "").toLowerCase(),
+      createdAt: serverTimestamp()
     });
 
-    loadsList.appendChild(card);
-  });
-});
-
-logoutBtn.addEventListener("click", async () => {
-  await signOut(auth);
-  window.location.replace("login.html");
+    window.location.replace("my-loads.html");
+  } catch (err) {
+    console.error(err);
+    alert("Failed to create load: " + (err.code || err.message));
+  }
 });
