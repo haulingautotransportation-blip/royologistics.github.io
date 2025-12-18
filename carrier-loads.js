@@ -14,18 +14,14 @@ onAuthStateChanged(auth, (user) => {
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  if (!readyUser) {
-    alert("Please login again.");
-    window.location.replace("login.html");
-    return;
-  }
-
-  const pickup = document.getElementById("pickup").value.trim();
-  const delivery = document.getElementById("delivery").value.trim();
-  const equipment = document.getElementById("equipment").value.trim();
-  const price = Number(document.getElementById("price").value);
-
   try {
+    if (!readyUser) throw new Error("not-authenticated");
+
+    const pickup = document.getElementById("pickup").value.trim();
+    const delivery = document.getElementById("delivery").value.trim();
+    const equipment = document.getElementById("equipment").value.trim();
+    const price = Number(document.getElementById("price").value);
+
     await addDoc(collection(db, "loads"), {
       pickupCity: pickup,
       deliveryCity: delivery,
