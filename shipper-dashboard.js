@@ -40,3 +40,13 @@ onAuthStateChanged(auth, async (user) => {
     loadsList.appendChild(card);
   });
 });
+<script>
+  document.getElementById("goCreate")?.addEventListener("click", () => {
+    window.location.href = "create-load.html";
+  });
+
+  document.getElementById("goActive")?.addEventListener("click", () => {
+    window.location.href = "my-loads.html";
+  });
+</script>
+
