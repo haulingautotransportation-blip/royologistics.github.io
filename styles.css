@@ -1132,4 +1132,19 @@ button, .btn, .lang-btn, a {
   text-decoration: none;
   color: inherit;
 }
+/* === HARD FIX: keep dashboard in grid even when cards are <a> links === */
+.dashboard-grid{
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)) !important;
+  gap: 20px !important;
+  align-items: stretch !important;
+}
+
+.dashboard-grid > a.dashboard-card,
+.dashboard-grid > .dashboard-card{
+  display: block !important;
+  width: 100% !important;
+  text-decoration: none !important;
+  color: inherit !important;
+}
 
