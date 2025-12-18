@@ -1117,4 +1117,10 @@ button, .btn, .lang-btn, a {
   color: #475569 !important;
   opacity: 1 !important;
 }
+/* Fix dashboard cards when they are links */
+.dashboard-card {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
 
