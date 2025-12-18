@@ -22,20 +22,21 @@ form.addEventListener("submit", async (e) => {
     const equipment = document.getElementById("equipment").value.trim();
     const price = Number(document.getElementById("price").value);
 
-    await addDoc(collection(db, "loads"), {
+    const ref = await addDoc(collection(db, "loads"), {
       pickupCity: pickup,
       deliveryCity: delivery,
       equipment,
       price,
       status: "open",
       shipperId: readyUser.uid,
-      shipperEmail: (readyUser.email || "").toLowerCase(),
+      shipperEmail: readyUser.email || "",
       createdAt: serverTimestamp()
     });
 
+    alert("✅ Saved. ID: " + ref.id);
     window.location.replace("my-loads.html");
   } catch (err) {
     console.error(err);
-    alert("Failed to create load: " + (err.code || err.message));
+    alert("❌ Create failed: " + (err.code || err.message));
   }
 });
