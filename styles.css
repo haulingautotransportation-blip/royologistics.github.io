@@ -1117,3 +1117,5 @@ main, .container {
 .dashboard-card { cursor: pointer; }
 .dashboard-card button { pointer-events: none; } /* button shows, card handles click */
 
+.dashboard-card { cursor: pointer; }
+.dashboard-card button { pointer-events: none; } /* button shows, card handles click */
