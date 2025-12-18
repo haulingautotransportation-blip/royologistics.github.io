@@ -1126,4 +1126,13 @@ button, .btn, .lang-btn, a {
   color: #475569 !important;
   opacity: 1 !important;
 }
+body::before, body::after,
+.container::before, .container::after {
+  pointer-events: none !important;
+  z-index: 0 !important;
+}
+main, .container {
+  position: relative;
+  z-index: 1;
+}
 
