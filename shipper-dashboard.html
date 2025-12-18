@@ -26,37 +26,43 @@
       Manage your shipments, quotes, and payments.
     </p>
 
-    <!-- ✅ GRID WRAPPER (THIS WAS MISSING) -->
+    <!-- ✅ GRID WRAPPER -->
     <div class="dashboard-grid">
 
-      <div class="dashboard-card" id="goActive">
-  <h3 data-i18n="card_active">Active Shipments</h3>
-  <p data-i18n="card_active_desc">Track current shipments.</p>
-  <button type="button" class="btn primary" style="margin-top:12px;">Track</button>
-</div>
+      <!-- ✅ Create Shipment (with visible CTA button like carrier page) -->
+      <div class="dashboard-card" id="goCreate" style="cursor:pointer;">
+        <h3 data-i18n="card_create">Create Shipment</h3>
+        <p data-i18n="card_create_desc">Post a new shipment request.</p>
+        <button type="button" class="btn primary" style="margin-top:12px; pointer-events:none;">
+          Create
+        </button>
+      </div>
 
-
-      <div class="dashboard-card">
+      <div class="dashboard-card" style="cursor:pointer;">
         <h3 data-i18n="card_quotes">Quotes</h3>
         <p data-i18n="card_quotes_desc">Review carrier offers.</p>
       </div>
 
-      <div class="dashboard-card" id="goActive">
+      <!-- ✅ Active Shipments (with visible CTA button like carrier page) -->
+      <div class="dashboard-card" id="goActive" style="cursor:pointer;">
         <h3 data-i18n="card_active">Active Shipments</h3>
         <p data-i18n="card_active_desc">Track current shipments.</p>
+        <button type="button" class="btn primary" style="margin-top:12px; pointer-events:none;">
+          Track
+        </button>
       </div>
 
-      <div class="dashboard-card">
+      <div class="dashboard-card" style="cursor:pointer;">
         <h3 data-i18n="card_docs">Documents</h3>
         <p data-i18n="card_docs_desc">Manage BOLs and invoices.</p>
       </div>
 
-      <div class="dashboard-card">
+      <div class="dashboard-card" style="cursor:pointer;">
         <h3 data-i18n="card_payments">Payments</h3>
         <p data-i18n="card_payments_desc">View payment history.</p>
       </div>
 
-      <div class="dashboard-card">
+      <div class="dashboard-card" style="cursor:pointer;">
         <h3 data-i18n="card_support">Support</h3>
         <p data-i18n="card_support_desc">Contact support.</p>
       </div>
