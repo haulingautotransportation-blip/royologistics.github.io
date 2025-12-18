@@ -1114,4 +1114,6 @@ main, .container {
   position: relative;
   z-index: 1;
 }
+.dashboard-card { cursor: pointer; }
+.dashboard-card button { pointer-events: none; } /* button shows, card handles click */
 
