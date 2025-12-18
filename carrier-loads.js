@@ -1,9 +1,14 @@
-import { collection, query, where, getDocs, orderBy, updateDoc, doc } 
-from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
-
 import { auth, db } from "./firebase.js";
 import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
-import { collection, query, where, getDocs, orderBy } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  orderBy,
+  updateDoc,
+  doc
+} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 
 const loadsList = document.getElementById("loadsList");
 const loadsEmpty = document.getElementById("loadsEmpty");
@@ -33,28 +38,39 @@ onAuthStateChanged(auth, async (user) => {
 
   loadsList.innerHTML = "";
 
-  snap.forEach(doc => {
-    const d = doc.data();
+  snap.forEach(docc => {
+    const d = docc.data();
 
     const card = document.createElement("div");
     card.className = "shipment-card";
+
     card.innerHTML = `
-  <strong>${d.pickupCity} → ${d.deliveryCity}</strong><br>
-  ${d.equipment} | $${d.price}<br>
-  Status: <b>${d.status}</b><br><br>
-  <button class="btn primary accept-btn">Accept Load</button>
-`;
+      <strong>${d.pickupCity || "-"} → ${d.deliveryCity || "-"}</strong><br>
+      ${d.equipment || "-"} | $${d.price || "-"}<br>
+      Status: <b>${d.status}</b><br><br>
+      <button class="btn primary accept-btn">Accept Load</button>
+    `;
+
     const btn = card.querySelector(".accept-btn");
 
-btn.addEventListener("click", async () => {
-  await updateDoc(doc(db, "loads", doc.id), {
-    status: "assigned",
-    carrierId: auth.currentUser.uid
-  });
+    btn.addEventListener("click", async () => {
+      btn.disabled = true;
 
-  card.remove(); // instantly removes from OPEN list
-});
+      try {
+        await updateDoc(doc(db, "loads", docc.id), {
+          status: "accepted",
+          acceptedBy: auth.currentUser.uid,
+          acceptedByEmail: auth.currentUser.email || "",
+          acceptedAt: new Date()
+        });
 
+        card.remove(); // remove from OPEN list
+      } catch (e) {
+        console.error(e);
+        btn.disabled = false;
+        alert("Could not accept load");
+      }
+    });
 
     loadsList.appendChild(card);
   });
