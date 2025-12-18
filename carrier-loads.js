@@ -1,3 +1,6 @@
+import { collection, query, where, getDocs, orderBy, updateDoc, doc } 
+from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+
 import { auth, db } from "./firebase.js";
 import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
 import { collection, query, where, getDocs, orderBy } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
@@ -36,10 +39,22 @@ onAuthStateChanged(auth, async (user) => {
     const card = document.createElement("div");
     card.className = "shipment-card";
     card.innerHTML = `
-      <strong>${d.pickupCity} → ${d.deliveryCity}</strong><br>
-      ${d.equipment} | $${d.price}<br>
-      Status: <b>${d.status}</b>
-    `;
+  <strong>${d.pickupCity} → ${d.deliveryCity}</strong><br>
+  ${d.equipment} | $${d.price}<br>
+  Status: <b>${d.status}</b><br><br>
+  <button class="btn primary accept-btn">Accept Load</button>
+`;
+    const btn = card.querySelector(".accept-btn");
+
+btn.addEventListener("click", async () => {
+  await updateDoc(doc(db, "loads", doc.id), {
+    status: "assigned",
+    carrierId: auth.currentUser.uid
+  });
+
+  card.remove(); // instantly removes from OPEN list
+});
+
 
     loadsList.appendChild(card);
   });
