@@ -21,6 +21,7 @@ async function getUserRole(uid) {
 }
 
 async function doLogin(expectedRole) {
+  // Updated: Get email and password based on expected role (carrier or shipper)
   const emailEl = byId(expectedRole === "carrier" ? "carrierEmail" : "shipperEmail");
   const passEl  = byId(expectedRole === "carrier" ? "carrierPassword" : "shipperPassword");
 
@@ -58,7 +59,7 @@ async function doLogin(expectedRole) {
   }
 }
 
-// Forms
+// Forms: Added event listeners for both carrier and shipper login forms
 byId("carrierLoginForm")?.addEventListener("submit", (e) => {
   e.preventDefault();
   doLogin("carrier");
