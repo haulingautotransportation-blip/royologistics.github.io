@@ -226,9 +226,10 @@
       window.location.replace("login.html");
     });
 
-    document.getElementById("btnGoLoads")?.addEventListener("click", () => {
-      document.getElementById("loadsSection")?.scrollIntoView({ behavior: "smooth" });
-    });
+    document.getElementById("btnGoLoads")?.addEventListener("click", (e) => {
+  e.preventDefault(); // stop the default jump
+  document.getElementById("loadsSection")?.scrollIntoView({ behavior: "smooth" });
+});
   </script>
 
   <script>
